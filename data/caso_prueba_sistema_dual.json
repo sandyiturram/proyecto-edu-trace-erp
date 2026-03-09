@@ -1,0 +1,572 @@
+{
+    "exportDate": "2026-01-21T21:53:00.000Z",
+    "companyId": "empresa-centralizador-demo",
+    "companies": [
+        {
+            "id": "empresa-centralizador-demo",
+            "name": "Comercial Moderno SpA - Centralizador",
+            "rut": "77.777.777-7",
+            "address": "Av. Libertador Bernardo O'Higgins 1234, Santiago",
+            "phone": "+56 2 2999 8888",
+            "email": "contacto@comercialmoderno.cl",
+            "website": "www.comercialmoderno.cl",
+            "industry": "Comercio Mayorista",
+            "currency": "CLP",
+            "fiscalYear": "Enero - Diciembre",
+            "accountingSystem": "centralizer",
+            "createdAt": "2026-01-01T00:00:00.000Z"
+        }
+    ],
+    "accounts": [
+        {
+            "id": "acc-demo-1",
+            "companyId": "empresa-centralizador-demo",
+            "code": "1",
+            "name": "ACTIVOS",
+            "type": "asset",
+            "nature": "debit",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-2",
+            "companyId": "empresa-centralizador-demo",
+            "code": "1.1",
+            "name": "Activo Corriente",
+            "type": "asset",
+            "nature": "debit",
+            "isGroup": true,
+            "parentId": "acc-demo-1",
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-3",
+            "companyId": "empresa-centralizador-demo",
+            "code": "1.1.01",
+            "name": "Caja",
+            "type": "asset",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-2",
+            "balance": 5000000
+        },
+        {
+            "id": "acc-demo-4",
+            "companyId": "empresa-centralizador-demo",
+            "code": "1.1.02",
+            "name": "Banco Estado Cta. Cte.",
+            "type": "asset",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-2",
+            "balance": 25000000
+        },
+        {
+            "id": "acc-demo-5",
+            "companyId": "empresa-centralizador-demo",
+            "code": "1.1.03",
+            "name": "Clientes por Cobrar",
+            "type": "asset",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-2",
+            "balance": 8000000
+        },
+        {
+            "id": "acc-demo-6",
+            "companyId": "empresa-centralizador-demo",
+            "code": "1.1.04",
+            "name": "IVA Crédito Fiscal",
+            "type": "asset",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-2",
+            "balance": 950000
+        },
+        {
+            "id": "acc-demo-7",
+            "companyId": "empresa-centralizador-demo",
+            "code": "1.1.05",
+            "name": "Mercaderías",
+            "type": "asset",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-2",
+            "balance": 15000000
+        },
+        {
+            "id": "acc-demo-20",
+            "companyId": "empresa-centralizador-demo",
+            "code": "2",
+            "name": "PASIVOS",
+            "type": "liability",
+            "nature": "credit",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-21",
+            "companyId": "empresa-centralizador-demo",
+            "code": "2.1",
+            "name": "Pasivo Corriente",
+            "type": "liability",
+            "nature": "credit",
+            "isGroup": true,
+            "parentId": "acc-demo-20",
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-22",
+            "companyId": "empresa-centralizador-demo",
+            "code": "2.1.01",
+            "name": "Proveedores",
+            "type": "liability",
+            "nature": "credit",
+            "isGroup": false,
+            "parentId": "acc-demo-21",
+            "balance": 12000000
+        },
+        {
+            "id": "acc-demo-23",
+            "companyId": "empresa-centralizador-demo",
+            "code": "2.1.02",
+            "name": "IVA Débito Fiscal",
+            "type": "liability",
+            "nature": "credit",
+            "isGroup": false,
+            "parentId": "acc-demo-21",
+            "balance": 1520000
+        },
+        {
+            "id": "acc-demo-24",
+            "companyId": "empresa-centralizador-demo",
+            "code": "2.1.03",
+            "name": "Remuneraciones por Pagar",
+            "type": "liability",
+            "nature": "credit",
+            "isGroup": false,
+            "parentId": "acc-demo-21",
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-40",
+            "companyId": "empresa-centralizador-demo",
+            "code": "3",
+            "name": "PATRIMONIO",
+            "type": "equity",
+            "nature": "credit",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-41",
+            "companyId": "empresa-centralizador-demo",
+            "code": "3.1",
+            "name": "Capital",
+            "type": "equity",
+            "nature": "credit",
+            "isGroup": true,
+            "parentId": "acc-demo-40",
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-42",
+            "companyId": "empresa-centralizador-demo",
+            "code": "3.1.01",
+            "name": "Capital Pagado",
+            "type": "equity",
+            "nature": "credit",
+            "isGroup": false,
+            "parentId": "acc-demo-41",
+            "balance": 40000000
+        },
+        {
+            "id": "acc-demo-43",
+            "companyId": "empresa-centralizador-demo",
+            "code": "3.2",
+            "name": "Resultados",
+            "type": "equity",
+            "nature": "credit",
+            "isGroup": true,
+            "parentId": "acc-demo-40",
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-44",
+            "companyId": "empresa-centralizador-demo",
+            "code": "3.2.01",
+            "name": "Resultados Acumulados",
+            "type": "equity",
+            "nature": "credit",
+            "isGroup": false,
+            "parentId": "acc-demo-43",
+            "balance": 10430000
+        },
+        {
+            "id": "acc-demo-45",
+            "companyId": "empresa-centralizador-demo",
+            "code": "3.2.02",
+            "name": "Resultado del Ejercicio",
+            "type": "equity",
+            "nature": "credit",
+            "isGroup": false,
+            "parentId": "acc-demo-43",
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-50",
+            "companyId": "empresa-centralizador-demo",
+            "code": "4",
+            "name": "INGRESOS",
+            "type": "revenue",
+            "nature": "credit",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-51",
+            "companyId": "empresa-centralizador-demo",
+            "code": "4.1",
+            "name": "Ventas",
+            "type": "revenue",
+            "nature": "credit",
+            "isGroup": false,
+            "parentId": "acc-demo-50",
+            "balance": 45000000
+        },
+        {
+            "id": "acc-demo-60",
+            "companyId": "empresa-centralizador-demo",
+            "code": "5",
+            "name": "COSTOS",
+            "type": "expense",
+            "nature": "debit",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-61",
+            "companyId": "empresa-centralizador-demo",
+            "code": "5.1",
+            "name": "Costo de Ventas",
+            "type": "expense",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-60",
+            "balance": 27000000
+        },
+        {
+            "id": "acc-demo-70",
+            "companyId": "empresa-centralizador-demo",
+            "code": "6",
+            "name": "GASTOS",
+            "type": "expense",
+            "nature": "debit",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-71",
+            "companyId": "empresa-centralizador-demo",
+            "code": "6.1",
+            "name": "Gastos de Administración",
+            "type": "expense",
+            "nature": "debit",
+            "isGroup": true,
+            "parentId": "acc-demo-70",
+            "balance": 0
+        },
+        {
+            "id": "acc-demo-72",
+            "companyId": "empresa-centralizador-demo",
+            "code": "6.1.01",
+            "name": "Sueldos y Salarios",
+            "type": "expense",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-71",
+            "balance": 12000000
+        },
+        {
+            "id": "acc-demo-73",
+            "companyId": "empresa-centralizador-demo",
+            "code": "6.1.02",
+            "name": "Arriendos",
+            "type": "expense",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-71",
+            "balance": 3600000
+        },
+        {
+            "id": "acc-demo-74",
+            "companyId": "empresa-centralizador-demo",
+            "code": "6.1.03",
+            "name": "Servicios Básicos",
+            "type": "expense",
+            "nature": "debit",
+            "isGroup": false,
+            "parentId": "acc-demo-71",
+            "balance": 970000
+        }
+    ],
+    "products": [
+        {
+            "id": "prod-demo-1",
+            "companyId": "empresa-centralizador-demo",
+            "code": "PROD-001",
+            "name": "Laptop Dell Latitude 5520",
+            "description": "Laptop empresarial, Intel i5, 16GB RAM, 512GB SSD",
+            "category": "Electrónica",
+            "unit": "Unidad",
+            "price": 850000,
+            "cost": 510000,
+            "stock": 25,
+            "minStock": 10,
+            "isActive": true
+        },
+        {
+            "id": "prod-demo-2",
+            "companyId": "empresa-centralizador-demo",
+            "code": "PROD-002",
+            "name": "Monitor LG 24\" Full HD",
+            "description": "Monitor LED 24 pulgadas, Full HD 1920x1080",
+            "category": "Electrónica",
+            "unit": "Unidad",
+            "price": 150000,
+            "cost": 90000,
+            "stock": 40,
+            "minStock": 15,
+            "isActive": true
+        },
+        {
+            "id": "prod-demo-3",
+            "companyId": "empresa-centralizador-demo",
+            "code": "PROD-003",
+            "name": "Teclado Mecánico Logitech",
+            "description": "Teclado mecánico retroiluminado RGB",
+            "category": "Periféricos",
+            "unit": "Unidad",
+            "price": 85000,
+            "cost": 51000,
+            "stock": 50,
+            "minStock": 20,
+            "isActive": true
+        }
+    ],
+    "suppliers": [
+        {
+            "id": "sup-demo-1",
+            "companyId": "empresa-centralizador-demo",
+            "rut": "96.800.100-5",
+            "name": "Dell Technologies Chile Ltda.",
+            "fantasyName": "Dell Chile",
+            "address": "Av. Andrés Bello 2687, Las Condes",
+            "phone": "+56 2 2820 5000",
+            "email": "ventas@dell.cl",
+            "contact": "Juan Pérez",
+            "category": "Tecnología",
+            "paymentTerms": 30,
+            "creditLimit": 50000000,
+            "balance": 8000000
+        },
+        {
+            "id": "sup-demo-2",
+            "companyId": "empresa-centralizador-demo",
+            "rut": "77.200.300-K",
+            "name": "Distribuidora Electronica SpA",
+            "fantasyName": "DistriElectro",
+            "address": "San Diego 1200, Santiago",
+            "phone": "+56 2 2555 4444",
+            "email": "contacto@distrielectro.cl",
+            "contact": "María Silva",
+            "category": "Electrónica",
+            "paymentTerms": 45,
+            "creditLimit": 30000000,
+            "balance": 4000000
+        }
+    ],
+    "customers": [
+        {
+            "id": "cus-demo-1",
+            "companyId": "empresa-centralizador-demo",
+            "rut": "88.123.456-7",
+            "name": "Universidad de Valparaíso",
+            "fantasyName": "UV",
+            "address": "Blanco 951, Valparaíso",
+            "phone": "+56 32 250 7000",
+            "email": "adquisiciones@uv.cl",
+            "contact": "Roberto Contreras",
+            "category": "Educación",
+            "paymentTerms": 30,
+            "creditLimit": 40000000,
+            "balance": 5000000
+        },
+        {
+            "id": "cus-demo-2",
+            "companyId": "empresa-centralizador-demo",
+            "rut": "76.987.654-3",
+            "name": "Empresa Consultora ABC Ltda.",
+            "fantasyName": "ABC Consultores",
+            "address": "Av. Providencia 2133, Providencia",
+            "phone": "+56 2 2234 5678",
+            "email": "compras@abc.cl",
+            "contact": "Ana Torres",
+            "category": "Servicios",
+            "paymentTerms": 30,
+            "creditLimit": 20000000,
+            "balance": 3000000
+        }
+    ],
+    "journalEntries": [
+        {
+            "id": "entry-demo-apertura",
+            "companyId": "empresa-centralizador-demo",
+            "number": "AST-0001",
+            "date": "2026-01-02",
+            "description": "Asiento de Apertura 2026",
+            "reference": "Apertura",
+            "type": "manual",
+            "status": "posted",
+            "totalDebit": 53950000,
+            "totalCredit": 53950000,
+            "sourceDocument": null,
+            "sourceDocumentId": null,
+            "lines": [
+                {
+                    "id": "line-demo-1",
+                    "accountId": "acc-demo-3",
+                    "description": "Saldo inicial Caja",
+                    "debit": 5000000,
+                    "credit": 0
+                },
+                {
+                    "id": "line-demo-2",
+                    "accountId": "acc-demo-4",
+                    "description": "Saldo inicial Banco",
+                    "debit": 25000000,
+                    "credit": 0
+                },
+                {
+                    "id": "line-demo-3",
+                    "accountId": "acc-demo-5",
+                    "description": "Saldo inicial Clientes",
+                    "debit": 8000000,
+                    "credit": 0
+                },
+                {
+                    "id": "line-demo-4",
+                    "accountId": "acc-demo-6",
+                    "description": "Saldo inicial IVA CF",
+                    "debit": 950000,
+                    "credit": 0
+                },
+                {
+                    "id": "line-demo-5",
+                    "accountId": "acc-demo-7",
+                    "description": "Saldo inicial Mercaderías",
+                    "debit": 15000000,
+                    "credit": 0
+                },
+                {
+                    "id": "line-demo-6",
+                    "accountId": "acc-demo-22",
+                    "description": "Saldo inicial Proveedores",
+                    "debit": 0,
+                    "credit": 12000000
+                },
+                {
+                    "id": "line-demo-7",
+                    "accountId": "acc-demo-23",
+                    "description": "Saldo inicial IVA DF",
+                    "debit": 0,
+                    "credit": 1520000
+                },
+                {
+                    "id": "line-demo-8",
+                    "accountId": "acc-demo-42",
+                    "description": "Saldo inicial Capital",
+                    "debit": 0,
+                    "credit": 40000000
+                },
+                {
+                    "id": "line-demo-9",
+                    "accountId": "acc-demo-44",
+                    "description": "Saldo inicial Resultados Acumulados",
+                    "debit": 0,
+                    "credit": 430000
+                }
+            ]
+        }
+    ],
+    "auxiliaryJournals": [
+        {
+            "id": "aux-demo-ventas-jan",
+            "companyId": "empresa-centralizador-demo",
+            "module": "sales",
+            "period": "2026-01",
+            "status": "open",
+            "transactions": [
+                {
+                    "transactionId": "trans-vent-1",
+                    "date": "2026-01-10",
+                    "description": "Venta Factura N° 501 - Servicios Ti",
+                    "lines": [
+                        {
+                            "accountId": "acc-demo-3",
+                            "debit": 1190000,
+                            "credit": 0
+                        },
+                        {
+                            "accountId": "acc-demo-51",
+                            "debit": 0,
+                            "credit": 1000000
+                        },
+                        {
+                            "accountId": "acc-demo-23",
+                            "debit": 0,
+                            "credit": 190000
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "aux-demo-compras-jan",
+            "companyId": "empresa-centralizador-demo",
+            "module": "purchases",
+            "period": "2026-01",
+            "status": "open",
+            "transactions": [
+                {
+                    "transactionId": "trans-comp-1",
+                    "date": "2026-01-15",
+                    "description": "Compra Factura N° 882 - Insumos Oficina",
+                    "lines": [
+                        {
+                            "accountId": "acc-demo-74",
+                            "debit": 500000,
+                            "credit": 0
+                        },
+                        {
+                            "accountId": "acc-demo-6",
+                            "debit": 95000,
+                            "credit": 0
+                        },
+                        {
+                            "accountId": "acc-demo-22",
+                            "debit": 0,
+                            "credit": 595000
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

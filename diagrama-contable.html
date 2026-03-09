@@ -1,0 +1,3754 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Contable - Diagrama de Flujo Interactivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #f59e0b;
+            --primary-light: #fbbf24;
+            --primary-dark: #d97706;
+            --secondary: #10b981;
+            --accent: #3b82f6;
+            --purple: #8b5cf6;
+            --dark: #1f2937;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: var(--gray-500);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: var(--white);
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--gray-300);
+        }
+
+        /* Stage Cards */
+        .stage {
+            position: relative;
+        }
+
+        .stage-main {
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+
+        .stage-main:hover {
+            transform: translateY(-5px);
+        }
+
+        .stage-main.entrada {
+            border-top: 4px solid var(--secondary);
+        }
+
+        .stage-main.proceso {
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stage-main.salida {
+            border-top: 4px solid var(--accent);
+        }
+
+        .stage-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stage-main.entrada .stage-icon {
+            color: var(--secondary);
+        }
+
+        .stage-main.proceso .stage-icon {
+            color: var(--white);
+        }
+
+        .stage-main.salida .stage-icon {
+            color: var(--accent);
+        }
+
+        .stage-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .stage-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Sub Items */
+        .sub-items {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .entrada .sub-items {
+            left: -180px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .salida .sub-items {
+            right: -200px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .sub-item {
+            background: var(--white);
+            border-radius: 2rem;
+            padding: 0.6rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sub-item:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+
+        .sub-item .plus {
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .sub-item:hover .plus {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        /* ERP Modules Section */
+        .erp-modules {
+            background: var(--white);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .erp-modules h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--purple);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .module-card {
+            background: linear-gradient(135deg, var(--gray-100) 0%, var(--white) 100%);
+            border: 2px solid var(--gray-200);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .module-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .module-card i {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .module-card.compras i {
+            color: #ef4444;
+        }
+
+        .module-card.ventas i {
+            color: #22c55e;
+        }
+
+        .module-card.inventario i {
+            color: #f97316;
+        }
+
+        .module-card.tesoreria i {
+            color: #3b82f6;
+        }
+
+        .module-card.contabilidad i {
+            color: #8b5cf6;
+        }
+
+        .module-card.reportes i {
+            color: #06b6d4;
+        }
+
+        .module-card h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .module-card p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .module-card .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Description Section */
+        .description-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            color: var(--white);
+        }
+
+        .description-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .description-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .description-content {
+            background: var(--white);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            color: var(--dark);
+        }
+
+        .description-content p {
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: 1rem;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-header h3 i {
+            color: var(--primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-100);
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* Content Sections in Modal */
+        .content-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .content-section p {
+            line-height: 1.7;
+            color: var(--gray-700);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            padding: 0.6rem 0.75rem;
+            background: var(--gray-100);
+            border-radius: 0.5rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .content-section li i {
+            color: var(--primary);
+            margin-top: 0.15rem;
+            font-size: 0.85rem;
+        }
+
+        /* Account Box */
+        .account-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+        }
+
+        .account-box h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+        }
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .account-item {
+            background: var(--white);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .account-item .label {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            margin-bottom: 0.15rem;
+        }
+
+        .account-item .value {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.85rem;
+        }
+
+        /* T Account */
+        .t-account {
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            border-radius: 0.5rem;
+            margin: 0.75rem 0;
+            overflow: hidden;
+        }
+
+        .t-account-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.6rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .t-account-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .t-account-side {
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .t-account-side:first-child {
+            border-right: 2px solid var(--gray-300);
+        }
+
+        .t-account-side h6 {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            margin-bottom: 0.35rem;
+        }
+
+        .t-account-side .amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .t-account-side.debit .amount {
+            color: #dc2626;
+        }
+
+        .t-account-side.credit .amount {
+            color: #16a34a;
+        }
+
+        /* Flow Example */
+        .flow-example {
+            background: var(--gray-100);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+        }
+
+        .flow-example h5 {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .flow-example h5 i {
+            color: var(--primary);
+        }
+
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+        }
+
+        .step-content {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .step-content strong {
+            color: var(--dark);
+        }
+
+        /* Link Button */
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.6rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            margin-top: 0.75rem;
+        }
+
+        .link-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .link-btn.success {
+            background: var(--secondary);
+        }
+
+        .link-btn.success:hover {
+            background: #059669;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .sub-items {
+                position: relative;
+                left: auto !important;
+                right: auto !important;
+                top: auto !important;
+                transform: none !important;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .back-btn {
+                position: static;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Simulation Styles */
+        .simulation-container {
+            background: var(--white);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .simulation-header {
+            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .simulation-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .simulation-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .simulation-progress {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--gray-100);
+            border-bottom: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .progress-step:hover {
+            border-color: var(--primary);
+        }
+
+        .progress-step.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+        }
+
+        .progress-step.completed {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: var(--white);
+        }
+
+        .progress-step i {
+            font-size: 0.9rem;
+        }
+
+        .simulation-body {
+            padding: 2rem;
+        }
+
+        .sim-step {
+            display: none;
+        }
+
+        .sim-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Document Preview */
+        .document-preview {
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            border-radius: 0.5rem;
+            max-width: 600px;
+            margin: 1rem auto;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .doc-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: var(--white);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .doc-header.venta {
+            background: linear-gradient(135deg, #166534 0%, #22c55e 100%);
+        }
+
+        .doc-company h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .doc-company p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .doc-number {
+            text-align: right;
+        }
+
+        .doc-number .type {
+            font-size: 0.7rem;
+            opacity: 0.9;
+        }
+
+        .doc-number .number {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .doc-info {
+            padding: 1rem;
+            background: var(--gray-100);
+            font-size: 0.85rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .doc-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doc-info-item .label {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+        }
+
+        .doc-info-item .value {
+            font-weight: 600;
+        }
+
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .doc-table th {
+            background: var(--gray-100);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--gray-300);
+        }
+
+        .doc-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .doc-table .right {
+            text-align: right;
+        }
+
+        .doc-totals {
+            background: var(--gray-50);
+            padding: 1rem;
+        }
+
+        .doc-totals-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+
+        .doc-totals-row.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            border-top: 2px solid var(--gray-300);
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .doc-totals-row .label {
+            color: var(--gray-500);
+        }
+
+        /* Analysis Box */
+        .analysis-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid var(--primary);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .analysis-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .analysis-item {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .analysis-item .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .analysis-item.activo .icon {
+            color: #3b82f6;
+        }
+
+        .analysis-item.pasivo .icon {
+            color: #ef4444;
+        }
+
+        .analysis-item.ingreso .icon {
+            color: #22c55e;
+        }
+
+        .analysis-item.gasto .icon {
+            color: #f97316;
+        }
+
+        .analysis-item .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .analysis-item .type {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .analysis-item .movement {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            display: inline-block;
+        }
+
+        .analysis-item .movement.debit {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .analysis-item .movement.credit {
+            background: #bbf7d0;
+            color: #166534;
+        }
+
+        /* Journal Entry Animation */
+        .journal-entry-animated {
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            max-width: 700px;
+            margin: 1rem auto;
+        }
+
+        .journal-header {
+            background: var(--purple);
+            color: var(--white);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .journal-header h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .journal-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .journal-row.header {
+            background: var(--gray-100);
+            font-weight: 600;
+        }
+
+        .journal-row>div {
+            padding: 0.75rem;
+        }
+
+        .journal-row .account {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .journal-row .debit {
+            color: #dc2626;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .journal-row .credit {
+            color: #16a34a;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .journal-row.animate {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .journal-totals {
+            background: var(--gray-100);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            font-weight: 700;
+        }
+
+        .journal-totals>div {
+            padding: 0.75rem;
+        }
+
+        /* Ledger T Account */
+        .ledger-accounts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .ledger-t {
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .ledger-t-header {
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .ledger-t-header.asset {
+            background: #3b82f6;
+        }
+
+        .ledger-t-header.liability {
+            background: #ef4444;
+        }
+
+        .ledger-t-header.revenue {
+            background: #22c55e;
+        }
+
+        .ledger-t-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 80px;
+        }
+
+        .ledger-t-side {
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .ledger-t-side:first-child {
+            border-right: 2px solid var(--gray-300);
+        }
+
+        .ledger-t-side h6 {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+        }
+
+        .ledger-t-side .amount {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .ledger-t-side.debit .amount {
+            color: #dc2626;
+        }
+
+        .ledger-t-side.credit .amount {
+            color: #16a34a;
+        }
+
+        .ledger-t-balance {
+            background: var(--gray-100);
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Financial Statements Mini */
+        .fs-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .fs-statement {
+            background: var(--white);
+            border: 2px solid var(--gray-300);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .fs-header {
+            padding: 1rem;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .fs-header.balance {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+
+        .fs-header.results {
+            background: linear-gradient(135deg, #166534 0%, #22c55e 100%);
+        }
+
+        .fs-header h4 {
+            font-size: 1rem;
+        }
+
+        .fs-header p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .fs-body {
+            padding: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .fs-section {
+            margin-bottom: 1rem;
+        }
+
+        .fs-section h5 {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .fs-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+        }
+
+        .fs-row.highlight {
+            background: var(--primary-light);
+            padding: 0.5rem;
+            margin: 0.5rem -1rem;
+            font-weight: 700;
+        }
+
+        .fs-row.total {
+            border-top: 2px solid var(--gray-300);
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            font-weight: 700;
+        }
+
+        .fs-row .positive {
+            color: #16a34a;
+        }
+
+        .fs-row .negative {
+            color: #dc2626;
+        }
+
+        /* Navigation Buttons */
+        .sim-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .sim-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid var(--gray-300);
+            background: var(--white);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .sim-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .sim-btn.primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
+        }
+
+        .sim-btn.primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .sim-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .fs-container {
+                grid-template-columns: 1fr;
+            }
+
+            .simulation-progress {
+                gap: 0.25rem;
+            }
+
+            .progress-step {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Back Button -->
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Volver al Sistema
+    </a>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-graduation-cap"></i> Curso: Sistema Contable</h1>
+            <p>
+                Aprende el proceso contable completo: desde los documentos mercantiles hasta los estados financieros.
+                Diseñado para estudiantes de primer año.
+            </p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('flujo')">
+                <i class="fas fa-sitemap"></i> Flujo Contable
+            </button>
+            <button class="tab-btn" onclick="showTab('modulos')">
+                <i class="fas fa-cubes"></i> Módulos del ERP
+            </button>
+            <button class="tab-btn" onclick="showTab('cuentas')">
+                <i class="fas fa-book"></i> Plan de Cuentas
+            </button>
+            <button class="tab-btn" onclick="showTab('asientos')">
+                <i class="fas fa-edit"></i> Asientos Contables
+            </button>
+            <button class="tab-btn" onclick="showTab('ejemplo')">
+                <i class="fas fa-play-circle"></i> Ejemplo Completo
+            </button>
+            <button class="tab-btn" onclick="showTab('ratios')">
+                <i class="fas fa-chart-bar"></i> Ratios Financieros
+            </button>
+            <button class="tab-btn" onclick="showTab('sistemas')">
+                <i class="fas fa-book"></i> Sistemas Contables
+            </button>
+            <button class="tab-btn" onclick="showTab('flujos')">
+                <i class="fas fa-exchange-alt"></i> Flujos de Trabajo
+            </button>
+        </div>
+
+        <!-- Tab 1: Flujo Contable -->
+        <div id="tab-flujo" class="tab-content active">
+            <!-- Flow Diagram -->
+            <div class="flow-diagram">
+                <!-- ENTRADA -->
+                <div class="stage entrada">
+                    <div class="sub-items">
+                        <div class="sub-item" onclick="openModal('documento')">
+                            <span class="plus">+</span> Documento Mercantil
+                        </div>
+                        <div class="sub-item" onclick="openModal('elementos')">
+                            <span class="plus">+</span> Elementos Contables
+                        </div>
+                        <div class="sub-item" onclick="openModal('registro')">
+                            <span class="plus">+</span> Reglas de Registro
+                        </div>
+                    </div>
+                    <div class="stage-main entrada" onclick="openModal('entrada')">
+                        <div class="stage-icon"><i class="fas fa-sign-in-alt"></i></div>
+                        <div class="stage-title">Entrada</div>
+                        <div class="stage-subtitle">Documentación</div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                <!-- PROCESO -->
+                <div class="stage proceso">
+                    <div class="stage-main proceso" onclick="openModal('proceso')">
+                        <div class="stage-icon"><i class="fas fa-cogs"></i></div>
+                        <div class="stage-title">Proceso</div>
+                        <div class="stage-subtitle">Registro Contable</div>
+                    </div>
+                </div>
+
+                <!-- NEXO: BALANCE DE COMPROBACIÓN -->
+                <div class="flow-nexus"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;"
+                    onclick="openModal('balance')">
+                    <i class="fas fa-arrow-right" style="color: #94a3b8; font-size: 1.25rem;"></i>
+                    <div style="background: #f3e8ff; color: #7c3aed; border: 1px dashed #c084fc; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.2s ease;"
+                        onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                        <i class="fas fa-list-check"
+                            style="margin-bottom: 0.2rem; display: block;"></i>Balance<br>Comprobación
+                    </div>
+                    <i class="fas fa-arrow-right" style="color: #94a3b8; font-size: 1.25rem;"></i>
+                </div>
+
+                <!-- SALIDA -->
+                <div class="stage salida">
+                    <div class="stage-main salida" onclick="openModal('salida')">
+                        <div class="stage-icon"><i class="fas fa-file-export"></i></div>
+                        <div class="stage-title">Salida</div>
+                        <div class="stage-subtitle">Reportes</div>
+                    </div>
+                    <div class="sub-items">
+                        <div class="sub-item" onclick="openModal('situacion')">
+                            <span class="plus">+</span> Estado Situación
+                        </div>
+                        <div class="sub-item" onclick="openModal('resultados')">
+                            <span class="plus">+</span> Estado Resultados
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="description-section">
+                <div class="description-header">
+                    <h2><i class="fas fa-book-open"></i> Descripción del Proceso Contable</h2>
+                </div>
+                <div class="description-content">
+                    <p>
+                        El <strong>proceso contable</strong> es el conjunto de pasos ordenados para registrar,
+                        clasificar
+                        y resumir las transacciones económicas de una empresa, produciendo información financiera útil.
+                    </p>
+                    <p>
+                        <strong>Principio fundamental:</strong> Toda transacción afecta al menos a dos cuentas
+                        (partida doble), donde los débitos siempre deben igualar a los créditos.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Módulos del ERP -->
+        <div id="tab-modulos" class="tab-content">
+            <div class="erp-modules">
+                <h3><i class="fas fa-project-diagram"></i> Relación con los Módulos del ERP</h3>
+                <p style="margin-bottom: 1.5rem; color: var(--gray-500);">
+                    Cada módulo del sistema genera documentos y transacciones que se registran contablemente.
+                    Haz clic para ver ejemplos en el sistema.
+                </p>
+                <div class="modules-grid">
+                    <div class="module-card compras" onclick="goToModule('compras', 'facturas-proveedor')">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h4>MM - Compras</h4>
+                        <p>Órdenes de compra y facturas de proveedor</p>
+                        <span class="badge">Ver en el sistema →</span>
+                    </div>
+                    <div class="module-card ventas" onclick="goToModule('ventas', 'facturas-cliente')">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>SD - Ventas</h4>
+                        <p>Cotizaciones y facturas a clientes</p>
+                        <span class="badge">Ver en el sistema →</span>
+                    </div>
+                    <div class="module-card inventario" onclick="goToModule('inventario', 'movimientos-stock')">
+                        <i class="fas fa-boxes"></i>
+                        <h4>WM - Inventario</h4>
+                        <p>Stock y movimientos de mercadería</p>
+                        <span class="badge">Ver en el sistema →</span>
+                    </div>
+                    <div class="module-card tesoreria" onclick="goToModule('tesoreria', 'bancos')">
+                        <i class="fas fa-landmark"></i>
+                        <h4>FI - Tesorería</h4>
+                        <p>Bancos, pagos y cobros</p>
+                        <span class="badge">Ver en el sistema →</span>
+                    </div>
+                    <div class="module-card contabilidad" onclick="goToModule('contabilidad', 'asientos')">
+                        <i class="fas fa-book"></i>
+                        <h4>GL - Contabilidad</h4>
+                        <p>Asientos, libro mayor y diario</p>
+                        <span class="badge">Ver en el sistema →</span>
+                    </div>
+                    <div class="module-card reportes" onclick="goToModule('reportes', 'balance-general')">
+                        <i class="fas fa-chart-pie"></i>
+                        <h4>Reportes</h4>
+                        <p>Estados financieros</p>
+                        <span class="badge">Ver en el sistema →</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-section" style="margin-top: 1.5rem;">
+                <div class="description-header">
+                    <h2><i class="fas fa-link"></i> Flujo de Información entre Módulos</h2>
+                </div>
+                <div class="description-content">
+                    <p><strong>1. Compras → Inventario → Contabilidad</strong></p>
+                    <p style="margin-left: 1rem; font-size: 0.9rem;">
+                        Al registrar una factura de compra, automáticamente se actualiza el inventario
+                        y se genera un asiento contable (Mercaderías + IVA Crédito = Proveedores).
+                    </p>
+                    <p><strong>2. Ventas → Inventario → Contabilidad</strong></p>
+                    <p style="margin-left: 1rem; font-size: 0.9rem;">
+                        Al emitir una factura de venta, se rebaja el inventario y se genera un asiento
+                        (Clientes = Ingresos por Ventas + IVA Débito).
+                    </p>
+                    <p><strong>3. Tesorería → Contabilidad</strong></p>
+                    <p style="margin-left: 1rem; font-size: 0.9rem;">
+                        Los pagos y cobros actualizan las cuentas bancarias y generan asientos que
+                        cancelan las cuentas por pagar (Proveedores) o por cobrar (Clientes).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Plan de Cuentas -->
+        <div id="tab-cuentas" class="tab-content">
+            <div class="erp-modules">
+                <h3><i class="fas fa-sitemap"></i> Clasificación de Cuentas Contables</h3>
+                <div class="account-box">
+                    <h5>Los 5 Elementos Contables</h5>
+                    <div class="account-grid">
+                        <div class="account-item">
+                            <div class="label">ACTIVO</div>
+                            <div class="value">Lo que TIENE</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="label">PASIVO</div>
+                            <div class="value">Lo que DEBE</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="label">PATRIMONIO</div>
+                            <div class="value">De los dueños</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="label">INGRESO</div>
+                            <div class="value">Lo que GANA</div>
+                        </div>
+                        <div class="account-item">
+                            <div class="label">GASTO</div>
+                            <div class="value">Lo que GASTA</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem;">Ecuación Contable Fundamental</h4>
+                    <p
+                        style="font-size: 1.5rem; text-align: center; padding: 1rem; background: var(--primary-light); border-radius: 0.5rem; color: var(--dark);">
+                        <strong>ACTIVO = PASIVO + PATRIMONIO</strong>
+                    </p>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem;">Naturaleza de las Cuentas</h4>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="background: var(--gray-100);">
+                                <th
+                                    style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--gray-300);">
+                                    Tipo</th>
+                                <th
+                                    style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--gray-300);">
+                                    Aumenta con</th>
+                                <th
+                                    style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--gray-300);">
+                                    Disminuye con</th>
+                                <th
+                                    style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--gray-300);">
+                                    Saldo Normal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200);">Activo</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #dc2626; font-weight: 600;">
+                                    Débito</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #16a34a;">Crédito</td>
+                                <td style="padding: 0.75rem; text-align: center;">Deudor</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200);">Pasivo</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #16a34a; font-weight: 600;">
+                                    Crédito</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #dc2626;">Débito</td>
+                                <td style="padding: 0.75rem; text-align: center;">Acreedor</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200);">Patrimonio</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #16a34a; font-weight: 600;">
+                                    Crédito</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #dc2626;">Débito</td>
+                                <td style="padding: 0.75rem; text-align: center;">Acreedor</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200);">Ingreso</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #16a34a; font-weight: 600;">
+                                    Crédito</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #dc2626;">Débito</td>
+                                <td style="padding: 0.75rem; text-align: center;">Acreedor</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem;">Gasto</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #dc2626; font-weight: 600;">
+                                    Débito</td>
+                                <td style="padding: 0.75rem; text-align: center; color: #16a34a;">Crédito</td>
+                                <td style="padding: 0.75rem; text-align: center;">Deudor</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="link-btn" onclick="goToModule('contabilidad', 'plan-cuentas')">
+                    <i class="fas fa-external-link-alt"></i> Ver Plan de Cuentas en el Sistema
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 4: Asientos Contables -->
+        <div id="tab-asientos" class="tab-content">
+            <div class="erp-modules">
+                <h3><i class="fas fa-edit"></i> Ejemplos de Asientos Contables</h3>
+
+                <div class="flow-example">
+                    <h5><i class="fas fa-shopping-cart"></i> Compra de Mercaderías a Crédito</h5>
+                    <p style="margin-bottom: 1rem;"><strong>Situación:</strong> Compra de productos por $1.000.000 + IVA
+                        (19%)</p>
+                    <table
+                        style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; font-size: 0.9rem;">
+                        <thead style="background: var(--secondary); color: white;">
+                            <tr>
+                                <th style="padding: 0.75rem; text-align: left;">Cuenta</th>
+                                <th style="padding: 0.75rem; text-align: right;">Debe</th>
+                                <th style="padding: 0.75rem; text-align: right;">Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--gray-200);">
+                                <td style="padding: 0.75rem;">Mercaderías (Activo ↑)</td>
+                                <td style="padding: 0.75rem; text-align: right; color: #dc2626; font-weight: 600;">
+                                    $1.000.000</td>
+                                <td style="padding: 0.75rem;"></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--gray-200);">
+                                <td style="padding: 0.75rem;">IVA Crédito Fiscal (Activo ↑)</td>
+                                <td style="padding: 0.75rem; text-align: right; color: #dc2626; font-weight: 600;">
+                                    $190.000</td>
+                                <td style="padding: 0.75rem;"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem;">Proveedores (Pasivo ↑)</td>
+                                <td style="padding: 0.75rem;"></td>
+                                <td style="padding: 0.75rem; text-align: right; color: #16a34a; font-weight: 600;">
+                                    $1.190.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flow-example">
+                    <h5><i class="fas fa-chart-line"></i> Venta de Productos a Crédito</h5>
+                    <p style="margin-bottom: 1rem;"><strong>Situación:</strong> Venta de productos por $2.000.000 + IVA
+                        (19%)</p>
+                    <table
+                        style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; font-size: 0.9rem;">
+                        <thead style="background: var(--accent); color: white;">
+                            <tr>
+                                <th style="padding: 0.75rem; text-align: left;">Cuenta</th>
+                                <th style="padding: 0.75rem; text-align: right;">Debe</th>
+                                <th style="padding: 0.75rem; text-align: right;">Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--gray-200);">
+                                <td style="padding: 0.75rem;">Clientes (Activo ↑)</td>
+                                <td style="padding: 0.75rem; text-align: right; color: #dc2626; font-weight: 600;">
+                                    $2.380.000</td>
+                                <td style="padding: 0.75rem;"></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--gray-200);">
+                                <td style="padding: 0.75rem;">Ingresos por Ventas (Ingreso ↑)</td>
+                                <td style="padding: 0.75rem;"></td>
+                                <td style="padding: 0.75rem; text-align: right; color: #16a34a; font-weight: 600;">
+                                    $2.000.000</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem;">IVA Débito Fiscal (Pasivo ↑)</td>
+                                <td style="padding: 0.75rem;"></td>
+                                <td style="padding: 0.75rem; text-align: right; color: #16a34a; font-weight: 600;">
+                                    $380.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flow-example">
+                    <h5><i class="fas fa-money-bill-wave"></i> Pago a Proveedor</h5>
+                    <p style="margin-bottom: 1rem;"><strong>Situación:</strong> Pago de factura por $1.190.000 con
+                        transferencia bancaria</p>
+                    <table
+                        style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; font-size: 0.9rem;">
+                        <thead style="background: var(--purple); color: white;">
+                            <tr>
+                                <th style="padding: 0.75rem; text-align: left;">Cuenta</th>
+                                <th style="padding: 0.75rem; text-align: right;">Debe</th>
+                                <th style="padding: 0.75rem; text-align: right;">Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--gray-200);">
+                                <td style="padding: 0.75rem;">Proveedores (Pasivo ↓)</td>
+                                <td style="padding: 0.75rem; text-align: right; color: #dc2626; font-weight: 600;">
+                                    $1.190.000</td>
+                                <td style="padding: 0.75rem;"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem;">Banco (Activo ↓)</td>
+                                <td style="padding: 0.75rem;"></td>
+                                <td style="padding: 0.75rem; text-align: right; color: #16a34a; font-weight: 600;">
+                                    $1.190.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="link-btn success" onclick="goToModule('contabilidad', 'asientos')">
+                    <i class="fas fa-external-link-alt"></i> Ver Libro Diario en el Sistema
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab 5: Ejemplo Completo -->
+        <div id="tab-ejemplo" class="tab-content">
+            <div class="simulation-container">
+                <div class="simulation-header">
+                    <h3><i class="fas fa-play-circle"></i> Simulación: Ciclo Completo Compra-Venta</h3>
+                    <p>Sigue paso a paso cómo una compra y posterior venta afectan los estados financieros, incluyendo
+                        el Estado de Resultados</p>
+                </div>
+
+                <div class="simulation-progress">
+                    <div class="progress-step active" onclick="goToSimStep(1)">
+                        <i class="fas fa-shopping-cart"></i> 1. Compra
+                    </div>
+                    <div class="progress-step" onclick="goToSimStep(2)">
+                        <i class="fas fa-search"></i> 2. Análisis
+                    </div>
+                    <div class="progress-step" onclick="goToSimStep(3)">
+                        <i class="fas fa-edit"></i> 3. Asiento
+                    </div>
+                    <div class="progress-step" onclick="goToSimStep(4)">
+                        <i class="fas fa-columns"></i> 4. Mayor
+                    </div>
+                    <div class="progress-step" onclick="goToSimStep(5)">
+                        <i class="fas fa-receipt"></i> 5. Venta
+                    </div>
+                    <div class="progress-step" onclick="goToSimStep(6)">
+                        <i class="fas fa-book"></i> 6. Asiento Venta
+                    </div>
+                    <div class="progress-step" onclick="goToSimStep(7)">
+                        <i class="fas fa-columns"></i> 7. Mayor Venta
+                    </div>
+                    <div class="progress-step" onclick="goToSimStep(8)">
+                        <i class="fas fa-chart-pie"></i> 8. Estados Finales
+                    </div>
+                </div>
+
+                <div class="simulation-body">
+                    <!-- PASO 1: Documento Mercantil -->
+                    <div id="sim-step-1" class="sim-step active">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-file-invoice" style="color: var(--accent);"></i>
+                            Paso 1: El Hecho Económico genera un Documento Mercantil
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            La empresa <strong>"Comercial Los Andes Ltda."</strong> realiza una compra de mercaderías a
+                            crédito.
+                            El proveedor emite una <strong>Factura Electrónica</strong> que respalda esta transacción.
+                        </p>
+
+                        <!-- Factura Visual -->
+                        <div class="document-preview">
+                            <div class="doc-header">
+                                <div class="doc-company">
+                                    <h4><i class="fas fa-building"></i> DISTRIBUIDORA TECH SPA</h4>
+                                    <p>RUT: 76.543.210-K • Av. Providencia 1234, Santiago</p>
+                                </div>
+                                <div class="doc-number">
+                                    <div class="type">FACTURA ELECTRÓNICA</div>
+                                    <div class="number">N° 00542</div>
+                                </div>
+                            </div>
+                            <div class="doc-info">
+                                <div class="doc-info-item">
+                                    <span class="label">Fecha Emisión</span>
+                                    <span class="value">19/12/2025</span>
+                                </div>
+                                <div class="doc-info-item">
+                                    <span class="label">Condición de Pago</span>
+                                    <span class="value">Crédito 30 días</span>
+                                </div>
+                                <div class="doc-info-item">
+                                    <span class="label">Señor(es)</span>
+                                    <span class="value">Comercial Los Andes Ltda.</span>
+                                </div>
+                                <div class="doc-info-item">
+                                    <span class="label">RUT</span>
+                                    <span class="value">76.123.456-7</span>
+                                </div>
+                            </div>
+                            <table class="doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cant.</th>
+                                        <th>Descripción</th>
+                                        <th class="right">P. Unit.</th>
+                                        <th class="right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>Notebook Lenovo ThinkPad L15</td>
+                                        <td class="right">$500.000</td>
+                                        <td class="right">$5.000.000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="doc-totals">
+                                <div class="doc-totals-row">
+                                    <span class="label">NETO:</span>
+                                    <span>$5.000.000</span>
+                                </div>
+                                <div class="doc-totals-row">
+                                    <span class="label">IVA 19%:</span>
+                                    <span>$950.000</span>
+                                </div>
+                                <div class="doc-totals-row total">
+                                    <span class="label">TOTAL:</span>
+                                    <span>$5.950.000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-box"
+                            style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-color: var(--accent);">
+                            <h4><i class="fas fa-info-circle"></i> ¿Qué información extraemos del documento?</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li
+                                    style="padding: 0.5rem; background: white; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                    <strong>Tipo de transacción:</strong> Compra de mercaderías
+                                </li>
+                                <li
+                                    style="padding: 0.5rem; background: white; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                    <strong>Forma de pago:</strong> A crédito (30 días) → Genera deuda con proveedor
+                                </li>
+                                <li
+                                    style="padding: 0.5rem; background: white; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                                    <strong>Montos:</strong> Neto $5.000.000 + IVA $950.000 = Total $5.950.000
+                                </li>
+                                <li style="padding: 0.5rem; background: white; border-radius: 0.5rem;">
+                                    <strong>IVA:</strong> Es recuperable (Crédito Fiscal) → Se registra como Activo
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" disabled><i class="fas fa-arrow-left"></i> Anterior</button>
+                            <button class="sim-btn primary" onclick="nextSimStep()">Siguiente <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PASO 2: Análisis Contable -->
+                    <div id="sim-step-2" class="sim-step">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-search" style="color: var(--secondary);"></i>
+                            Paso 2: Análisis e Identificación de Cuentas
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            Analizamos el documento para identificar qué elementos contables se afectan,
+                            su naturaleza (Activo, Pasivo, etc.) y si aumentan o disminuyen.
+                        </p>
+
+                        <div class="analysis-box">
+                            <h4><i class="fas fa-magnifying-glass"></i> Identificación de Elementos Contables</h4>
+                            <div class="analysis-grid">
+                                <div class="analysis-item activo">
+                                    <div class="icon"><i class="fas fa-box"></i></div>
+                                    <div class="name">Mercaderías</div>
+                                    <div class="type">ACTIVO</div>
+                                    <div class="movement debit">↑ AUMENTA = DÉBITO</div>
+                                </div>
+                                <div class="analysis-item activo">
+                                    <div class="icon"><i class="fas fa-receipt"></i></div>
+                                    <div class="name">IVA Crédito Fiscal</div>
+                                    <div class="type">ACTIVO</div>
+                                    <div class="movement debit">↑ AUMENTA = DÉBITO</div>
+                                </div>
+                                <div class="analysis-item pasivo">
+                                    <div class="icon"><i class="fas fa-handshake"></i></div>
+                                    <div class="name">Proveedores</div>
+                                    <div class="type">PASIVO</div>
+                                    <div class="movement credit">↑ AUMENTA = CRÉDITO</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-example" style="margin-top: 1.5rem;">
+                            <h5><i class="fas fa-lightbulb"></i> Regla de Oro: Partida Doble</h5>
+                            <p style="margin-bottom: 1rem;">
+                                Toda transacción afecta <strong>al menos 2 cuentas</strong>.
+                                La suma de los DÉBITOS debe ser igual a la suma de los CRÉDITOS.
+                            </p>
+                            <div
+                                style="display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                                <div
+                                    style="background: #fecaca; padding: 1rem 2rem; border-radius: 0.5rem; text-align: center;">
+                                    <div style="font-size: 0.8rem; color: #991b1b;">DEBE</div>
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #dc2626;">$5.950.000</div>
+                                </div>
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--gray-300);">=</div>
+                                <div
+                                    style="background: #bbf7d0; padding: 1rem 2rem; border-radius: 0.5rem; text-align: center;">
+                                    <div style="font-size: 0.8rem; color: #166534;">HABER</div>
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #16a34a;">$5.950.000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" onclick="prevSimStep()"><i class="fas fa-arrow-left"></i>
+                                Anterior</button>
+                            <button class="sim-btn primary" onclick="nextSimStep()">Siguiente <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PASO 3: Asiento Contable -->
+                    <div id="sim-step-3" class="sim-step">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-edit" style="color: var(--purple);"></i>
+                            Paso 3: Registro en el Libro Diario (Asiento Contable)
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            Con el análisis completado, registramos la transacción en el <strong>Libro Diario</strong>.
+                            Este es el registro cronológico de todas las operaciones.
+                        </p>
+
+                        <div class="journal-entry-animated">
+                            <div class="journal-header">
+                                <h4><i class="fas fa-book"></i> LIBRO DIARIO</h4>
+                                <span>Asiento N° 45 • 19/12/2025</span>
+                            </div>
+                            <div class="journal-row header">
+                                <div>Cuenta</div>
+                                <div style="text-align: right;">Debe</div>
+                                <div style="text-align: right;">Haber</div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.2s;">
+                                <div class="account"><i class="fas fa-box" style="color: #3b82f6;"></i> Mercaderías
+                                </div>
+                                <div class="debit">$5.000.000</div>
+                                <div></div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.4s;">
+                                <div class="account"><i class="fas fa-receipt" style="color: #3b82f6;"></i> IVA Crédito
+                                    Fiscal</div>
+                                <div class="debit">$950.000</div>
+                                <div></div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.6s;">
+                                <div class="account"><i class="fas fa-handshake" style="color: #ef4444;"></i>
+                                    Proveedores</div>
+                                <div></div>
+                                <div class="credit">$5.950.000</div>
+                            </div>
+                            <div class="journal-totals">
+                                <div style="font-style: italic; color: var(--gray-500);">TOTALES</div>
+                                <div class="debit" style="text-align: right;">$5.950.000</div>
+                                <div class="credit" style="text-align: right;">$5.950.000</div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--gray-500);">
+                            <em>Glosa: Compra de mercaderías según Factura N° 00542 de Distribuidora Tech SPA</em>
+                        </div>
+
+                        <div class="analysis-box"
+                            style="background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-color: var(--purple);">
+                            <h4 style="color: #7c3aed;"><i class="fas fa-check-circle"></i> ¿Por qué el asiento está
+                                cuadrado?</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                <li style="padding: 0.4rem; font-size: 0.9rem;">✓ Mercaderías (Activo) aumenta → se
+                                    DEBITA por $5.000.000</li>
+                                <li style="padding: 0.4rem; font-size: 0.9rem;">✓ IVA Crédito (Activo) aumenta → se
+                                    DEBITA por $950.000</li>
+                                <li style="padding: 0.4rem; font-size: 0.9rem;">✓ Proveedores (Pasivo) aumenta → se
+                                    ACREDITA por $5.950.000</li>
+                                <li style="padding: 0.4rem; font-size: 0.9rem; font-weight: 600;">= DÉBITOS ($5.950.000)
+                                    = CRÉDITOS ($5.950.000) ✓</li>
+                            </ul>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" onclick="prevSimStep()"><i class="fas fa-arrow-left"></i>
+                                Anterior</button>
+                            <button class="sim-btn primary" onclick="nextSimStep()">Siguiente <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PASO 4: Libro Mayor -->
+                    <div id="sim-step-4" class="sim-step">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-columns" style="color: var(--secondary);"></i>
+                            Paso 4: Mayorización (Libro Mayor)
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            El asiento se "traspasa" al <strong>Libro Mayor</strong>, donde cada cuenta tiene su propia
+                            página (Cuenta T).
+                            Esto permite ver el saldo acumulado de cada cuenta.
+                        </p>
+
+                        <div class="ledger-accounts">
+                            <div class="ledger-t">
+                                <div class="ledger-t-header asset">
+                                    <i class="fas fa-box"></i> MERCADERÍAS
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">$5.000.000</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance">Saldo Deudor: $5.000.000</div>
+                            </div>
+
+                            <div class="ledger-t">
+                                <div class="ledger-t-header asset">
+                                    <i class="fas fa-receipt"></i> IVA CRÉDITO FISCAL
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">$950.000</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance">Saldo Deudor: $950.000</div>
+                            </div>
+
+                            <div class="ledger-t">
+                                <div class="ledger-t-header liability">
+                                    <i class="fas fa-handshake"></i> PROVEEDORES
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">$5.950.000</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance">Saldo Acreedor: $5.950.000</div>
+                            </div>
+                        </div>
+
+                        <div class="flow-example">
+                            <h5><i class="fas fa-balance-scale"></i> Verificación: Ecuación Contable</h5>
+                            <p>Después de esta transacción, la ecuación contable sigue en equilibrio:</p>
+
+                            <!-- Ecuación visual mejorada -->
+                            <div
+                                style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0; padding: 1rem; background: white; border-radius: 0.75rem;">
+                                <!-- ACTIVO -->
+                                <div style="text-align: center; min-width: 140px;">
+                                    <div
+                                        style="background: #dbeafe; padding: 0.75rem 1.25rem; border-radius: 0.5rem; border: 2px solid #3b82f6;">
+                                        <div
+                                            style="font-size: 0.75rem; color: #1e40af; font-weight: 600; text-transform: uppercase;">
+                                            Activo</div>
+                                        <div style="font-size: 1.1rem; font-weight: 700; color: #16a34a;">+$5.950.000
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signo = -->
+                                <div style="font-size: 2rem; font-weight: 700; color: #374151; padding: 0 0.5rem;">=
+                                </div>
+
+                                <!-- PASIVO -->
+                                <div style="text-align: center; min-width: 120px;">
+                                    <div
+                                        style="background: #fecaca; padding: 0.75rem 1.25rem; border-radius: 0.5rem; border: 2px solid #ef4444;">
+                                        <div
+                                            style="font-size: 0.75rem; color: #991b1b; font-weight: 600; text-transform: uppercase;">
+                                            Pasivo</div>
+                                        <div style="font-size: 1.1rem; font-weight: 700; color: #dc2626;">+$5.950.000
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signo + -->
+                                <div style="font-size: 2rem; font-weight: 700; color: #374151; padding: 0 0.5rem;">+
+                                </div>
+
+                                <!-- PATRIMONIO -->
+                                <div style="text-align: center; min-width: 130px;">
+                                    <div
+                                        style="background: #e9d5ff; padding: 0.75rem 1.25rem; border-radius: 0.5rem; border: 2px solid #8b5cf6;">
+                                        <div
+                                            style="font-size: 0.75rem; color: #5b21b6; font-weight: 600; text-transform: uppercase;">
+                                            Patrimonio</div>
+                                        <div style="font-size: 1.1rem; font-weight: 700; color: #7c3aed;">$0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Nota explicativa -->
+                            <div
+                                style="text-align: center; background: #fef3c7; border: 2px solid #f59e0b; border-radius: 0.5rem; padding: 0.75rem;">
+                                <span style="font-size: 0.85rem; color: #92400e;">
+                                    <i class="fas fa-info-circle"></i> La compra aumenta <strong>Activo</strong>
+                                    (Mercaderías + IVA) y <strong>Pasivo</strong> (Proveedores) por igual
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" onclick="prevSimStep()"><i class="fas fa-arrow-left"></i>
+                                Anterior</button>
+                            <button class="sim-btn primary" onclick="nextSimStep()">Siguiente <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PASO 5: Factura de Venta -->
+                    <div id="sim-step-5" class="sim-step">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-receipt" style="color: #22c55e;"></i>
+                            Paso 5: Venta de Mercaderías - Factura de Venta
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            Ahora la empresa vende <strong>5 de los 10 notebooks</strong> comprados a un cliente.
+                            Se emite una <strong>Factura de Venta</strong> con un margen de ganancia del 50%.
+                        </p>
+
+                        <!-- Factura de Venta Visual -->
+                        <div class="document-preview">
+                            <div class="doc-header venta">
+                                <div class="doc-company">
+                                    <h4><i class="fas fa-building"></i> COMERCIAL LOS ANDES LTDA.</h4>
+                                    <p>RUT: 76.123.456-7 • Av. Apoquindo 4500, Las Condes</p>
+                                </div>
+                                <div class="doc-number">
+                                    <div class="type">FACTURA ELECTRÓNICA</div>
+                                    <div class="number">N° 00128</div>
+                                </div>
+                            </div>
+                            <div class="doc-info">
+                                <div class="doc-info-item">
+                                    <span class="label">Fecha Emisión</span>
+                                    <span class="value">22/12/2025</span>
+                                </div>
+                                <div class="doc-info-item">
+                                    <span class="label">Condición de Pago</span>
+                                    <span class="value">Crédito 30 días</span>
+                                </div>
+                                <div class="doc-info-item">
+                                    <span class="label">Señor(es)</span>
+                                    <span class="value">Constructora Los Andes S.A.</span>
+                                </div>
+                                <div class="doc-info-item">
+                                    <span class="label">RUT</span>
+                                    <span class="value">76.890.123-4</span>
+                                </div>
+                            </div>
+                            <table class="doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cant.</th>
+                                        <th>Descripción</th>
+                                        <th class="right">P. Unit.</th>
+                                        <th class="right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>Notebook Lenovo ThinkPad L15</td>
+                                        <td class="right">$750.000</td>
+                                        <td class="right">$3.750.000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="doc-totals">
+                                <div class="doc-totals-row">
+                                    <span class="label">NETO:</span>
+                                    <span>$3.750.000</span>
+                                </div>
+                                <div class="doc-totals-row">
+                                    <span class="label">IVA 19%:</span>
+                                    <span>$712.500</span>
+                                </div>
+                                <div class="doc-totals-row total">
+                                    <span class="label">TOTAL:</span>
+                                    <span>$4.462.500</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-box"
+                            style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: #22c55e;">
+                            <h4><i class="fas fa-calculator"></i> Análisis de la Venta</h4>
+                            <div class="analysis-grid">
+                                <div class="analysis-item" style="text-align: left;">
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">Precio de Venta (5 unidades)
+                                    </div>
+                                    <div style="font-size: 1.2rem; font-weight: 700; color: #22c55e;">$3.750.000</div>
+                                </div>
+                                <div class="analysis-item" style="text-align: left;">
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">Costo (5 × $500.000)</div>
+                                    <div style="font-size: 1.2rem; font-weight: 700; color: #dc2626;">$2.500.000</div>
+                                </div>
+                                <div class="analysis-item" style="text-align: left;">
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">Utilidad Bruta</div>
+                                    <div style="font-size: 1.2rem; font-weight: 700; color: #166534;">$1.250.000</div>
+                                </div>
+                                <div class="analysis-item" style="text-align: left;">
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">Margen de Ganancia</div>
+                                    <div style="font-size: 1.2rem; font-weight: 700; color: #f59e0b;">50%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-example" style="margin-top: 1.5rem;">
+                            <h5><i class="fas fa-lightbulb"></i> ¿Qué cuentas se afectan en una venta?</h5>
+                            <div class="analysis-grid" style="margin-top: 1rem;">
+                                <div class="analysis-item activo">
+                                    <div class="icon"><i class="fas fa-users"></i></div>
+                                    <div class="name">Clientes por Cobrar</div>
+                                    <div class="type">ACTIVO</div>
+                                    <div class="movement debit">↑ AUMENTA = DÉBITO</div>
+                                </div>
+                                <div class="analysis-item ingreso">
+                                    <div class="icon"><i class="fas fa-chart-line"></i></div>
+                                    <div class="name">Ingresos por Ventas</div>
+                                    <div class="type">INGRESO</div>
+                                    <div class="movement credit">↑ AUMENTA = CRÉDITO</div>
+                                </div>
+                                <div class="analysis-item pasivo">
+                                    <div class="icon"><i class="fas fa-receipt"></i></div>
+                                    <div class="name">IVA Débito Fiscal</div>
+                                    <div class="type">PASIVO</div>
+                                    <div class="movement credit">↑ AUMENTA = CRÉDITO</div>
+                                </div>
+                                <div class="analysis-item gasto">
+                                    <div class="icon"><i class="fas fa-box-open"></i></div>
+                                    <div class="name">Costo de Ventas</div>
+                                    <div class="type">GASTO</div>
+                                    <div class="movement debit">↑ AUMENTA = DÉBITO</div>
+                                </div>
+                                <div class="analysis-item activo">
+                                    <div class="icon"><i class="fas fa-box"></i></div>
+                                    <div class="name">Mercaderías</div>
+                                    <div class="type">ACTIVO</div>
+                                    <div class="movement credit">↓ DISMINUYE = CRÉDITO</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" onclick="prevSimStep()"><i class="fas fa-arrow-left"></i>
+                                Anterior</button>
+                            <button class="sim-btn primary" onclick="nextSimStep()">Siguiente <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PASO 6: Asiento de Venta -->
+                    <div id="sim-step-6" class="sim-step">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-book" style="color: var(--purple);"></i>
+                            Paso 6: Asientos Contables de la Venta
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            La venta genera <strong>dos asientos contables</strong>: uno para reconocer el ingreso
+                            y otro para reconocer el costo de la mercadería vendida.
+                        </p>
+
+                        <!-- Asiento 1: Ingreso por Venta -->
+                        <div class="journal-entry-animated" style="margin-bottom: 1.5rem;">
+                            <div class="journal-header"
+                                style="background: linear-gradient(135deg, #166534 0%, #22c55e 100%);">
+                                <h4><i class="fas fa-book"></i> ASIENTO 1: Reconocimiento del Ingreso</h4>
+                                <span>Asiento N° 46 • 22/12/2025</span>
+                            </div>
+                            <div class="journal-row header">
+                                <div>Cuenta</div>
+                                <div style="text-align: right;">Debe</div>
+                                <div style="text-align: right;">Haber</div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.2s;">
+                                <div class="account"><i class="fas fa-users" style="color: #3b82f6;"></i> Clientes por
+                                    Cobrar</div>
+                                <div class="debit">$4.462.500</div>
+                                <div></div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.4s;">
+                                <div class="account"><i class="fas fa-chart-line" style="color: #22c55e;"></i> Ingresos
+                                    por Ventas</div>
+                                <div></div>
+                                <div class="credit">$3.750.000</div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.6s;">
+                                <div class="account"><i class="fas fa-receipt" style="color: #ef4444;"></i> IVA Débito
+                                    Fiscal</div>
+                                <div></div>
+                                <div class="credit">$712.500</div>
+                            </div>
+                            <div class="journal-totals">
+                                <div style="font-style: italic; color: var(--gray-500);">TOTALES</div>
+                                <div class="debit" style="text-align: right;">$4.462.500</div>
+                                <div class="credit" style="text-align: right;">$4.462.500</div>
+                            </div>
+                        </div>
+
+                        <!-- Asiento 2: Costo de Ventas -->
+                        <div class="journal-entry-animated">
+                            <div class="journal-header"
+                                style="background: linear-gradient(135deg, #dc2626 0%, #f97316 100%);">
+                                <h4><i class="fas fa-book"></i> ASIENTO 2: Reconocimiento del Costo</h4>
+                                <span>Asiento N° 47 • 22/12/2025</span>
+                            </div>
+                            <div class="journal-row header">
+                                <div>Cuenta</div>
+                                <div style="text-align: right;">Debe</div>
+                                <div style="text-align: right;">Haber</div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.2s;">
+                                <div class="account"><i class="fas fa-box-open" style="color: #f97316;"></i> Costo de
+                                    Ventas</div>
+                                <div class="debit">$2.500.000</div>
+                                <div></div>
+                            </div>
+                            <div class="journal-row animate" style="animation-delay: 0.4s;">
+                                <div class="account"><i class="fas fa-box" style="color: #3b82f6;"></i> Mercaderías
+                                </div>
+                                <div></div>
+                                <div class="credit">$2.500.000</div>
+                            </div>
+                            <div class="journal-totals">
+                                <div style="font-style: italic; color: var(--gray-500);">TOTALES</div>
+                                <div class="debit" style="text-align: right;">$2.500.000</div>
+                                <div class="credit" style="text-align: right;">$2.500.000</div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-box"
+                            style="background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-color: var(--purple); margin-top: 1.5rem;">
+                            <h4 style="color: #7c3aed;"><i class="fas fa-info-circle"></i> ¿Por qué dos asientos?</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                                <li style="padding: 0.4rem; font-size: 0.9rem;">
+                                    <strong>Asiento 1:</strong> Registra el INGRESO por la venta y genera el derecho a
+                                    cobrar al cliente
+                                </li>
+                                <li style="padding: 0.4rem; font-size: 0.9rem;">
+                                    <strong>Asiento 2:</strong> Registra el COSTO de la mercadería vendida y rebaja el
+                                    inventario
+                                </li>
+                                <li style="padding: 0.4rem; font-size: 0.9rem; font-weight: 600; color: #166534;">
+                                    La diferencia entre el Ingreso ($3.750.000) y el Costo ($2.500.000) es la
+                                    <strong>Utilidad Bruta: $1.250.000</strong>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" onclick="prevSimStep()"><i class="fas fa-arrow-left"></i>
+                                Anterior</button>
+                            <button class="sim-btn primary" onclick="nextSimStep()">Siguiente <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PASO 7: Libro Mayor Actualizado con Venta -->
+                    <div id="sim-step-7" class="sim-step">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-columns" style="color: var(--secondary);"></i>
+                            Paso 7: Libro Mayor Actualizado (Post-Venta)
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            Después de la compra y la venta, el Libro Mayor muestra los saldos actualizados de todas las
+                            cuentas afectadas.
+                        </p>
+
+                        <div class="ledger-accounts">
+                            <div class="ledger-t">
+                                <div class="ledger-t-header asset">
+                                    <i class="fas fa-box"></i> MERCADERÍAS
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">$5.000.000</div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">(Compra)</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">$2.500.000</div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">(Venta)</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance">Saldo Deudor: $2.500.000</div>
+                            </div>
+
+                            <div class="ledger-t">
+                                <div class="ledger-t-header asset">
+                                    <i class="fas fa-users"></i> CLIENTES POR COBRAR
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">$4.462.500</div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">(Venta)</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance">Saldo Deudor: $4.462.500</div>
+                            </div>
+
+                            <div class="ledger-t">
+                                <div class="ledger-t-header revenue">
+                                    <i class="fas fa-chart-line"></i> INGRESOS POR VENTAS
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">$3.750.000</div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">(Venta)</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance" style="background: #dcfce7; color: #166534;">Saldo
+                                    Acreedor: $3.750.000</div>
+                            </div>
+
+                            <div class="ledger-t">
+                                <div class="ledger-t-header" style="background: #f97316;">
+                                    <i class="fas fa-box-open"></i> COSTO DE VENTAS
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">$2.500.000</div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">(Venta)</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance" style="background: #fef3c7; color: #b45309;">Saldo Deudor:
+                                    $2.500.000</div>
+                            </div>
+
+                            <div class="ledger-t">
+                                <div class="ledger-t-header liability">
+                                    <i class="fas fa-receipt"></i> IVA DÉBITO FISCAL
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">$712.500</div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">(Venta)</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance">Saldo Acreedor: $712.500</div>
+                            </div>
+
+                            <div class="ledger-t">
+                                <div class="ledger-t-header liability">
+                                    <i class="fas fa-handshake"></i> PROVEEDORES
+                                </div>
+                                <div class="ledger-t-body">
+                                    <div class="ledger-t-side debit">
+                                        <h6>DEBE</h6>
+                                        <div class="amount">-</div>
+                                    </div>
+                                    <div class="ledger-t-side credit">
+                                        <h6>HABER</h6>
+                                        <div class="amount">$5.950.000</div>
+                                        <div style="font-size: 0.7rem; color: var(--gray-500);">(Compra)</div>
+                                    </div>
+                                </div>
+                                <div class="ledger-t-balance">Saldo Acreedor: $5.950.000</div>
+                            </div>
+                        </div>
+
+                        <div class="flow-example">
+                            <h5><i class="fas fa-balance-scale"></i> Verificación: Ecuación Contable Actualizada</h5>
+                            <p>Después de la compra y la venta, la ecuación sigue equilibrada:</p>
+
+                            <!-- Ecuación visual mejorada -->
+                            <div
+                                style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0; padding: 1rem; background: white; border-radius: 0.75rem;">
+                                <!-- ACTIVO -->
+                                <div style="text-align: center; min-width: 140px;">
+                                    <div
+                                        style="background: #dbeafe; padding: 0.75rem 1.25rem; border-radius: 0.5rem; border: 2px solid #3b82f6;">
+                                        <div
+                                            style="font-size: 0.75rem; color: #1e40af; font-weight: 600; text-transform: uppercase;">
+                                            Activo</div>
+                                        <div style="font-size: 1.25rem; font-weight: 700; color: #1e40af;">$17.912.500
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signo = -->
+                                <div style="font-size: 2rem; font-weight: 700; color: #374151; padding: 0 0.5rem;">=
+                                </div>
+
+                                <!-- PASIVO -->
+                                <div style="text-align: center; min-width: 120px;">
+                                    <div
+                                        style="background: #fecaca; padding: 0.75rem 1.25rem; border-radius: 0.5rem; border: 2px solid #ef4444;">
+                                        <div
+                                            style="font-size: 0.75rem; color: #991b1b; font-weight: 600; text-transform: uppercase;">
+                                            Pasivo</div>
+                                        <div style="font-size: 1.25rem; font-weight: 700; color: #dc2626;">$6.662.500
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signo + -->
+                                <div style="font-size: 2rem; font-weight: 700; color: #374151; padding: 0 0.5rem;">+
+                                </div>
+
+                                <!-- PATRIMONIO -->
+                                <div style="text-align: center; min-width: 130px;">
+                                    <div
+                                        style="background: #e9d5ff; padding: 0.75rem 1.25rem; border-radius: 0.5rem; border: 2px solid #8b5cf6;">
+                                        <div
+                                            style="font-size: 0.75rem; color: #5b21b6; font-weight: 600; text-transform: uppercase;">
+                                            Patrimonio</div>
+                                        <div style="font-size: 1.25rem; font-weight: 700; color: #7c3aed;">$11.250.000
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Verificación matemática -->
+                            <div
+                                style="text-align: center; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 0.5rem; padding: 0.75rem; margin-top: 0.5rem;">
+                                <div
+                                    style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                                    <span style="font-size: 0.9rem; color: #166534;">
+                                        <strong>$17.912.500</strong> = <strong>$6.662.500</strong> +
+                                        <strong>$11.250.000</strong>
+                                    </span>
+                                    <span
+                                        style="background: #22c55e; color: white; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 600;">
+                                        <i class="fas fa-check"></i> ¡CUADRADO!
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p
+                                style="text-align: center; margin-top: 1rem; font-size: 0.85rem; color: var(--gray-500);">
+                                <i class="fas fa-info-circle"></i> El Patrimonio aumentó en <strong
+                                    style="color: #16a34a;">$1.250.000</strong> (la Utilidad Bruta de la venta)
+                            </p>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" onclick="prevSimStep()"><i class="fas fa-arrow-left"></i>
+                                Anterior</button>
+                            <button class="sim-btn primary" onclick="nextSimStep()">Siguiente <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- PASO 8: Estados Financieros Finales -->
+                    <div id="sim-step-8" class="sim-step">
+                        <h4 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-chart-pie" style="color: var(--primary);"></i>
+                            Paso 8: Estados Financieros con Impacto de la Venta
+                        </h4>
+                        <p style="margin-bottom: 1.5rem; color: var(--gray-700);">
+                            Ahora los Estados Financieros muestran el <strong>impacto completo</strong>: el Balance
+                            General
+                            y el <strong>Estado de Resultados</strong> reflejan la utilidad generada por la venta.
+                        </p>
+
+                        <div class="fs-container">
+                            <!-- Balance General -->
+                            <div class="fs-statement">
+                                <div class="fs-header balance">
+                                    <h4><i class="fas fa-balance-scale"></i> Estado de Situación Financiera</h4>
+                                    <p>Balance General al 31/12/2025</p>
+                                </div>
+                                <div class="fs-body">
+                                    <div class="fs-section">
+                                        <h5>Activos</h5>
+                                        <div class="fs-row">
+                                            <span>Caja</span>
+                                            <span>$2.000.000</span>
+                                        </div>
+                                        <div class="fs-row">
+                                            <span>Banco</span>
+                                            <span>$8.000.000</span>
+                                        </div>
+                                        <div class="fs-row highlight">
+                                            <span>Clientes por Cobrar</span>
+                                            <span class="positive">$4.462.500 ↑</span>
+                                        </div>
+                                        <div class="fs-row">
+                                            <span>Mercaderías</span>
+                                            <span>$2.500.000</span>
+                                        </div>
+                                        <div class="fs-row">
+                                            <span>IVA Crédito Fiscal</span>
+                                            <span>$950.000</span>
+                                        </div>
+                                        <div class="fs-row total">
+                                            <span>TOTAL ACTIVOS</span>
+                                            <span>$17.912.500</span>
+                                        </div>
+                                    </div>
+                                    <div class="fs-section">
+                                        <h5>Pasivos</h5>
+                                        <div class="fs-row">
+                                            <span>Proveedores</span>
+                                            <span>$5.950.000</span>
+                                        </div>
+                                        <div class="fs-row highlight">
+                                            <span>IVA Débito Fiscal</span>
+                                            <span class="negative">$712.500 ↑</span>
+                                        </div>
+                                        <div class="fs-row total">
+                                            <span>TOTAL PASIVOS</span>
+                                            <span>$6.662.500</span>
+                                        </div>
+                                    </div>
+                                    <div class="fs-section">
+                                        <h5>Patrimonio</h5>
+                                        <div class="fs-row">
+                                            <span>Capital</span>
+                                            <span>$10.000.000</span>
+                                        </div>
+                                        <div class="fs-row highlight">
+                                            <span>Resultado del Ejercicio</span>
+                                            <span class="positive">$1.250.000 ↑</span>
+                                        </div>
+                                        <div class="fs-row total">
+                                            <span>TOTAL PATRIMONIO</span>
+                                            <span>$11.250.000</span>
+                                        </div>
+                                    </div>
+                                    <!-- Total Pasivo + Patrimonio -->
+                                    <div class="fs-section"
+                                        style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); margin: 0 -1rem -1rem -1rem; padding: 1rem; border-radius: 0 0 0.5rem 0.5rem;">
+                                        <div class="fs-row total"
+                                            style="font-size: 1.1rem; border-top: none; margin-top: 0; padding-top: 0;">
+                                            <span style="color: #1e40af;"><strong>TOTAL PASIVO +
+                                                    PATRIMONIO</strong></span>
+                                            <span style="color: #1e40af;"><strong>$17.912.500</strong></span>
+                                        </div>
+                                        <div style="text-align: center; margin-top: 0.5rem;">
+                                            <span
+                                                style="background: #22c55e; color: white; padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600;">
+                                                <i class="fas fa-check"></i> = TOTAL ACTIVOS ✓
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Estado de Resultados -->
+                            <div class="fs-statement">
+                                <div class="fs-header results">
+                                    <h4><i class="fas fa-chart-line"></i> Estado de Resultados</h4>
+                                    <p>Del 01/01/2025 al 31/12/2025</p>
+                                </div>
+                                <div class="fs-body">
+                                    <div class="fs-section">
+                                        <h5>Ingresos Operacionales</h5>
+                                        <div class="fs-row highlight">
+                                            <span>Ventas</span>
+                                            <span class="positive">$3.750.000 ↑</span>
+                                        </div>
+                                        <div class="fs-row total">
+                                            <span>TOTAL INGRESOS</span>
+                                            <span>$3.750.000</span>
+                                        </div>
+                                    </div>
+                                    <div class="fs-section">
+                                        <h5>Costos de Venta</h5>
+                                        <div class="fs-row highlight">
+                                            <span>Costo de Mercaderías Vendidas</span>
+                                            <span class="negative">($2.500.000) ↑</span>
+                                        </div>
+                                        <div class="fs-row total">
+                                            <span>COSTO DE VENTAS</span>
+                                            <span>($2.500.000)</span>
+                                        </div>
+                                    </div>
+                                    <div class="fs-section"
+                                        style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 1rem; border-radius: 0.5rem; margin: -1rem; margin-top: 0.5rem;">
+                                        <h5 style="color: #166534; border-bottom-color: #22c55e;">Resultado Operacional
+                                        </h5>
+                                        <div class="fs-row total" style="font-size: 1.2rem;">
+                                            <span style="color: #166534;"><strong>RESULTADO OPERACIONAL (Margen
+                                                    Bruto)</strong></span>
+                                            <span style="color: #166534;"><strong>$1.250.000</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Otros Ingresos y Gastos -->
+                                    <div class="fs-section" style="margin-top: 0.5rem;">
+                                        <h5>Otros Ingresos y Gastos</h5>
+                                        <div class="fs-row">
+                                            <span>Otros Ingresos</span>
+                                            <span style="color: #059669;">$200.000</span>
+                                        </div>
+                                        <div class="fs-row">
+                                            <span>Gastos de Administración</span>
+                                            <span style="color: #dc2626;">($800.000)</span>
+                                        </div>
+                                        <div class="fs-row">
+                                            <span>Gastos de Ventas</span>
+                                            <span style="color: #dc2626;">($300.000)</span>
+                                        </div>
+                                        <div class="fs-row">
+                                            <span>Gastos Financieros</span>
+                                            <span style="color: #dc2626;">($100.000)</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Resultado Neto del Ejercicio -->
+                                    <div class="fs-section"
+                                        style="background: linear-gradient(135deg, #d1fae5, #f0fdf4); padding: 1rem; border-radius: 0.5rem; margin-top: 0.5rem; border: 2px solid #16a34a;">
+                                        <h5 style="color: #16a34a; border-bottom-color: #22c55e;">Resultado del
+                                            Ejercicio</h5>
+                                        <div class="fs-row total" style="font-size: 1.25rem; ">
+                                            <span style="color: #16a34a;"><strong>RESULTADO NETO DEL EJERCICIO
+                                                    (Ganancia)</strong></span>
+                                            <span style="color: #16a34a;"><strong>$250.000</strong></span>
+                                        </div>
+                                        <p
+                                            style="margin: 0.5rem 0 0; font-size: 0.85rem; color: #15803d; text-align: center;">
+                                            <i class="fas fa-info-circle"></i> Ingresos - Costos - Gastos = Ganancia
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-box"
+                            style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border-color: var(--secondary); margin-top: 1.5rem;">
+                            <h4 style="color: #166534;"><i class="fas fa-graduation-cap"></i> ¡Ciclo Contable Completo!
+                            </h4>
+                            <p>Has seguido el ciclo completo de Compra-Venta y su impacto en los Estados Financieros:
+                            </p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                                <span
+                                    style="background: white; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                                    <i class="fas fa-check" style="color: #16a34a;"></i> Factura de Compra
+                                </span>
+                                <span
+                                    style="background: white; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                                    <i class="fas fa-check" style="color: #16a34a;"></i> Asiento de Compra
+                                </span>
+                                <span
+                                    style="background: white; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                                    <i class="fas fa-check" style="color: #16a34a;"></i> Libro Mayor (Compra)
+                                </span>
+                                <span
+                                    style="background: white; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                                    <i class="fas fa-check" style="color: #16a34a;"></i> Factura de Venta
+                                </span>
+                                <span
+                                    style="background: white; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                                    <i class="fas fa-check" style="color: #16a34a;"></i> Asientos de Venta
+                                </span>
+                                <span
+                                    style="background: white; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.85rem;">
+                                    <i class="fas fa-check" style="color: #16a34a;"></i> Libro Mayor Final
+                                </span>
+                                <span
+                                    style="background: #fef3c7; padding: 0.5rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 600;">
+                                    <i class="fas fa-star" style="color: #f59e0b;"></i> Estados Financieros con Utilidad
+                                </span>
+                            </div>
+                            <div style="margin-top: 1.5rem; padding: 1rem; background: white; border-radius: 0.5rem;">
+                                <strong><i class="fas fa-key" style="color: #f59e0b;"></i> Concepto Clave:</strong>
+                                <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+                                    El <strong>Estado de Resultados</strong> muestra las operaciones que generan
+                                    utilidades o pérdidas
+                                    (Ingresos - Costos - Gastos). La compra de mercaderías NO afecta los resultados
+                                    hasta que se VENDEN,
+                                    momento en que se reconoce tanto el ingreso como el costo correspondiente.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="sim-nav">
+                            <button class="sim-btn" onclick="prevSimStep()"><i class="fas fa-arrow-left"></i>
+                                Anterior</button>
+                            <button class="sim-btn primary" onclick="goToSimStep(1)"><i class="fas fa-redo"></i>
+                                Reiniciar Simulación</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones para ir al sistema -->
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+                <button class="link-btn" onclick="goToModule('compras', 'facturas-proveedor')">
+                    <i class="fas fa-external-link-alt"></i> Facturas de Compra
+                </button>
+                <button class="link-btn success" onclick="goToModule('contabilidad', 'asientos')">
+                    <i class="fas fa-external-link-alt"></i> Libro Diario
+                </button>
+                <button class="link-btn" style="background: var(--secondary);"
+                    onclick="goToModule('reportes', 'balance-comprobacion')">
+                    <i class="fas fa-external-link-alt"></i> Balance de Comprobación
+                </button>
+                <button class="link-btn" style="background: var(--purple);"
+                    onclick="goToModule('reportes', 'balance-general')">
+                    <i class="fas fa-external-link-alt"></i> Balance General
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 6: Ratios Financieros -->
+    <div id="tab-ratios" class="tab-content">
+        <div class="description-section" style="background: white;">
+            <div class="description-header" style="background: var(--primary);">
+                <h2 style="color: white;"><i class="fas fa-chart-bar"></i> Ratios Financieros</h2>
+            </div>
+            <div class="description-body" style="color: #333;">
+                <p style="font-size: 1.1rem; margin-bottom: 2rem; color: #333;">
+                    Los <strong>ratios financieros</strong> son indicadores numéricos calculados a partir de los estados
+                    financieros.
+                </p>
+
+                <!-- Ratios de Liquidez -->
+                <div
+                    style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #e0f2fe, #f0f9ff); border-radius: 1rem; border-left: 5px solid #06b6d4;">
+                    <h3 style="margin: 0 0 1rem; color: #0891b2;"><i class="fas fa-tint"></i> Ratios de Liquidez</h3>
+                    <p style="margin-bottom: 1rem; color: #333;">Miden la capacidad de pago a corto plazo.</p>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; color: #333;">
+                            <strong>Razón Corriente</strong> = Activo Corriente / Pasivo Corriente
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; color: #333;">
+                            <strong>Prueba Ácida</strong> = (Activo Corriente - Inventario) / Pasivo Corriente
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ratios de Rentabilidad -->
+                <div
+                    style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #dcfce7, #f0fdf4); border-radius: 1rem; border-left: 5px solid #10b981;">
+                    <h3 style="margin: 0 0 1rem; color: #059669;"><i class="fas fa-chart-line"></i> Ratios de
+                        Rentabilidad</h3>
+                    <p style="margin-bottom: 1rem; color: #333;">Evalúan la capacidad de generar utilidades.</p>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; color: #333;">
+                            <strong>ROA</strong> = Resultado del Ejercicio / Total Activos × 100
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; color: #333;">
+                            <strong>ROE</strong> = Resultado del Ejercicio / Patrimonio × 100
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; color: #333;">
+                            <strong>Margen Neto</strong> = Resultado del Ejercicio / Ventas × 100
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ratios de Solvencia -->
+                <div
+                    style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #ede9fe, #f5f3ff); border-radius: 1rem; border-left: 5px solid #8b5cf6;">
+                    <h3 style="margin: 0 0 1rem; color: #7c3aed;"><i class="fas fa-shield-alt"></i> Ratios de Solvencia
+                    </h3>
+                    <p style="margin-bottom: 1rem; color: #333;">Miden la capacidad de cumplir obligaciones de largo
+                        plazo.</p>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; color: #333;">
+                            <strong>Endeudamiento</strong> = Total Pasivos / Total Activos × 100
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; color: #333;">
+                            <strong>Autonomía</strong> = Patrimonio / Total Activos × 100
+                        </div>
+                    </div>
+                </div>
+
+                <button class="link-btn" style="background: #f59e0b;"
+                    onclick="goToModule('reportes', 'ratios-financieros')">
+                    <i class="fas fa-external-link-alt"></i> Ver Ratios en el Sistema
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 7: Sistemas de Contabilización -->
+    <div id="tab-sistemas" class="tab-content">
+        <div class="description-section" style="background: white;">
+            <div class="description-header" style="background: var(--primary);">
+                <h2 style="color: white;"><i class="fas fa-book"></i> Guía: Sistemas de Contabilización</h2>
+            </div>
+            <div class="description-body" style="color: #333;">
+                <p style="font-size: 1.1rem; margin-bottom: 2rem; color: #333;">
+                    EDU-TRACE ERP soporta <strong>dos sistemas de contabilización</strong> que reflejan métodos
+                    utilizados en la práctica contable real:
+                </p>
+
+                <!-- Sistema Jornalizador -->
+                <div
+                    style="margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, #dbeafe, #eff6ff); border-radius: 1rem; border: 3px solid #3b82f6;">
+                    <h3 style="margin: 0 0 1rem; color: #1e40af;"><i class="fas fa-book"></i> 📘 Sistema Jornalizador
+                        (Diario Único)</h3>
+                    <p style="margin-bottom: 1rem; color: #333;">El sistema jornalizador registra <strong>todas las
+                            transacciones directamente</strong> en el Libro Diario, sin importar su origen o módulo.</p>
+
+                    <h4 style="color: #1e40af; margin: 1rem 0 0.5rem;">Características:</h4>
+                    <ul style="margin: 0 0 1rem; padding-left: 1.5rem; color: #333;">
+                        <li>✅ Registro inmediato de cada operación</li>
+                        <li>✅ Visualización directa en el Libro Diario</li>
+                        <li>✅ Ideal para empresas pequeñas</li>
+                        <li>✅ Más simple de entender para principiantes</li>
+                    </ul>
+
+                    <!-- Ejemplo Jornalizador -->
+                    <div style="background: white; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem;">
+                        <h5 style="margin: 0 0 0.5rem; color: #1e40af;"><i class="fas fa-receipt"></i> Ejemplo Práctico
+                            - Venta al contado:</h5>
+                        <div
+                            style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.9rem; color: #333;">
+                            <strong>Libro Diario - Asiento #001</strong><br>
+                            Fecha: 15/03/2024<br>
+                            ―――――――――――――――<br>
+                            Caja
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$119.000
+                            (D)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Ventas
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$100.000
+                            (C)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;IVA Débito
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$19.000 (C)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sistema Centralizador -->
+                <div
+                    style="margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, #dcfce7, #f0fdf4); border-radius: 1rem; border: 3px solid #10b981;">
+                    <h3 style="margin: 0 0 1rem; color: #065f46;"><i class="fas fa-layer-group"></i> 📗 Sistema
+                        Centralizador (Libros Auxiliares)</h3>
+                    <p style="margin-bottom: 1rem; color: #333;">El sistema centralizador registra las transacciones en
+                        <strong>libros auxiliares por módulo</strong> y luego las consolida mensualmente en el Libro
+                        Diario.
+                    </p>
+
+                    <h4 style="color: #065f46; margin: 1rem 0 0.5rem;">Características:</h4>
+                    <ul style="margin: 0 0 1rem; padding-left: 1.5rem; color: #333;">
+                        <li>✅ Organización por módulos (Ventas, Compras, Tesorería)</li>
+                        <li>✅ Centralización mensual</li>
+                        <li>✅ Refleja práctica empresarial real</li>
+                        <li>✅ Reduce volumen en Libro Diario</li>
+                    </ul>
+
+                    <!-- Flujo de trabajo -->
+                    <div style="background: white; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                        <h5 style="margin: 0 0 0.5rem; color: #065f46;"><i class="fas fa-sitemap"></i> Flujo de Trabajo:
+                        </h5>
+                        <div
+                            style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.85rem; color: #333;">
+                            <strong>1. REGISTRO DIARIO</strong><br>
+                            &nbsp;&nbsp;├─ Módulo Ventas → Libro Auxiliar de Ventas<br>
+                            &nbsp;&nbsp;├─ Módulo Compras → Libro Auxiliar de Compras<br>
+                            &nbsp;&nbsp;└─ Módulo Tesorería → Libro Auxiliar de Tesorería<br><br>
+                            <strong>2. FIN DE MES</strong><br>
+                            &nbsp;&nbsp;└─ CENTRALIZACIÓN<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ Consolida totales por cuenta<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ Genera 1 asiento resumen por módulo<br><br>
+                            <strong>3. LIBRO DIARIO</strong><br>
+                            &nbsp;&nbsp;└─ Solo contiene asientos centralizados
+                        </div>
+                    </div>
+
+                    <!-- Ejemplo Centralizador -->
+                    <div style="background: white; padding: 1rem; border-radius: 0.5rem;">
+                        <h5 style="margin: 0 0 0.5rem; color: #065f46;"><i class="fas fa-file-invoice"></i> Ejemplo:
+                            Centralización Marzo 2024</h5>
+                        <div
+                            style="background: #f8fafc; padding: 1rem; border-radius: 0.5rem; font-family: monospace; font-size: 0.85rem; color: #333;">
+                            <strong>Asiento Resumen - Ventas Marzo 2024</strong><br>
+                            ―――――――――――――――――――――――<br>
+                            Caja &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$1.500.000
+                            (D)<br>
+                            Banco &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$2.300.000 (D)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Ventas
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$3.200.000
+                            (C)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;IVA Débito
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$608.000 (C)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuándo usar cada sistema -->
+                <div
+                    style="margin-bottom: 2rem; padding: 1.5rem; background: #fefce8; border-radius: 1rem; border: 2px solid #eab308;">
+                    <h4 style="margin: 0 0 1rem; color: #a16207;"><i class="fas fa-lightbulb"></i> 💡 ¿Cuándo usar cada
+                        sistema?</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div
+                            style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #3b82f6;">
+                            <h5 style="margin: 0 0 0.5rem; color: #1e40af;">Usa Jornalizador si:</h5>
+                            <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.9rem; color: #333;">
+                                <li>Estás comenzando con contabilidad</li>
+                                <li>Menos de 50 transacciones/mes</li>
+                                <li>Quieres simpleza y visión directa</li>
+                            </ul>
+                        </div>
+                        <div
+                            style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #10b981;">
+                            <h5 style="margin: 0 0 0.5rem; color: #065f46;">Usa Centralizador si:</h5>
+                            <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.9rem; color: #333;">
+                                <li>Ya dominas el Jornalizador</li>
+                                <li>Más de 50 transacciones/mes</li>
+                                <li>Quieres aprender práctica real</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla comparativa -->
+                <div style="margin-bottom: 2rem; overflow-x: auto;">
+                    <h4 style="color: #1e40af; margin-bottom: 1rem;"><i class="fas fa-table"></i> 📊 Comparación</h4>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                        <thead>
+                            <tr style="background: var(--primary); color: white;">
+                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #ddd;">Aspecto</th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">Jornalizador
+                                </th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">Centralizador
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: #333;">
+                            <tr style="background: white;">
+                                <td style="padding: 0.75rem; border: 1px solid #ddd;"><strong>Asientos/mes</strong></td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">1 por
+                                    transacción</td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">3-5
+                                    consolidados</td>
+                            </tr>
+                            <tr style="background: #f9fafb;">
+                                <td style="padding: 0.75rem; border: 1px solid #ddd;"><strong>Libro Diario</strong></td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">Detallado</td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">Resumido</td>
+                            </tr>
+                            <tr style="background: white;">
+                                <td style="padding: 0.75rem; border: 1px solid #ddd;"><strong>Complejidad</strong></td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">⭐ Baja</td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">⭐⭐⭐ Media</td>
+                            </tr>
+                            <tr style="background: #f9fafb;">
+                                <td style="padding: 0.75rem; border: 1px solid #ddd;"><strong>Nivel</strong></td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">Principiante
+                                </td>
+                                <td style="padding: 0.75rem; text-align: center; border: 1px solid #ddd;">
+                                    Intermedio/Avanzado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Cómo configurar -->
+                <div
+                    style="padding: 1.5rem; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0.5rem; margin-bottom: 1rem;">
+                    <h4 style="margin: 0 0 0.5rem; color: #1e40af;"><i class="fas fa-cog"></i> 🔧 ¿Cómo configurar en
+                        EDU-TRACE ERP?</h4>
+                    <ol style="margin: 0.5rem 0 0; padding-left: 1.5rem; color: #333;">
+                        <li>Ve a <strong>Administración</strong> → <strong>Configuración</strong></li>
+                        <li>En "Parámetros Contables"</li>
+                        <li>Selecciona "Sistema de Contabilización":
+                            <ul style="margin: 0.25rem 0; padding-left: 1rem;">
+                                <li>🔵 <strong>Jornalizador</strong> (Diario Único)</li>
+                                <li>🟢 <strong>Centralizador</strong> (Libros Auxiliares)</li>
+                            </ul>
+                        </li>
+                        <li>Guarda los cambios</li>
+                    </ol>
+                </div>
+
+                <button class="link-btn" style="background: #3b82f6;" onclick="goToModule('admin', 'configuracion')">
+                    <i class="fas fa-cog"></i> Ir a Configuración
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 8: Flujos de Trabajo (Ciclos) -->
+    <div id="tab-flujos" class="tab-content">
+        <div class="description-section" style="background: white;">
+            <div class="description-header" style="background: var(--purple);">
+                <h2 style="color: white;"><i class="fas fa-exchange-alt"></i> Flujos de Trabajo y Ciclos Operativos
+                </h2>
+            </div>
+            <div class="description-body" style="color: #333; padding: 2rem;">
+                <p style="font-size: 1.1rem; margin-bottom: 2.5rem; color: #333; text-align: center;">
+                    Comprender la diferencia entre <strong>Gestión Operativa</strong> y
+                    <strong>Contabilización</strong> es clave.
+                    No todos los documentos generan asientos contables.
+                </p>
+
+                <!-- Ciclo de Compras -->
+                <div style="margin-bottom: 3.5rem;">
+                    <h3
+                        style="color: #1e40af; border-bottom: 2px solid #bfdbfe; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                        <i class="fas fa-shopping-cart"></i> 1. Ciclo de Compras (Adquisiciones)
+                    </h3>
+                    <div
+                        style="display: flex; flex-direction: column; gap: 1rem; align-items: center; margin-bottom: 2rem;">
+                        <!-- Diagrama Visual Compras -->
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                            <div
+                                style="background: #f8fafc; border: 2px solid #cbd5e1; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 180px;">
+                                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">GESTIÓN</div>
+                                <i class="fas fa-file-invoice"
+                                    style="font-size: 1.5rem; color: #64748b; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 600;">Orden de Compra</div>
+                                <div style="font-size: 0.75rem; color: #ef4444; margin-top: 0.25rem;"><i
+                                        class="fas fa-times-circle"></i> No Contabiliza</div>
+                            </div>
+                            <i class="fas fa-arrow-right" style="color: #cbd5e1;"></i>
+                            <div
+                                style="background: #f8fafc; border: 2px solid #cbd5e1; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 180px;">
+                                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">LOGÍSTICA</div>
+                                <i class="fas fa-truck-loading"
+                                    style="font-size: 1.5rem; color: #64748b; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 600;">Recepción</div>
+                                <div style="font-size: 0.75rem; color: #ef4444; margin-top: 0.25rem;"><i
+                                        class="fas fa-times-circle"></i> No Contabiliza</div>
+                            </div>
+                            <i class="fas fa-arrow-right" style="color: #3b82f6;"></i>
+                            <div
+                                style="background: #eff6ff; border: 2px solid #3b82f6; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 200px; box-shadow: var(--shadow);">
+                                <div style="font-size: 0.7rem; color: #1e40af; font-weight: 700;">CONTABILIDAD</div>
+                                <i class="fas fa-file-signature"
+                                    style="font-size: 1.5rem; color: #3b82f6; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 700;">Factura Proveedor</div>
+                                <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
+                                    <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
+                                </div>
+                            </div>
+                            <i class="fas fa-arrow-right" style="color: #10b981;"></i>
+                            <div
+                                style="background: #f0fdf4; border: 2px solid #10b981; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 180px; box-shadow: var(--shadow);">
+                                <div style="font-size: 0.7rem; color: #166534; font-weight: 700;">TESORERÍA</div>
+                                <i class="fas fa-money-bill-wave"
+                                    style="font-size: 1.5rem; color: #10b981; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 700;">Pago</div>
+                                <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
+                                    <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: #eff6ff; padding: 1.5rem; border-radius: 1rem; border-left: 5px solid #3b82f6;">
+                        <h4 style="margin: 0 0 1rem; color: #1e40af;"><i class="fas fa-lightbulb"></i> Concepto
+                            Clave: El momento de la verdad</h4>
+                        <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
+                            La <strong>Orden de Compra</strong> es una intención. Solo cuando recibimos la
+                            <strong>Factura</strong> y la <strong>contabilizamos</strong>, nace la obligación legal
+                            de pago (Pasivo) y el reconocimiento del gasto o activo (Mercadería).
+                        </p>
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                            <button class="link-btn" onclick="goToModule('compras', 'facturas-proveedor')">
+                                <i class="fas fa-external-link-alt"></i> Módulo Compras
+                            </button>
+                            <button class="link-btn success" onclick="goToModule('tesoreria', 'cuentas-pagar')">
+                                <i class="fas fa-wallet"></i> Módulo Tesorería (Pagos)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ciclo de Ventas -->
+                <div style="margin-bottom: 2rem;">
+                    <h3
+                        style="color: #166534; border-bottom: 2px solid #bbf7d0; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                        <i class="fas fa-cash-register"></i> 2. Ciclo de Ventas (Ingresos)
+                    </h3>
+                    <div
+                        style="display: flex; flex-direction: column; gap: 1rem; align-items: center; margin-bottom: 2rem;">
+                        <!-- Diagrama Visual Ventas -->
+                        <div
+                            style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                            <div
+                                style="background: #f8fafc; border: 2px solid #cbd5e1; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 180px;">
+                                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">GESTIÓN</div>
+                                <i class="fas fa-shopping-basket"
+                                    style="font-size: 1.5rem; color: #64748b; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 600;">Pedido de Venta</div>
+                                <div style="font-size: 0.75rem; color: #ef4444; margin-top: 0.25rem;"><i
+                                        class="fas fa-times-circle"></i> No Contabiliza</div>
+                            </div>
+                            <i class="fas fa-arrow-right" style="color: #cbd5e1;"></i>
+                            <div
+                                style="background: #f8fafc; border: 2px solid #cbd5e1; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 180px;">
+                                <div style="font-size: 0.7rem; color: #64748b; font-weight: 700;">LOGÍSTICA</div>
+                                <i class="fas fa-box" style="font-size: 1.5rem; color: #64748b; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 600;">Despacho</div>
+                                <div style="font-size: 0.75rem; color: #ef4444; margin-top: 0.25rem;"><i
+                                        class="fas fa-times-circle"></i> No Contabiliza</div>
+                            </div>
+                            <i class="fas fa-arrow-right" style="color: #10b981;"></i>
+                            <div
+                                style="background: #f0fdf4; border: 2px solid #10b981; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 200px; box-shadow: var(--shadow);">
+                                <div style="font-size: 0.7rem; color: #166534; font-weight: 700;">CONTABILIDAD</div>
+                                <i class="fas fa-file-invoice-dollar"
+                                    style="font-size: 1.5rem; color: #22c55e; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 700;">Factura Cliente</div>
+                                <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
+                                    <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
+                                </div>
+                            </div>
+                            <i class="fas fa-arrow-right" style="color: #3b82f6;"></i>
+                            <div
+                                style="background: #eff6ff; border: 2px solid #3b82f6; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 180px; box-shadow: var(--shadow);">
+                                <div style="font-size: 0.7rem; color: #1e40af; font-weight: 700;">TESORERÍA</div>
+                                <i class="fas fa-hand-holding-usd"
+                                    style="font-size: 1.5rem; color: #3b82f6; margin: 0.5rem 0;"></i>
+                                <div style="font-weight: 700;">Cobro</div>
+                                <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
+                                    <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: #f0fdf4; padding: 1.5rem; border-radius: 1rem; border-left: 5px solid #22c55e;">
+                        <h4 style="margin: 0 0 1rem; color: #166534;"><i class="fas fa-info-circle"></i> Importante:
+                            Reconocimiento de Ingresos</h4>
+                        <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
+                            En el ERP, el ingreso se reconoce al <strong>contabilizar la factura</strong>. El cobro
+                            posterior solo cambia la forma del activo (de una Cuenta por Cobrar a Caja/Banco), pero
+                            el ingreso ya ocurrió.
+                        </p>
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+                            <button class="link-btn success" onclick="goToModule('ventas', 'facturas-cliente')">
+                                <i class="fas fa-external-link-alt"></i> Módulo Ventas
+                            </button>
+                            <button class="link-btn" style="background: #3b82f6;"
+                                onclick="goToModule('tesoreria', 'cuentas-cobrar')">
+                                <i class="fas fa-handshake"></i> Módulo Tesorería (Cobros)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modal-title"><i class="fas fa-info-circle"></i> Título</h3>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Button -->
+    <button class="print-btn" onclick="window.print()">
+        <i class="fas fa-print"></i> Imprimir
+    </button>
+
+    <script>
+        // Tab switching
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            event.target.closest('.tab-btn').classList.add('active');
+        }
+
+        // Navigate to module in main system
+        function goToModule(module, view) {
+            // Build the target URL with hash
+            const targetHash = `#${module}/${view}`;
+
+            // Try to use opener window if available
+            if (window.opener && !window.opener.closed) {
+                try {
+                    // Check if App is available in opener
+                    if (window.opener.App && typeof window.opener.App.navigate === 'function') {
+                        window.opener.App.navigate(module, view);
+                        window.opener.focus();
+                        return;
+                    }
+                } catch (e) {
+                    console.log('Cannot access opener, redirecting...', e);
+                }
+            }
+
+            // Get the base path (same directory as this file)
+            const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+            const targetUrl = basePath + 'index.html' + targetHash;
+
+            // Open in new window or redirect
+            const newWindow = window.open(targetUrl, 'EDU-TRACE ERP');
+            if (newWindow) {
+                newWindow.focus();
+            } else {
+                // Fallback: redirect current window
+                window.location.href = targetUrl;
+            }
+        }
+
+        // Simulation navigation
+        let currentSimStep = 1;
+        const totalSimSteps = 8;
+
+        function goToSimStep(step) {
+            currentSimStep = step;
+            // Hide all steps
+            document.querySelectorAll('.sim-step').forEach(s => s.classList.remove('active'));
+            // Show current step
+            document.getElementById('sim-step-' + step).classList.add('active');
+            // Update progress
+            document.querySelectorAll('.progress-step').forEach((p, i) => {
+                p.classList.remove('active', 'completed');
+                if (i + 1 < step) {
+                    p.classList.add('completed');
+                } else if (i + 1 === step) {
+                    p.classList.add('active');
+                }
+            });
+        }
+
+        function nextSimStep() {
+            if (currentSimStep < totalSimSteps) {
+                goToSimStep(currentSimStep + 1);
+            }
+        }
+
+        function prevSimStep() {
+            if (currentSimStep > 1) {
+                goToSimStep(currentSimStep - 1);
+            }
+        }
+
+        // Modal content
+        const modalContent = {
+            entrada: {
+                title: '<i class="fas fa-sign-in-alt"></i> Etapa de Entrada',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué es la Etapa de Entrada?</h4>
+                        <p>Es la primera fase del proceso contable donde se recopilan y analizan los <strong>documentos mercantiles</strong> que respaldan las transacciones económicas.</p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> <strong>Recopilar documentos:</strong> Facturas, boletas, notas de crédito, recibos, contratos de arriendo y contratos de servicios</li>
+                            <li><i class="fas fa-check"></i> <strong>Verificar autenticidad:</strong> Comprobar que sean legítimos y legales</li>
+                            <li><i class="fas fa-check"></i> <strong>Identificar el hecho:</strong> Determinar el tipo de transacción</li>
+                            <li><i class="fas fa-check"></i> <strong>Clasificar cuentas:</strong> Identificar qué cuentas se afectarán</li>
+                        </ul>
+                    </div>
+                    <button class="link-btn" onclick="goToModule('compras', 'facturas-proveedor')">
+                        <i class="fas fa-external-link-alt"></i> Ver Facturas de Proveedor
+                    </button>
+                    <button class="link-btn success" onclick="goToModule('ventas', 'facturas-cliente')">
+                        <i class="fas fa-external-link-alt"></i> Ver Facturas de Cliente
+                    </button>
+                `
+            },
+            documento: {
+                title: '<i class="fas fa-file-invoice"></i> Documento Mercantil',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué es un Documento Mercantil?</h4>
+                        <p>Es cualquier documento escrito que sirve como <strong>comprobante o respaldo</strong> de una transacción comercial.</p>
+                        <ul>
+                            <li><i class="fas fa-file-invoice-dollar"></i> <strong>Factura:</strong> Detalla venta o compra con IVA</li>
+                            <li><i class="fas fa-receipt"></i> <strong>Boleta:</strong> Comprobante para consumidor final</li>
+                            <li><i class="fas fa-undo"></i> <strong>Nota de Crédito:</strong> Anula o reduce una factura</li>
+                            <li><i class="fas fa-plus-circle"></i> <strong>Nota de Débito:</strong> Aumenta el monto de una factura</li>
+                            <li><i class="fas fa-truck"></i> <strong>Guía de Despacho:</strong> Acredita traslado de mercaderías</li>
+                            <li><i class="fas fa-file-contract"></i> <strong>Contrato de Arriendo:</strong> Acuerdo de uso de un bien físico</li>
+                            <li><i class="fas fa-file-signature"></i> <strong>Contrato de Servicios:</strong> Acuerdo para la prestación de un servicio</li>
+                        </ul>
+                    </div>
+                `
+            },
+            elementos: {
+                title: '<i class="fas fa-tags"></i> Elementos Contables',
+                content: `
+                    <div class="account-box">
+                        <h5>Los 5 Elementos Contables</h5>
+                        <div class="account-grid">
+                            <div class="account-item"><div class="label">ACTIVO</div><div class="value">Lo que TIENE</div></div>
+                            <div class="account-item"><div class="label">PASIVO</div><div class="value">Lo que DEBE</div></div>
+                            <div class="account-item"><div class="label">PATRIMONIO</div><div class="value">De los dueños</div></div>
+                            <div class="account-item"><div class="label">INGRESO</div><div class="value">Lo que GANA</div></div>
+                            <div class="account-item"><div class="label">GASTO</div><div class="value">Lo que GASTA</div></div>
+                        </div>
+                    </div>
+                    <div class="content-section">
+                        <h4>Ecuación Contable</h4>
+                        <p style="font-size: 1.25rem; text-align: center; padding: 1rem; background: var(--primary-light); border-radius: 0.5rem;">
+                            <strong>ACTIVO = PASIVO + PATRIMONIO</strong>
+                        </p>
+                    </div>
+                    <button class="link-btn" onclick="goToModule('contabilidad', 'plan-cuentas')">
+                        <i class="fas fa-external-link-alt"></i> Ver Plan de Cuentas
+                    </button>
+                `
+            },
+            registro: {
+                title: '<i class="fas fa-book"></i> Reglas de Registro',
+                content: `
+                    <div class="content-section">
+                        <h4>Débito vs Crédito</h4>
+                        <ul>
+                            <li><i class="fas fa-arrow-up" style="color: #dc2626;"></i> <strong>ACTIVO aumenta:</strong> Se DEBITA</li>
+                            <li><i class="fas fa-arrow-down" style="color: #16a34a;"></i> <strong>ACTIVO disminuye:</strong> Se ACREDITA</li>
+                            <li><i class="fas fa-arrow-up" style="color: #16a34a;"></i> <strong>PASIVO aumenta:</strong> Se ACREDITA</li>
+                            <li><i class="fas fa-arrow-down" style="color: #dc2626;"></i> <strong>PASIVO disminuye:</strong> Se DEBITA</li>
+                            <li><i class="fas fa-arrow-up" style="color: #16a34a;"></i> <strong>INGRESO aumenta:</strong> Se ACREDITA</li>
+                            <li><i class="fas fa-arrow-up" style="color: #dc2626;"></i> <strong>GASTO aumenta:</strong> Se DEBITA</li>
+                        </ul>
+                    </div>
+                    <div class="t-account">
+                        <div class="t-account-header">Cuenta T - Ejemplo: CAJA</div>
+                        <div class="t-account-body">
+                            <div class="t-account-side debit"><h6>DEBE</h6><div class="amount">+ Aumenta</div></div>
+                            <div class="t-account-side credit"><h6>HABER</h6><div class="amount">- Disminuye</div></div>
+                        </div>
+                    </div>
+                `
+            },
+            proceso: {
+                title: '<i class="fas fa-cogs"></i> Etapa de Proceso',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué es el Registro Contable?</h4>
+                        <p>Es la fase donde las transacciones se <strong>registran formalmente</strong> en los libros contables, siguiendo la <strong>partida doble</strong>.</p>
+                    </div>
+                    <div class="content-section">
+                        <h4>Libros Contables</h4>
+                        <ul>
+                            <li><i class="fas fa-book"></i> <strong>Libro Diario:</strong> Registro cronológico de todas las transacciones</li>
+                            <li><i class="fas fa-columns"></i> <strong>Libro Mayor:</strong> Agrupa movimientos por cuenta</li>
+                            <li><i class="fas fa-list-check"></i> <strong>Balance de Comprobación:</strong> Actúa como el nexo contable comprobatorio entre los módulos y la posterior preparación de los Estados Financieros</li>
+                        </ul>
+                    </div>
+                    <button class="link-btn" onclick="goToModule('contabilidad', 'asientos')">
+                        <i class="fas fa-external-link-alt"></i> Ver Libro Diario
+                    </button>
+                    <button class="link-btn success" onclick="goToModule('contabilidad', 'libro-mayor')">
+                        <i class="fas fa-external-link-alt"></i> Ver Libro Mayor
+                    </button>
+                    <button class="link-btn" style="background-color: var(--purple);" onclick="goToModule('reportes', 'balance-comprobacion')">
+                        <i class="fas fa-external-link-alt"></i> Ver Balance de Comprobación
+                    </button>
+                `
+            },
+            salida: {
+                title: '<i class="fas fa-file-export"></i> Etapa de Salida',
+                content: `
+                    <div class="content-section">
+                        <h4>Estados Financieros</h4>
+                        <ul>
+                            <li><i class="fas fa-chart-pie"></i> <strong>Estado de Situación (Balance General):</strong> Activos, Pasivos y Patrimonio</li>
+                            <li><i class="fas fa-chart-line"></i> <strong>Estado de Resultados:</strong> Ingresos y Gastos</li>
+                        </ul>
+                    </div>
+                    <button class="link-btn" onclick="goToModule('reportes', 'balance-general')">
+                        <i class="fas fa-external-link-alt"></i> Ver Balance General
+                    </button>
+                    <button class="link-btn success" onclick="goToModule('reportes', 'estado-resultados')">
+                        <i class="fas fa-external-link-alt"></i> Ver Estado de Resultados
+                    </button>
+                `
+            },
+            balance: {
+                title: '<i class="fas fa-balance-scale"></i> Balance de Comprobación',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué es?</h4>
+                        <p>Lista TODAS las cuentas con sus saldos deudores y acreedores. Objetivo: actuar como nexo contable y revisar que la suma de débitos sea idéntica a créditos previo a armar Estados Financieros.</p>
+                    </div>
+                    <div class="t-account">
+                        <div class="t-account-header">Ejemplo: Cuenta CAJA</div>
+                        <div class="t-account-body">
+                            <div class="t-account-side debit"><h6>DEBE</h6><div class="amount">$5.000.000</div></div>
+                            <div class="t-account-side credit"><h6>HABER</h6><div class="amount">$2.000.000</div></div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; font-size: 1.1rem;"><strong>Saldo Deudor: $3.000.000</strong></p>
+                    <button class="link-btn" onclick="goToModule('reportes', 'balance-comprobacion')">
+                        <i class="fas fa-external-link-alt"></i> Ver Balance de Comprobación
+                    </button>
+                `
+            },
+            situacion: {
+                title: '<i class="fas fa-chart-pie"></i> Estado de Situación Financiera',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué es?</h4>
+                        <p>También llamado <strong>Balance General</strong>. Una "fotografía" de la empresa: qué tiene (Activos), qué debe (Pasivos) y cuánto pertenece a los dueños (Patrimonio).</p>
+                    </div>
+                    <div class="account-box">
+                        <h5>Estructura</h5>
+                        <div class="account-grid">
+                            <div class="account-item"><div class="label">ACTIVOS</div><div class="value">$18.000.000</div></div>
+                            <div class="account-item"><div class="label">PASIVOS</div><div class="value">$8.000.000</div></div>
+                            <div class="account-item"><div class="label">PATRIMONIO</div><div class="value">$10.000.000</div></div>
+                        </div>
+                        <p style="text-align: center; margin-top: 0.75rem; font-size: 0.9rem;">
+                            <strong>Activo ($18M) = Pasivo ($8M) + Patrimonio ($10M) ✓</strong>
+                        </p>
+                    </div>
+                    <button class="link-btn" onclick="goToModule('reportes', 'balance-general')">
+                        <i class="fas fa-external-link-alt"></i> Ver Balance General
+                    </button>
+                `
+            },
+            resultados: {
+                title: '<i class="fas fa-chart-line"></i> Estado de Resultados',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué es?</h4>
+                        <p>Muestra el <strong>rendimiento económico</strong> de la empresa durante un período. Indica si ganó o perdió dinero.</p>
+                    </div>
+                    <div class="flow-example">
+                        <h5><i class="fas fa-calculator"></i> Estructura del Estado de Resultados</h5>
+                        <div class="flow-steps">
+                            <div class="flow-step"><div class="step-number">+</div><div class="step-content">Ingresos por Ventas: <strong>$15.000.000</strong></div></div>
+                            <div class="flow-step"><div class="step-number">-</div><div class="step-content">Costo de Ventas: <strong>($9.000.000)</strong></div></div>
+                            <div class="flow-step" style="background: #f3f4f630; margin: 0.5rem 0; border-left: 4px solid #10b981;">
+                                <div class="step-number">=</div>
+                                <div class="step-content" style="color: #10b981; font-weight: 700;">Resultado Operacional (Margen Bruto): $6.000.000</div>
+                            </div>
+                            <div class="flow-step"><div class="step-number">+</div><div class="step-content">Otros Ingresos: <strong>$500.000</strong></div></div>
+                            <div class="flow-step"><div class="step-number">-</div><div class="step-content">Gastos de Administración: <strong>($2.000.000)</strong></div></div>
+                            <div class="flow-step"><div class="step-number">-</div><div class="step-content">Gastos de Ventas: <strong>($800.000)</strong></div></div>
+                            <div class="flow-step"><div class="step-number">-</div><div class="step-content">Gastos Financieros: <strong>($200.000)</strong></div></div>
+                            <div class="flow-step" style="background: #10b98120; margin-top: 0.5rem; border-left: 4px solid #16a34a; padding: 1rem;">
+                                <div class="step-number" style="background: #16a34a;">=</div>
+                                <div class="step-content" style="color: #16a34a; font-weight: 700; font-size: 1.1rem;">Resultado Neto del Ejercicio (Ganancia): $3.500.000</div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 1rem; padding: 0.75rem; background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 0.5rem; font-size: 0.9rem;">
+                            <i class="fas fa-info-circle" style="color: #16a34a;"></i> <strong>Nota:</strong> Si el resultado es negativo, se denomina <strong>Pérdida del Ejercicio</strong>.
+                        </p>
+                    </div>
+                    <button class="link-btn success" onclick="goToModule('reportes', 'estado-resultados')">
+                        <i class="fas fa-external-link-alt"></i> Ver Estado de Resultados
+                    </button>
+                `
+            },
+            ratios: {
+                title: '<i class="fas fa-chart-bar"></i> Ratios Financieros',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué son los Ratios Financieros?</h4>
+                        <p>Son <strong>indicadores numéricos</strong> calculados a partir de los estados financieros que permiten evaluar el desempeño, la salud financiera y la eficiencia de una empresa.</p>
+                    </div>
+                    <div class="flow-example">
+                        <h5><i class="fas fa-tint"></i> Ratios de Liquidez</h5>
+                        <div class="flow-steps">
+                            <div class="flow-step"><div class="step-number">1</div><div class="step-content"><strong>Razón Corriente</strong> = Activo Corriente / Pasivo Corriente</div></div>
+                            <div class="flow-step"><div class="step-number">2</div><div class="step-content"><strong>Prueba Ácida</strong> = (Act. Corr. - Inventario) / Pasivo Corriente</div></div>
+                        </div>
+                    </div>
+                    <div class="flow-example">
+                        <h5><i class="fas fa-chart-line"></i> Ratios de Rentabilidad</h5>
+                        <div class="flow-steps">
+                            <div class="flow-step"><div class="step-number">1</div><div class="step-content"><strong>ROA</strong> = Resultado del Ejercicio / Total Activos × 100</div></div>
+                            <div class="flow-step"><div class="step-number">2</div><div class="step-content"><strong>ROE</strong> = Resultado del Ejercicio / Patrimonio × 100</div></div>
+                            <div class="flow-step"><div class="step-number">3</div><div class="step-content"><strong>Margen Neto</strong> = Resultado del Ejercicio / Ventas × 100</div></div>
+                        </div>
+                    </div>
+                    <div class="flow-example">
+                        <h5><i class="fas fa-shield-alt"></i> Ratios de Solvencia</h5>
+                        <div class="flow-steps">
+                            <div class="flow-step"><div class="step-number">1</div><div class="step-content"><strong>Endeudamiento</strong> = Total Pasivos / Total Activos × 100</div></div>
+                            <div class="flow-step"><div class="step-number">2</div><div class="step-content"><strong>Autonomía</strong> = Patrimonio / Total Activos × 100</div></div>
+                        </div>
+                    </div>
+                    <button class="link-btn" style="background: #f59e0b;" onclick="goToModule('reportes', 'ratios-financieros')">
+                        <i class="fas fa-external-link-alt"></i> Ver Ratios Financieros en el Sistema
+                    </button>
+                `
+            },
+            sistemas: {
+                title: '<i class="fas fa-book"></i> Guía: Sistemas de Contabilización',
+                content: `
+                    <div class="content-section">
+                        <h4>¿Qué son?</h4>
+                        <p>EDU-TRACE ERP soporta <strong>dos sistemas de contabilización</strong> que determinan cómo se registran las transacciones contables:</p>
+                    </div>
+                    <div class="flow-example">
+                        <h5><i class="fas fa-book"></i> 1. Jornalizador (Diario Único)</h5>
+                        <div class="flow-steps">
+                            <div class="flow-step"><div class="step-number">✓</div><div class="step-content">Todas las transacciones se registran <strong>directamente</strong> en el Libro Diario</div></div>
+                            <div class="flow-step"><div class="step-number">✓</div><div class="step-content">Ideal para <strong>microempresas y estudiantes</strong></div></div>
+                            <div class="flow-step"><div class="step-number">✓</div><div class="step-content">Simple, directo, visibilidad inmediata</div></div>
+                        </div>
+                    </div>
+                    <div class="flow-example">
+                        <h5><i class="fas fa-books"></i> 2. Centralizador (Libros Auxiliares)</h5>
+                        <div class="flow-steps">
+                            <div class="flow-step"><div class="step-number">1</div><div class="step-content">Las transacciones se registran primero en <strong>libros auxiliares</strong> por módulo (Ventas, Compras, etc.)</div></div>
+                            <div class="flow-step"><div class="step-number">2</div><div class="step-content">Al final del mes, se <strong>centralizan</strong> (consolidan) en el Libro Diario</div></div>
+                            <div class="flow-step"><div class="step-number">✓</div><div class="step-content">Ideal para <strong>PYMEs y grandes empresas</strong></div></div>
+                            <div class="flow-step"><div class="step-number">✓</div><div class="step-content">Reduce volumen del Libro Diario, mejor organización</div></div>
+                        </div>
+                    </div>
+                    <div style="padding: 1rem; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0.5rem; margin-top: 1rem;">
+                        <p style="margin: 0; font-size: 0.95rem;">
+                            <i class="fas fa-cog" style="color: #3b82f6;"></i> <strong>Configuración:</strong>
+                            El sistema se elige en <strong>Administración → Configuración → Sistema de Contabilización</strong>. 
+                            Por defecto: <strong>Jornalizador</strong>.
+                        </p>
+                    </div>
+                    <button class="link-btn" style="background: #3b82f6;" onclick="goToModule('admin', 'configuracion')">
+                        <i class="fas fa-cog"></i> Ir a Configuración
+                    </button>
+                `
+            }
+        };
+
+        function openModal(topic) {
+            const content = modalContent[topic];
+            if (!content) return;
+            document.getElementById('modal-title').innerHTML = content.title;
+            document.getElementById('modal-body').innerHTML = content.content;
+            document.getElementById('modal-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('modal-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    </script>
+</body>
+
+</html>

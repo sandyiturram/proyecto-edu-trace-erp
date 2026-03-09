@@ -1,0 +1,132 @@
+{
+  "companies": [
+    {
+      "id": "com-2025-001",
+      "name": "Comunica LTDA.",
+      "accountingSystem": "centralizer",
+      "fiscalYear": 2025
+    }
+  ],
+  "accounts": [
+    {"id": "acc-1", "code": "1.1.01", "name": "Caja", "type": "asset"},
+    {"id": "acc-2", "code": "1.1.02", "name": "Banco Internacional", "type": "asset"},
+    {"id": "acc-3", "code": "1.1.03", "name": "Documentos por Cobrar", "type": "asset"},
+    {"id": "acc-4", "code": "1.1.04", "name": "Mercaderías", "type": "asset"},
+    {"id": "acc-5", "code": "1.1.05", "name": "Arriendo Pagado por Adelantado", "type": "asset"},
+    {"id": "acc-6", "code": "1.2.01", "name": "Muebles de Oficina", "type": "asset"},
+    {"id": "acc-7", "code": "1.2.02", "name": "Depreciación Acumulada Muebles", "type": "asset_contra"},
+    {"id": "acc-8", "code": "1.2.03", "name": "Franquicia", "type": "asset"},
+    {"id": "acc-9", "code": "1.2.04", "name": "Amortización Acumulada Franquicia", "type": "asset_contra"},
+    {"id": "acc-10", "code": "2.1.01", "name": "Acreedores", "type": "liability"},
+    {"id": "acc-11", "code": "2.1.02", "name": "Proveedores", "type": "liability"},
+    {"id": "acc-12", "code": "2.1.03", "name": "Documentos por Pagar", "type": "liability"},
+    {"id": "acc-13", "code": "2.1.04", "name": "Imposiciones por Pagar", "type": "liability"},
+    {"id": "acc-14", "code": "2.1.05", "name": "Remuneraciones por Pagar", "type": "liability"},
+    {"id": "acc-15", "code": "2.1.06", "name": "Cuentas por Pagar", "type": "liability"},
+    {"id": "acc-16", "code": "2.1.07", "name": "Gastos por Pagar", "type": "liability"},
+    {"id": "acc-17", "code": "2.1.08", "name": "IVA por Pagar", "type": "liability"},
+    {"id": "acc-18", "code": "2.1.09", "name": "Provisión Impuesto a la Renta", "type": "liability"},
+    {"id": "acc-19", "code": "3.1.01", "name": "Capital Social", "type": "equity"},
+    {"id": "acc-20", "code": "3.1.02", "name": "Resultados Acumulados", "type": "equity"},
+    {"id": "acc-21", "code": "4.1.01", "name": "Ventas", "type": "revenue"},
+    {"id": "acc-22", "code": "5.1.01", "name": "Sueldos y Salarios", "type": "expense"},
+    {"id": "acc-23", "code": "2.1.10", "name": "IVA Débito Fiscal", "type": "liability"},
+    {"id": "acc-24", "code": "1.1.06", "name": "IVA Crédito Fiscal", "type": "asset"},
+    {"id": "acc-25", "code": "1.1.07", "name": "Clientes (Crédito)", "type": "asset"}
+  ],
+  "journalEntries": [
+    {
+      "id": "je-001",
+      "number": "ASI-001",
+      "date": "2025-01-01",
+      "description": "Asiento de Reapertura 2025",
+      "lines": [
+        {"accountId": "acc-1", "debit": 3623898, "credit": 0},
+        {"accountId": "acc-3", "debit": 5479202, "credit": 0},
+        {"accountId": "acc-4", "debit": 6760504, "credit": 0},
+        {"accountId": "acc-5", "debit": 5500000, "credit": 0},
+        {"accountId": "acc-6", "debit": 2000000, "credit": 0},
+        {"accountId": "acc-8", "debit": 1000000, "credit": 0},
+        {"accountId": "acc-7", "debit": 0, "credit": 16667},
+        {"accountId": "acc-9", "debit": 0, "credit": 16667},
+        {"accountId": "acc-10", "debit": 0, "credit": 850000},
+        {"accountId": "acc-11", "debit": 0, "credit": 800000},
+        {"accountId": "acc-12", "debit": 0, "credit": 1785000},
+        {"accountId": "acc-13", "debit": 0, "credit": 110600},
+        {"accountId": "acc-14", "debit": 0, "credit": 700000},
+        {"accountId": "acc-15", "debit": 0, "credit": 1190000},
+        {"accountId": "acc-16", "debit": 0, "credit": 150000},
+        {"accountId": "acc-17", "debit": 0, "credit": 665000},
+        {"accountId": "acc-18", "debit": 0, "credit": 2046511},
+        {"accountId": "acc-19", "debit": 0, "credit": 11500000},
+        {"accountId": "acc-20", "debit": 0, "credit": 4533159}
+      ]
+    }
+  ],
+  "auxiliaryJournals": [
+    {
+      "id": "aux-sal-01",
+      "module": "sales",
+      "period": "2025-01",
+      "status": "open",
+      "transactions": [
+        {
+          "transactionId": "v-001",
+          "date": "2025-01-05",
+          "description": "Venta Factura 300 unidades",
+          "lines": [
+            {"accountId": "acc-25", "debit": 8330000, "credit": 0},
+            {"accountId": "acc-21", "debit": 0, "credit": 7000000},
+            {"accountId": "acc-23", "debit": 0, "credit": 1330000}
+          ]
+        },
+        {
+          "transactionId": "v-002",
+          "date": "2025-01-20",
+          "description": "Venta Boleta 25 unidades",
+          "lines": [
+            {"accountId": "acc-1", "debit": 595000, "credit": 0},
+            {"accountId": "acc-21", "debit": 0, "credit": 500000},
+            {"accountId": "acc-23", "debit": 0, "credit": 95000}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aux-tre-01",
+      "module": "treasury",
+      "period": "2025-01",
+      "status": "open",
+      "transactions": [
+        {
+          "transactionId": "t-001",
+          "date": "2025-01-02",
+          "description": "Apertura Cuenta Corriente",
+          "lines": [
+            {"accountId": "acc-2", "debit": 3000000, "credit": 0},
+            {"accountId": "acc-1", "debit": 0, "credit": 3000000}
+          ]
+        },
+        {
+          "transactionId": "t-002",
+          "date": "2025-01-06",
+          "description": "Recibo 50% Transferencia Venta",
+          "lines": [
+            {"accountId": "acc-2", "debit": 4165000, "credit": 0},
+            {"accountId": "acc-25", "debit": 0, "credit": 4165000}
+          ]
+        },
+        {
+          "transactionId": "t-003",
+          "date": "2025-01-15",
+          "description": "Pago Remuneraciones Liquido",
+          "lines": [
+            {"accountId": "acc-22", "debit": 1500000, "credit": 0},
+            {"accountId": "acc-13", "debit": 0, "credit": 300000},
+            {"accountId": "acc-2", "debit": 0, "credit": 1200000}
+          ]
+        }
+      ]
+    }
+  ]
+}

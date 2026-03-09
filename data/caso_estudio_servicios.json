@@ -1,0 +1,1112 @@
+{
+    "exportDate": "2024-12-14T12:00:00.000Z",
+    "companyId": "caso-servicios-2024",
+    "companies": [
+        {
+            "id": "caso-servicios-2024",
+            "name": "Consultora Legal y Tributaria SpA",
+            "rut": "77.891.234-5",
+            "address": "Av. Pedro de Valdivia 100, Oficina 1201, Providencia",
+            "phone": "+56 2 2987 6543",
+            "email": "contacto@consultlt.cl",
+            "website": "www.consultlt.cl",
+            "industry": "Servicios Profesionales",
+            "currency": "CLP",
+            "fiscalYear": "Enero - Diciembre",
+            "createdAt": "2024-01-01T00:00:00.000Z"
+        }
+    ],
+    "accounts": [
+        {
+            "id": "acc-s1",
+            "companyId": "caso-servicios-2024",
+            "code": "1",
+            "name": "ACTIVOS",
+            "type": "activo",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-s2",
+            "companyId": "caso-servicios-2024",
+            "code": "1.1",
+            "name": "Activo Corriente",
+            "type": "activo",
+            "isGroup": true,
+            "parentId": "acc-s1",
+            "balance": 0
+        },
+        {
+            "id": "acc-s3",
+            "companyId": "caso-servicios-2024",
+            "code": "1.1.01",
+            "name": "Caja",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s2",
+            "balance": 850000
+        },
+        {
+            "id": "acc-s4",
+            "companyId": "caso-servicios-2024",
+            "code": "1.1.02",
+            "name": "Banco Chile Cta. Cte.",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s2",
+            "balance": 12500000
+        },
+        {
+            "id": "acc-s5",
+            "companyId": "caso-servicios-2024",
+            "code": "1.1.03",
+            "name": "Clientes por Servicios",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s2",
+            "balance": 8900000
+        },
+        {
+            "id": "acc-s6",
+            "companyId": "caso-servicios-2024",
+            "code": "1.1.04",
+            "name": "Honorarios por Cobrar",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s2",
+            "balance": 4500000
+        },
+        {
+            "id": "acc-s7",
+            "companyId": "caso-servicios-2024",
+            "code": "1.1.05",
+            "name": "IVA Crédito Fiscal",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s2",
+            "balance": 980000
+        },
+        {
+            "id": "acc-s8",
+            "companyId": "caso-servicios-2024",
+            "code": "1.1.06",
+            "name": "Anticipo a Proveedores",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s2",
+            "balance": 500000
+        },
+        {
+            "id": "acc-s10",
+            "companyId": "caso-servicios-2024",
+            "code": "1.2",
+            "name": "Activo No Corriente",
+            "type": "activo",
+            "isGroup": true,
+            "parentId": "acc-s1",
+            "balance": 0
+        },
+        {
+            "id": "acc-s11",
+            "companyId": "caso-servicios-2024",
+            "code": "1.2.01",
+            "name": "Equipos de Oficina",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s10",
+            "balance": 6800000
+        },
+        {
+            "id": "acc-s12",
+            "companyId": "caso-servicios-2024",
+            "code": "1.2.02",
+            "name": "Depreciación Acum. Eq. Oficina",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s10",
+            "balance": -1360000
+        },
+        {
+            "id": "acc-s13",
+            "companyId": "caso-servicios-2024",
+            "code": "1.2.03",
+            "name": "Software y Licencias",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s10",
+            "balance": 4500000
+        },
+        {
+            "id": "acc-s14",
+            "companyId": "caso-servicios-2024",
+            "code": "1.2.04",
+            "name": "Amortización Acum. Software",
+            "type": "activo",
+            "isGroup": false,
+            "parentId": "acc-s10",
+            "balance": -1500000
+        },
+        {
+            "id": "acc-s20",
+            "companyId": "caso-servicios-2024",
+            "code": "2",
+            "name": "PASIVOS",
+            "type": "pasivo",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-s21",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1",
+            "name": "Pasivo Corriente",
+            "type": "pasivo",
+            "isGroup": true,
+            "parentId": "acc-s20",
+            "balance": 0
+        },
+        {
+            "id": "acc-s22",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.01",
+            "name": "Proveedores de Servicios",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 2800000
+        },
+        {
+            "id": "acc-s23",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.02",
+            "name": "IVA Débito Fiscal",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 2450000
+        },
+        {
+            "id": "acc-s24",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.03",
+            "name": "Honorarios por Pagar",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 3200000
+        },
+        {
+            "id": "acc-s25",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.04",
+            "name": "Remuneraciones por Pagar",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 5600000
+        },
+        {
+            "id": "acc-s26",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.05",
+            "name": "AFP por Pagar",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 720000
+        },
+        {
+            "id": "acc-s27",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.06",
+            "name": "Salud por Pagar",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 392000
+        },
+        {
+            "id": "acc-s28",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.07",
+            "name": "Impuesto Único por Pagar",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 580000
+        },
+        {
+            "id": "acc-s29",
+            "companyId": "caso-servicios-2024",
+            "code": "2.1.08",
+            "name": "Anticipos de Clientes",
+            "type": "pasivo",
+            "isGroup": false,
+            "parentId": "acc-s21",
+            "balance": 1200000
+        },
+        {
+            "id": "acc-s40",
+            "companyId": "caso-servicios-2024",
+            "code": "3",
+            "name": "PATRIMONIO",
+            "type": "patrimonio",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-s41",
+            "companyId": "caso-servicios-2024",
+            "code": "3.1",
+            "name": "Capital",
+            "type": "patrimonio",
+            "isGroup": true,
+            "parentId": "acc-s40",
+            "balance": 0
+        },
+        {
+            "id": "acc-s42",
+            "companyId": "caso-servicios-2024",
+            "code": "3.1.01",
+            "name": "Capital Pagado",
+            "type": "patrimonio",
+            "isGroup": false,
+            "parentId": "acc-s41",
+            "balance": 15000000
+        },
+        {
+            "id": "acc-s43",
+            "companyId": "caso-servicios-2024",
+            "code": "3.2",
+            "name": "Resultados",
+            "type": "patrimonio",
+            "isGroup": true,
+            "parentId": "acc-s40",
+            "balance": 0
+        },
+        {
+            "id": "acc-s44",
+            "companyId": "caso-servicios-2024",
+            "code": "3.2.01",
+            "name": "Resultados Acumulados",
+            "type": "patrimonio",
+            "isGroup": false,
+            "parentId": "acc-s43",
+            "balance": 4228000
+        },
+        {
+            "id": "acc-s50",
+            "companyId": "caso-servicios-2024",
+            "code": "4",
+            "name": "INGRESOS",
+            "type": "ingreso",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-s51",
+            "companyId": "caso-servicios-2024",
+            "code": "4.1",
+            "name": "Ingresos por Servicios",
+            "type": "ingreso",
+            "isGroup": true,
+            "parentId": "acc-s50",
+            "balance": 0
+        },
+        {
+            "id": "acc-s52",
+            "companyId": "caso-servicios-2024",
+            "code": "4.1.01",
+            "name": "Honorarios por Asesoría Legal",
+            "type": "ingreso",
+            "isGroup": false,
+            "parentId": "acc-s51",
+            "balance": 45000000
+        },
+        {
+            "id": "acc-s53",
+            "companyId": "caso-servicios-2024",
+            "code": "4.1.02",
+            "name": "Honorarios por Asesoría Tributaria",
+            "type": "ingreso",
+            "isGroup": false,
+            "parentId": "acc-s51",
+            "balance": 38000000
+        },
+        {
+            "id": "acc-s54",
+            "companyId": "caso-servicios-2024",
+            "code": "4.1.03",
+            "name": "Honorarios por Auditoría",
+            "type": "ingreso",
+            "isGroup": false,
+            "parentId": "acc-s51",
+            "balance": 22000000
+        },
+        {
+            "id": "acc-s55",
+            "companyId": "caso-servicios-2024",
+            "code": "4.1.04",
+            "name": "Capacitaciones",
+            "type": "ingreso",
+            "isGroup": false,
+            "parentId": "acc-s51",
+            "balance": 8500000
+        },
+        {
+            "id": "acc-s56",
+            "companyId": "caso-servicios-2024",
+            "code": "4.2",
+            "name": "Otros Ingresos",
+            "type": "ingreso",
+            "isGroup": true,
+            "parentId": "acc-s50",
+            "balance": 0
+        },
+        {
+            "id": "acc-s57",
+            "companyId": "caso-servicios-2024",
+            "code": "4.2.01",
+            "name": "Ingresos Financieros",
+            "type": "ingreso",
+            "isGroup": false,
+            "parentId": "acc-s56",
+            "balance": 320000
+        },
+        {
+            "id": "acc-s70",
+            "companyId": "caso-servicios-2024",
+            "code": "6",
+            "name": "GASTOS",
+            "type": "gasto",
+            "isGroup": true,
+            "parentId": null,
+            "balance": 0
+        },
+        {
+            "id": "acc-s71",
+            "companyId": "caso-servicios-2024",
+            "code": "6.1",
+            "name": "Gastos del Personal",
+            "type": "gasto",
+            "isGroup": true,
+            "parentId": "acc-s70",
+            "balance": 0
+        },
+        {
+            "id": "acc-s72",
+            "companyId": "caso-servicios-2024",
+            "code": "6.1.01",
+            "name": "Sueldos Profesionales",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s71",
+            "balance": 48000000
+        },
+        {
+            "id": "acc-s73",
+            "companyId": "caso-servicios-2024",
+            "code": "6.1.02",
+            "name": "Sueldos Administrativos",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s71",
+            "balance": 14400000
+        },
+        {
+            "id": "acc-s74",
+            "companyId": "caso-servicios-2024",
+            "code": "6.1.03",
+            "name": "Leyes Sociales",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s71",
+            "balance": 12480000
+        },
+        {
+            "id": "acc-s75",
+            "companyId": "caso-servicios-2024",
+            "code": "6.1.04",
+            "name": "Capacitación Personal",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s71",
+            "balance": 3200000
+        },
+        {
+            "id": "acc-s76",
+            "companyId": "caso-servicios-2024",
+            "code": "6.2",
+            "name": "Gastos Operacionales",
+            "type": "gasto",
+            "isGroup": true,
+            "parentId": "acc-s70",
+            "balance": 0
+        },
+        {
+            "id": "acc-s77",
+            "companyId": "caso-servicios-2024",
+            "code": "6.2.01",
+            "name": "Arriendo Oficina",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s76",
+            "balance": 9600000
+        },
+        {
+            "id": "acc-s78",
+            "companyId": "caso-servicios-2024",
+            "code": "6.2.02",
+            "name": "Servicios Básicos",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s76",
+            "balance": 2400000
+        },
+        {
+            "id": "acc-s79",
+            "companyId": "caso-servicios-2024",
+            "code": "6.2.03",
+            "name": "Gastos de Representación",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s76",
+            "balance": 4800000
+        },
+        {
+            "id": "acc-s80",
+            "companyId": "caso-servicios-2024",
+            "code": "6.2.04",
+            "name": "Suscripciones y Membresías",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s76",
+            "balance": 2800000
+        },
+        {
+            "id": "acc-s81",
+            "companyId": "caso-servicios-2024",
+            "code": "6.2.05",
+            "name": "Depreciación y Amortización",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s76",
+            "balance": 2860000
+        },
+        {
+            "id": "acc-s82",
+            "companyId": "caso-servicios-2024",
+            "code": "6.3",
+            "name": "Gastos Financieros",
+            "type": "gasto",
+            "isGroup": true,
+            "parentId": "acc-s70",
+            "balance": 0
+        },
+        {
+            "id": "acc-s83",
+            "companyId": "caso-servicios-2024",
+            "code": "6.3.01",
+            "name": "Comisiones Bancarias",
+            "type": "gasto",
+            "isGroup": false,
+            "parentId": "acc-s82",
+            "balance": 280000
+        }
+    ],
+    "suppliers": [
+        {
+            "id": "sup-s1",
+            "companyId": "caso-servicios-2024",
+            "rut": "76.234.567-8",
+            "name": "Editorial Jurídica de Chile",
+            "fantasyName": "EJC",
+            "address": "Huérfanos 1160, Santiago Centro",
+            "phone": "+56 2 2696 5500",
+            "email": "ventas@editorialjuridica.cl",
+            "contact": "José Muñoz",
+            "category": "Libros Jurídicos",
+            "paymentTerms": 30,
+            "creditLimit": 5000000,
+            "balance": 800000
+        },
+        {
+            "id": "sup-s2",
+            "companyId": "caso-servicios-2024",
+            "rut": "96.756.430-8",
+            "name": "Microsoft Chile",
+            "fantasyName": "Microsoft",
+            "address": "Av. Santa María 2670, Providencia",
+            "phone": "+56 2 2430 6600",
+            "email": "empresas@microsoft.cl",
+            "contact": "Ana Soto",
+            "category": "Software",
+            "paymentTerms": 30,
+            "creditLimit": 10000000,
+            "balance": 1200000
+        },
+        {
+            "id": "sup-s3",
+            "companyId": "caso-servicios-2024",
+            "rut": "77.345.678-9",
+            "name": "Imprenta Moderna Ltda.",
+            "fantasyName": "ImpMod",
+            "address": "San Pablo 2500, Santiago",
+            "phone": "+56 2 2681 4500",
+            "email": "cotizaciones@impmod.cl",
+            "contact": "Mario Torres",
+            "category": "Impresiones",
+            "paymentTerms": 15,
+            "creditLimit": 2000000,
+            "balance": 350000
+        }
+    ],
+    "customers": [
+        {
+            "id": "cus-s1",
+            "companyId": "caso-servicios-2024",
+            "rut": "76.123.456-7",
+            "name": "Inmobiliaria Los Jardines S.A.",
+            "fantasyName": "Jardines",
+            "address": "Av. Apoquindo 3000, Las Condes",
+            "phone": "+56 2 2678 9012",
+            "email": "gerencia@jardines.cl",
+            "contact": "Gerente Paula Vega",
+            "category": "Inmobiliaria",
+            "paymentTerms": 30,
+            "creditLimit": 20000000,
+            "balance": 3500000
+        },
+        {
+            "id": "cus-s2",
+            "companyId": "caso-servicios-2024",
+            "rut": "77.234.567-8",
+            "name": "Exportadora del Pacífico SpA",
+            "fantasyName": "ExPac",
+            "address": "Av. del Mar 500, Valparaíso",
+            "phone": "+56 32 2345 678",
+            "email": "legal@expac.cl",
+            "contact": "Jefe Legal Ricardo Parra",
+            "category": "Exportación",
+            "paymentTerms": 45,
+            "creditLimit": 30000000,
+            "balance": 2800000
+        },
+        {
+            "id": "cus-s3",
+            "companyId": "caso-servicios-2024",
+            "rut": "78.345.678-9",
+            "name": "Clínica Santa Elena Ltda.",
+            "fantasyName": "Santa Elena",
+            "address": "Av. Providencia 2500, Providencia",
+            "phone": "+56 2 2890 1234",
+            "email": "finanzas@csantaelena.cl",
+            "contact": "CFO María José López",
+            "category": "Salud",
+            "paymentTerms": 30,
+            "creditLimit": 15000000,
+            "balance": 1800000
+        },
+        {
+            "id": "cus-s4",
+            "companyId": "caso-servicios-2024",
+            "rut": "79.456.789-0",
+            "name": "Agrícola El Valle S.A.",
+            "fantasyName": "El Valle",
+            "address": "Camino a Melipilla Km 50",
+            "phone": "+56 2 3456 7890",
+            "email": "administracion@elvalle.cl",
+            "contact": "Adm. Carlos Bravo",
+            "category": "Agrícola",
+            "paymentTerms": 60,
+            "creditLimit": 25000000,
+            "balance": 800000
+        }
+    ],
+    "products": [
+        {
+            "id": "srv-s1",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-LEG-001",
+            "name": "Asesoría Legal Mensual",
+            "description": "Asesoría legal integral mensual (hasta 20 horas)",
+            "category": "Servicios Legales",
+            "unit": "mes",
+            "cost": 0,
+            "price": 1500000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        },
+        {
+            "id": "srv-s2",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-LEG-002",
+            "name": "Constitución de Sociedad",
+            "description": "Servicio de constitución de sociedad SpA o Ltda.",
+            "category": "Servicios Legales",
+            "unit": "srv",
+            "cost": 0,
+            "price": 450000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        },
+        {
+            "id": "srv-s3",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-LEG-003",
+            "name": "Modificación Estatutos",
+            "description": "Modificación de estatutos sociales",
+            "category": "Servicios Legales",
+            "unit": "srv",
+            "cost": 0,
+            "price": 280000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        },
+        {
+            "id": "srv-s4",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-TRI-001",
+            "name": "Asesoría Tributaria Mensual",
+            "description": "Asesoría tributaria mensual (declaraciones y consultas)",
+            "category": "Servicios Tributarios",
+            "unit": "mes",
+            "cost": 0,
+            "price": 890000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        },
+        {
+            "id": "srv-s5",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-TRI-002",
+            "name": "Declaración Renta Empresas",
+            "description": "Preparación y presentación declaración de renta",
+            "category": "Servicios Tributarios",
+            "unit": "srv",
+            "cost": 0,
+            "price": 650000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        },
+        {
+            "id": "srv-s6",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-AUD-001",
+            "name": "Auditoría Estados Financieros",
+            "description": "Auditoría externa de estados financieros anuales",
+            "category": "Auditoría",
+            "unit": "srv",
+            "cost": 0,
+            "price": 3500000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        },
+        {
+            "id": "srv-s7",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-AUD-002",
+            "name": "Due Diligence",
+            "description": "Due diligence financiero y legal",
+            "category": "Auditoría",
+            "unit": "srv",
+            "cost": 0,
+            "price": 5500000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        },
+        {
+            "id": "srv-s8",
+            "companyId": "caso-servicios-2024",
+            "code": "SRV-CAP-001",
+            "name": "Curso IFRS Básico",
+            "description": "Capacitación IFRS para contadores (16 horas)",
+            "category": "Capacitación",
+            "unit": "srv",
+            "cost": 0,
+            "price": 380000,
+            "stock": 0,
+            "minStock": 0,
+            "isService": true,
+            "supplierId": null
+        }
+    ],
+    "employees": [
+        {
+            "id": "emp-s1",
+            "companyId": "caso-servicios-2024",
+            "rut": "10.234.567-8",
+            "firstName": "Roberto",
+            "lastName": "Fernández Muñoz",
+            "position": "Socio Director",
+            "department": "Dirección",
+            "email": "rfernandez@consultlt.cl",
+            "phone": "+56 9 9876 5432",
+            "hireDate": "2018-01-01",
+            "baseSalary": 5500000,
+            "contractType": "Indefinido",
+            "isActive": true
+        },
+        {
+            "id": "emp-s2",
+            "companyId": "caso-servicios-2024",
+            "rut": "11.345.678-9",
+            "firstName": "Carolina",
+            "lastName": "Vega Soto",
+            "position": "Socia - Área Legal",
+            "department": "Legal",
+            "email": "cvega@consultlt.cl",
+            "phone": "+56 9 8765 4321",
+            "hireDate": "2018-01-01",
+            "baseSalary": 5000000,
+            "contractType": "Indefinido",
+            "isActive": true
+        },
+        {
+            "id": "emp-s3",
+            "companyId": "caso-servicios-2024",
+            "rut": "12.456.789-0",
+            "firstName": "Andrés",
+            "lastName": "Morales Díaz",
+            "position": "Gerente Tributario",
+            "department": "Tributario",
+            "email": "amorales@consultlt.cl",
+            "phone": "+56 9 7654 3210",
+            "hireDate": "2019-03-01",
+            "baseSalary": 3800000,
+            "contractType": "Indefinido",
+            "isActive": true
+        },
+        {
+            "id": "emp-s4",
+            "companyId": "caso-servicios-2024",
+            "rut": "13.567.890-1",
+            "firstName": "Valentina",
+            "lastName": "Castro Rojas",
+            "position": "Abogada Senior",
+            "department": "Legal",
+            "email": "vcastro@consultlt.cl",
+            "phone": "+56 9 6543 2109",
+            "hireDate": "2020-06-15",
+            "baseSalary": 2800000,
+            "contractType": "Indefinido",
+            "isActive": true
+        },
+        {
+            "id": "emp-s5",
+            "companyId": "caso-servicios-2024",
+            "rut": "14.678.901-2",
+            "firstName": "Sebastián",
+            "lastName": "Pérez Lagos",
+            "position": "Contador Senior",
+            "department": "Tributario",
+            "email": "sperez@consultlt.cl",
+            "phone": "+56 9 5432 1098",
+            "hireDate": "2021-01-10",
+            "baseSalary": 2200000,
+            "contractType": "Indefinido",
+            "isActive": true
+        },
+        {
+            "id": "emp-s6",
+            "companyId": "caso-servicios-2024",
+            "rut": "15.789.012-3",
+            "firstName": "Camila",
+            "lastName": "Núñez Silva",
+            "position": "Asistente Legal",
+            "department": "Legal",
+            "email": "cnunez@consultlt.cl",
+            "phone": "+56 9 4321 0987",
+            "hireDate": "2022-03-01",
+            "baseSalary": 1200000,
+            "contractType": "Indefinido",
+            "isActive": true
+        },
+        {
+            "id": "emp-s7",
+            "companyId": "caso-servicios-2024",
+            "rut": "16.890.123-4",
+            "firstName": "Diego",
+            "lastName": "Araya Fuentes",
+            "position": "Asistente Contable",
+            "department": "Tributario",
+            "email": "daraya@consultlt.cl",
+            "phone": "+56 9 3210 9876",
+            "hireDate": "2023-02-15",
+            "baseSalary": 950000,
+            "contractType": "Plazo Fijo",
+            "isActive": true
+        },
+        {
+            "id": "emp-s8",
+            "companyId": "caso-servicios-2024",
+            "rut": "17.901.234-5",
+            "firstName": "Francisca",
+            "lastName": "Bravo Ortiz",
+            "position": "Secretaria Ejecutiva",
+            "department": "Administración",
+            "email": "fbravo@consultlt.cl",
+            "phone": "+56 9 2109 8765",
+            "hireDate": "2019-08-01",
+            "baseSalary": 1100000,
+            "contractType": "Indefinido",
+            "isActive": true
+        }
+    ],
+    "journalEntries": [
+        {
+            "id": "je-s1",
+            "companyId": "caso-servicios-2024",
+            "date": "2024-12-01",
+            "description": "Cobro honorarios asesoría legal noviembre - Inmobiliaria Jardines",
+            "reference": "BOL-HON-0234",
+            "status": "posted",
+            "lines": [
+                {
+                    "accountId": "acc-s4",
+                    "description": "Banco Chile Cta. Cte.",
+                    "debit": 1785000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s52",
+                    "description": "Honorarios Asesoría Legal",
+                    "debit": 0,
+                    "credit": 1500000
+                },
+                {
+                    "accountId": "acc-s23",
+                    "description": "IVA Débito Fiscal 19%",
+                    "debit": 0,
+                    "credit": 285000
+                }
+            ]
+        },
+        {
+            "id": "je-s2",
+            "companyId": "caso-servicios-2024",
+            "date": "2024-12-03",
+            "description": "Factura servicios de auditoría - Exportadora del Pacífico",
+            "reference": "FV-0456",
+            "status": "posted",
+            "lines": [
+                {
+                    "accountId": "acc-s5",
+                    "description": "Clientes por Servicios - ExPac",
+                    "debit": 4165000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s54",
+                    "description": "Honorarios por Auditoría",
+                    "debit": 0,
+                    "credit": 3500000
+                },
+                {
+                    "accountId": "acc-s23",
+                    "description": "IVA Débito Fiscal 19%",
+                    "debit": 0,
+                    "credit": 665000
+                }
+            ]
+        },
+        {
+            "id": "je-s3",
+            "companyId": "caso-servicios-2024",
+            "date": "2024-12-05",
+            "description": "Pago arriendo oficina diciembre",
+            "reference": "EG-ARR-DIC",
+            "status": "posted",
+            "lines": [
+                {
+                    "accountId": "acc-s77",
+                    "description": "Arriendo Oficina",
+                    "debit": 800000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s7",
+                    "description": "IVA Crédito Fiscal",
+                    "debit": 152000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s4",
+                    "description": "Banco Chile Cta. Cte.",
+                    "debit": 0,
+                    "credit": 952000
+                }
+            ]
+        },
+        {
+            "id": "je-s4",
+            "companyId": "caso-servicios-2024",
+            "date": "2024-12-10",
+            "description": "Provisión remuneraciones diciembre 2024",
+            "reference": "NOM-DIC-2024",
+            "status": "posted",
+            "lines": [
+                {
+                    "accountId": "acc-s72",
+                    "description": "Sueldos Profesionales",
+                    "debit": 19100000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s73",
+                    "description": "Sueldos Administrativos",
+                    "debit": 3250000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s74",
+                    "description": "Leyes Sociales",
+                    "debit": 1117500,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s25",
+                    "description": "Remuneraciones por Pagar",
+                    "debit": 0,
+                    "credit": 17615000
+                },
+                {
+                    "accountId": "acc-s26",
+                    "description": "AFP por Pagar",
+                    "debit": 0,
+                    "credit": 2861725
+                },
+                {
+                    "accountId": "acc-s27",
+                    "description": "Salud por Pagar",
+                    "debit": 0,
+                    "credit": 1564500
+                },
+                {
+                    "accountId": "acc-s28",
+                    "description": "Impuesto Único por Pagar",
+                    "debit": 0,
+                    "credit": 1426275
+                }
+            ]
+        },
+        {
+            "id": "je-s5",
+            "companyId": "caso-servicios-2024",
+            "date": "2024-12-12",
+            "description": "Cobro parcial factura auditoría - Clínica Santa Elena",
+            "reference": "CB-0123",
+            "status": "posted",
+            "lines": [
+                {
+                    "accountId": "acc-s4",
+                    "description": "Banco Chile Cta. Cte.",
+                    "debit": 2000000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s5",
+                    "description": "Clientes por Servicios - Santa Elena",
+                    "debit": 0,
+                    "credit": 2000000
+                }
+            ]
+        },
+        {
+            "id": "je-s6",
+            "companyId": "caso-servicios-2024",
+            "date": "2024-12-14",
+            "description": "Factura capacitación IFRS - Agrícola El Valle (10 participantes)",
+            "reference": "FV-0460",
+            "status": "posted",
+            "lines": [
+                {
+                    "accountId": "acc-s5",
+                    "description": "Clientes por Servicios - El Valle",
+                    "debit": 4522000,
+                    "credit": 0
+                },
+                {
+                    "accountId": "acc-s55",
+                    "description": "Capacitaciones",
+                    "debit": 0,
+                    "credit": 3800000
+                },
+                {
+                    "accountId": "acc-s23",
+                    "description": "IVA Débito Fiscal 19%",
+                    "debit": 0,
+                    "credit": 722000
+                }
+            ]
+        }
+    ],
+    "bankAccounts": [
+        {
+            "id": "bank-s1",
+            "companyId": "caso-servicios-2024",
+            "name": "Cuenta Corriente Chile",
+            "bank": "Banco de Chile",
+            "accountNumber": "00-12345-67",
+            "type": "corriente",
+            "currency": "CLP",
+            "balance": 12500000,
+            "accountId": "acc-s4"
+        }
+    ],
+    "costCenters": [
+        {
+            "id": "cc-s1",
+            "companyId": "caso-servicios-2024",
+            "code": "CC-DIR",
+            "name": "Dirección",
+            "description": "Centro de costo para socios directores"
+        },
+        {
+            "id": "cc-s2",
+            "companyId": "caso-servicios-2024",
+            "code": "CC-LEG",
+            "name": "Área Legal",
+            "description": "Centro de costo para servicios legales"
+        },
+        {
+            "id": "cc-s3",
+            "companyId": "caso-servicios-2024",
+            "code": "CC-TRI",
+            "name": "Área Tributaria",
+            "description": "Centro de costo para servicios tributarios"
+        },
+        {
+            "id": "cc-s4",
+            "companyId": "caso-servicios-2024",
+            "code": "CC-AUD",
+            "name": "Auditoría",
+            "description": "Centro de costo para servicios de auditoría"
+        },
+        {
+            "id": "cc-s5",
+            "companyId": "caso-servicios-2024",
+            "code": "CC-ADM",
+            "name": "Administración",
+            "description": "Centro de costo para gastos administrativos"
+        }
+    ]
+}

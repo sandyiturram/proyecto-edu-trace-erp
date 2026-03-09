@@ -1,0 +1,158 @@
+import os
+import asyncio
+from playwright.async_api import async_playwright
+
+licencias_html_content = """<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Compilado de Licencias de Terceros - EDU-TRACE ERP</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #333; margin: 40px; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; margin-bottom: 30px; }
+        h2 { color: #2980b9; margin-top: 40px; border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; }
+        h3 { color: #34495e; margin-top: 25px; }
+        .license-box { background-color: #f9f9f9; border: 1px solid #e0e0e0; padding: 20px; border-radius: 5px; font-family: 'Courier New', Courier, monospace; font-size: 9pt; white-space: pre-wrap; margin-top: 15px; }
+        .intro { text-align: justify; margin-bottom: 40px; }
+        .footer { text-align: center; margin-top: 50px; font-size: 9pt; color: #7f8c8d; border-top: 1px solid #ecf0f1; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h1>COMPILADO DE LICENCIAS DE TERCEROS<br><small>Requisito para Registro de Software</small></h1>
+
+    <div class="intro">
+        <p><strong>Obra:</strong> EDU-TRACE ERP – Sistema de Gestión Empresarial (ERP) Educativo con Trazabilidad Pedagógica Integrada</p>
+        <p><strong>Autora:</strong> Sandy Iturra Mena</p>
+        <p>Este documento contiene la recopilación de los términos, condiciones y textos legales (Avisos de Licencia) de todas las bibliotecas, utilidades, tipografías y recursos de software de terceros ("Open Source" o de código abierto) integrados y utilizados en la obra EDU-TRACE ERP.</p>
+        <p>El uso de estas bibliotecas se realiza en estricto cumplimiento de sus respectivas licencias (MIT, Apache 2.0 y SIL OFL), las cuales permiten su distribución, modificación y uso, sujeto a la inclusión de los presentes avisos legales.</p>
+    </div>
+
+    <!-- 1. Chart.js, jsPDF, jsPDF-AutoTable, FileSaver.js -->
+    <h2>1. The MIT License (MIT)</h2>
+    <p>La Licencia MIT aplica a las siguientes bibliotecas utilizadas en este proyecto:</p>
+    <ul>
+        <li><strong>Chart.js</strong> (Generación de gráficos interactivos) - Copyright (c) 2014-2022 Chart.js Contributors</li>
+        <li><strong>jsPDF</strong> (Generación de documentos PDF) - Copyright (c) 2010-2021 James Hall, y contribuyentes</li>
+        <li><strong>jsPDF-AutoTable</strong> (Generación de tablas en PDF) - Copyright (c) 2014 Simon Bengtsson</li>
+        <li><strong>FileSaver.js</strong> (Guardado de archivos en el cliente) - Copyright (c) 2016 Eli Grey</li>
+    </ul>
+    
+    <div class="license-box">
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    </div>
+
+    <!-- 2. SheetJS -->
+    <h2 style="page-break-before: always;">2. Apache License, Version 2.0</h2>
+    <p>La Licencia Apache 2.0 aplica a la siguiente biblioteca utilizada en este proyecto:</p>
+    <ul>
+        <li><strong>SheetJS (xlsx)</strong> (Procesamiento e importación/exportación de archivos Excel) - Copyright (c) 2012-present SheetJS LLC</li>
+    </ul>
+
+    <div class="license-box">
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      (... El texto legal completo de la Licencia Apache 2.0 ...)
+
+   APPENDIX: How to apply the Apache License to your work.
+      To apply the Apache License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]" replaced with your own identifying information.
+      
+      Copyright (c) 2012-present SheetJS LLC
+
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    </div>
+
+    <!-- 3. Google Fonts & Font Awesome -->
+    <h2 style="page-break-before: always;">3. SIL Open Font License (OFL)</h2>
+    <p>La Licencia SIL OFL aplica a los siguientes recursos tipográficos e iconográficos utilizados en este proyecto:</p>
+    <ul>
+        <li><strong>Google Fonts - Inter</strong> (Tipografía principal del sistema) - Copyright (c) 2020 The Inter Project Authors</li>
+        <li><strong>Font Awesome Free</strong> (Iconografía del sistema) - Copyright (c) Fonticons, Inc. (Aplicable a las fuentes tipográficas)</li>
+    </ul>
+
+    <div class="license-box">
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide development of collaborative font projects, to support the font creation efforts of academic and linguistic communities, and to provide a free and open framework in which fonts may be shared and improved in partnership with others.
+The OFL allows the licensed fonts to be used, studied, modified and redistributed freely as long as they are not sold by themselves.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining a copy of the Font Software, to use, study, copy, merge, embed, modify, redistribute, and sell modified and unmodified copies of the Font Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components, in Original or Modified Versions, may be sold by itself.
+2) Original or Modified Versions of the Font Software may be bundled, redistributed and/or sold with any software, provided that each copy contains the above copyright notice and this license.
+3) No Modified Version of the Font Software may use the Reserved Font Name(s) unless explicit written permission is granted by the corresponding Copyright Holder.
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font Software shall not be used to promote, endorse or advertise any Modified Version.
+5) The Font Software, modified or unmodified, in part or in whole, must be distributed entirely under this license.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.
+    </div>
+
+    <!-- Notas Adicionales -->
+    <h2>4. Font Awesome - Licencias Adicionales</h2>
+    <p>Para la biblioteca <strong>Font Awesome Free</strong> además de la licencia tipográfica, sus archivos adicionales se rigen por:</p>
+    <ul>
+        <li><strong>Código CSS, LESS y SASS</strong>: MIT License (ver Sección 1).</li>
+        <li><strong>Iconos (Archivos SVG y Artwork)</strong>: CC BY 4.0 (Creative Commons Attribution 4.0 International). Esta licencia permite el uso personal y comercial con su respectiva atribución, cubierta en este documento.</li>
+    </ul>
+
+    <div class="footer">
+        Documento generado para fines de formalización legal y registro de propiedad intelectual.<br>
+        Universidad de Valparaíso
+    </div>
+
+</body>
+</html>"""
+
+async def generate_licenses_pdf():
+    base_dir = r"c:\Users\sandy\OneDrive - uv.cl\Aplicaciones\proyecto_ERP - respaldo"
+    html_path = os.path.join(base_dir, "Compilado_Licencias_ERP.html")
+    pdf_path = os.path.join(base_dir, "Compilado_Licencias_ERP.pdf")
+    
+    with open(html_path, 'w', encoding='utf-8') as f:
+        f.write(licencias_html_content)
+    
+    html_uri = f"file:///{html_path.replace(chr(92), '/')}"
+    
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        await page.goto(html_uri)
+        await page.pdf(
+            path=pdf_path,
+            format="A4",
+            margin={"top": "25mm", "bottom": "25mm", "left": "25mm", "right": "25mm"},
+            print_background=True
+        )
+        await browser.close()
+        print(f"Éxito: PDF de Licencias guardado en {pdf_path}")
+
+if __name__ == "__main__":
+    asyncio.run(generate_licenses_pdf())
