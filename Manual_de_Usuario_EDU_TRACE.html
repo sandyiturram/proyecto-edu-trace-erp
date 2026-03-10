@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Usuario Detallado | EDU-TRACE ERP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a6ed1;
+            --primary-dark: #064280;
+            --primary-light: #e6f0f9;
+            --secondary: #6c5ce7;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --bg-body: #f8fafc;
+            --page-width: 210mm;
+            /* A4 Width */
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            background: var(--bg-body);
+        }
+
+        /* Paper Layout for Screen */
+        .page {
+            width: var(--page-width);
+            min-height: 297mm;
+            /* A4 Height */
+            padding: 20mm;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            /* Ensure clear breaks between main pages */
+        }
+
+        /* COVER PAGE */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 257mm;
+        }
+
+        .cover-logo {
+            font-size: 80px;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .cover-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin: 0;
+            color: var(--primary-dark);
+        }
+
+        .cover-subtitle {
+            font-size: 24px;
+            color: var(--text-muted);
+            margin: 10px 0 60px;
+        }
+
+        .cover-info {
+            border-top: 2px solid var(--primary-light);
+            padding-top: 30px;
+            width: 80%;
+        }
+
+        /* HEADINGS */
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--primary-dark);
+            margin-top: 1.5em;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2 i {
+            width: 30px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        h3 {
+            font-size: 18px;
+            color: var(--secondary);
+            border-left: 4px solid var(--secondary);
+            padding-left: 10px;
+        }
+
+        /* CONTENT ELEMENTS */
+        .path-indicator {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 15px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .highlight-box {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            page-break-inside: avoid;
+        }
+
+        .highlight-info {
+            background: #eff6ff;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .highlight-success {
+            background: #f0fdf4;
+            border-left: 5px solid #22c55e;
+        }
+
+        .highlight-warning {
+            background: #fffbeb;
+            border-left: 5px solid #f59e0b;
+        }
+
+        .highlight-danger {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+
+        /* PROCESS STEPS (Like Help System) */
+        .process-step {
+            display: flex;
+            margin-bottom: 25px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .process-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .process-content {
+            flex: 1;
+        }
+
+        .process-content h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .module-link {
+            font-size: 12px;
+            background: var(--bg-body);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            font-family: monospace;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            gap: 5px;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .accounting-impact {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8fafc;
+            border-left: 4px solid var(--secondary);
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            page-break-inside: avoid;
+        }
+
+        .accounting-impact strong {
+            color: var(--secondary);
+        }
+
+        .accounting-impact .debit {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .accounting-impact .credit {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .relation-box {
+            background: #fdf2f8;
+            border: 1px solid #fbcfe8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #9d174d;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            page-break-inside: avoid;
+        }
+
+        .relation-box i {
+            font-size: 24px;
+        }
+
+        /* DATA TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            page-break-inside: avoid;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* PRINT OPTIMIZATION */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                min-height: auto;
+                padding: 15mm;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            h2 {
+                page-break-before: always;
+                margin-top: 0;
+            }
+
+            .cover {
+                height: auto;
+                padding-top: 25vh;
+            }
+
+            /* Prevent breaking inside critical blocks */
+            .highlight-box,
+            .process-step,
+            .relation-box,
+            table,
+            .accounting-impact {
+                page-break-inside: avoid;
+            }
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="print-btn no-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Guardar como PDF
+    </button>
+
+    <!-- PORTADA -->
+    <div class="page">
+        <div class="cover">
+            <div class="cover-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="cover-title">EDU-TRACE ERP</h1>
+            <p class="cover-subtitle">Manual Operativo, Lógica de Procesos y Análisis Financiero</p>
+            <div class="cover-info">
+                <p><strong>Versión:</strong> 1.0 - Edición Extendida e Interactiva</p>
+                <p><strong>Propósito:</strong> Guía Metodológica, Relación de Módulos, Impacto Contable y Reportes.</p>
+                <p><strong>Institución:</strong> Universidad de Valparaíso</p>
+                <p><strong>Autora:</strong> Sandy Iturra</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 1: RELACIÓN DE MÓDULOS -->
+    <div class="page">
+        <h2><i class="fas fa-project-diagram"></i> 1. Relación de Módulos (Trazabilidad)</h2>
+        <p><strong>EDU-TRACE ERP</strong> es una aplicación web de tipo software educativo que simula un Sistema de
+            Gestión Empresarial (ERP) integrado, orientado a la enseñanza de contabilidad mediante la ejecución de
+            procesos empresariales y su correspondiente registro contable.</p>
+
+        <div class="highlight-box highlight-info">
+            <p><i class="fas fa-sync-alt"></i> <strong>Integración en Tiempo Real:</strong> Cuando se realiza una
+                operación en un submódulo (ej. recepcionar una guía, emitir factura), el sistema genera el asiento
+                contable correspondiente y actualiza los libros y el balance al instante o los centraliza según la
+                configuración de la empresa.</p>
+        </div>
+
+        <h3>Flujo Lógico de la Información</h3>
+        <p>Los módulos no operan de forma aislada. Este es el flujo que sostiene el ERP:</p>
+        <ul>
+            <li><strong>Compras (MM) <i class="fas fa-arrow-right"></i> Inventario (WM):</strong> Al recepcionar
+                mercaderías, aumentan las existencias en bodega y se calcula el Nuevo Costo Promedio.</li>
+            <li><strong>Compras (MM) <i class="fas fa-arrow-right"></i> Tesorería (FI):</strong> Al registrar la factura
+                del proveedor, la obligación de pago viaja al módulo de finanzas.</li>
+            <li><strong>Ventas (SD) <i class="fas fa-arrow-right"></i> Inventario (WM):</strong> Al despachar a un
+                cliente, salen mercaderías reconociendo automáticamente el Costo de Ventas.</li>
+            <li><strong>Ventas (SD) <i class="fas fa-arrow-right"></i> Tesorería (FI):</strong> Al facturar, el derecho
+                a cobrar viaja a finanzas para su futura recaudación.</li>
+            <li><strong>Todos los sub-sistemas <i class="fas fa-arrow-right"></i> Contabilidad (GL):</strong> Toda
+                operación detona un movimiento en los estados financieros, respetando siempre que <i>Activo = Pasivo +
+                    Patrimonio</i>.</li>
+        </ul>
+
+        <div class="highlight-box highlight-warning">
+            <h4><i class="fas fa-question-circle"></i> Diagrama Contable e Inteligencia Asistida (F1)</h4>
+            <p>El sistema cuenta con asistencia en cualquier pantalla presionando la tecla <strong>F1</strong>. El modal
+                de ayuda le ofrece enlaces directos a módulos relacionados, glosario de términos, y acceso al "Diagrama
+                Contable Interactivo", el cual muestra en tiempo real una representación visual de la ecuación contable
+                (Balanzas equilibradas) animándose según varían los montos de la simulación.</p>
+        </div>
+    </div>
+
+    <!-- SECCION 2: ADMINISTRACIÓN Y CONFIGURACIÓN -->
+    <div class="page">
+        <h2><i class="fas fa-cog"></i> 2. Administración y Configuración</h2>
+        <p>Antes de registrar transacciones operativas, es importante configurar los parámetros base de la empresa. Esto
+            afectará mecánicamente cómo el ERP registra la contabilidad.</p>
+
+        <h3>2.1 Parámetros Contables <span class="module-link"><i class="fas fa-cog"></i> Administración >
+                Configuración</span></h3>
+        <p>En esta sección usted puede determinar ajustes estructurales para la entidad:</p>
+        <ul>
+            <li><strong>Ajustes Tributarios:</strong> Modifique la Tasa de IVA (ej: 19%) o de Impuesto a la Renta. Las
+                operaciones de Venta/Compra aplicarán automáticamente esta tasa para segregar el IVA Débito o Crédito
+                Fiscal.</li>
+            <li><strong>Método de Inventario:</strong> Seleccione Costo Promedio Ponderado o FIFO. Esta elección
+                define cómo se costearán las salidas de inventario en las Guías de Despacho de Venta.</li>
+            <li><strong>Decimales:</strong> Elija trabajar sin decimales (recomendado para pesos Chilenos) o con 2
+                decimales.</li>
+        </ul>
+
+        <h3>2.2 Sistema de Contabilización: Jornalizador vs Centralizador</h3>
+        <p>Esta es la configuración pedagógica más crítica del sistema, la cual altera visiblemente el comportamiento
+            transaccional:</p>
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-book"></i></div>
+            <div class="process-content">
+                <h4 style="color:var(--info);">A) Sistema Jornalizador (Diario Único)</h4>
+                <p><strong>Ideal para nivel inicial.</strong> Cada vez que realiza una transacción (ej: graba una venta
+                    o hace un pago), el sistema genera inmediatamente un número de <strong>Asiento Individual</strong>
+                    visible de inmediato en el Libro Diario Principal.</p>
+            </div>
+        </div>
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-exchange-alt"></i></div>
+            <div class="process-content">
+                <h4 style="color:var(--success);">B) Sistema Centralizador (Dual / Libros Auxiliares)</h4>
+                <p><strong>Práctica profesional avanzada.</strong> Las transacciones masivas (Compras, Ventas, Caja) no
+                    generan asientos automáticos en el Diario Principal. En su lugar, se registran de forma subyacente
+                    en
+                    sus respectivos <strong>Libros Auxiliares</strong>.<br>A fin de mes, el contador debe ir a <i><i
+                            class="fas fa-book"></i> Contabilidad > Centralización</i> y generar un único "Asiento
+                    Resumen Mensual" (Centralización) que traspasa los saldos agrupados de los auxiliares al Libro Mayor
+                    (ej: un macro asiento que resuma las 50 ventas del mes).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 2.5: IMPORTACION Y DEMOS -->
+    <div class="page" style="page-break-before: auto !important;"> <!-- Continued from admin -->
+        <h3>2.3 Importación, Exportación y Casos de Estudio <span class="module-link"><i class="fas fa-file-import"></i>
+                Administrar > Importar/Exportar</span></h3>
+
+        <p>El sistema está diseñado para que usted no empiece desde cero si no lo desea. Puede cargar ecosistemas
+            corporativos listos:</p>
+
+        <div class="highlight-box highlight-info">
+            <h4><i class="fas fa-flask"></i> Casos de Demostración Integrados</h4>
+            <p>Presionando botones precargados, el ERP autogenerará transacciones. Existen casos orientados al comercio
+                (con inventario), empresas de servicios, o casos específicos para probar la modalidad centralizadora.
+                Esto inyectará productos, clientes, saldos iniciales y operaciones base instantáneamente.</p>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-robot"></i></div>
+            <div class="process-content">
+                <h4>Generación de Casos Académicos con IA Externa</h4>
+                <p>El ERP le facilita un "Prompt" (instrucción pre-fraseada) para copiar y pegar en herramientas de
+                    Inteligencia Artificial como ChatGPT o Claude. La IA leerá las instrucciones estrictas de cuadre
+                    contable del sistema y le generará un archivo JSON con una empresa ficticia inventada a su medida.
+                </p>
+                <p>Usted guarda ese texto como <code>.json</code> y lo carga en la sección de <strong>Importar
+                        Datos</strong>. Automáticamente tendrá un nuevo escenario didáctico para resolver.</p>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-download"></i></div>
+            <div class="process-content">
+                <h4>Exportación Universitaria (Excel y Backup JSON)</h4>
+                <p>Para evaluación docente, todo el trabajo realizado por el estudiante puede ser exportado.</p>
+                <ul>
+                    <li><strong>JSON (Backup Completo):</strong> Permite guardar todo el estado del ERP (Asientos,
+                        Productos, etc.) para retomarlo después en otro computador o enviarlo para revisión.</li>
+                    <li><strong>Exportación Excel <i class="fas fa-file-excel"></i> :</strong> Descarga un consolidado
+                        visual de los estados financieros, mayores y libros diarios apto para revisión rápida formativa.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 3: COMPRAS -->
+    <div class="page">
+        <h2><i class="fas fa-shopping-cart"></i> 3. Módulo de Compras (MM)</h2>
+        <p>Gestiona el ciclo de abastecimiento, conocido como <strong>Purchase-to-Pay (P2P)</strong>. Muestra cómo una
+            orden desencadena la logística y el reconocimiento de obligaciones con proveedores.</p>
+
+        <h3>Lógica del Proceso P2P</h3>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-file-signature"></i></div>
+            <div class="process-content">
+                <h4>Paso 1: Orden de Compra <span class="module-link"><i class="fas fa-shopping-cart"></i> Órdenes de
+                        Compra</span></h4>
+                <p>Es el documento interno de planificación y aprobación del gasto. Fija precio y cantidades futuras.
+                </p>
+                <div class="accounting-impact">
+                    <i class="fas fa-info-circle"></i> <strong>Impacto:</strong> Compromiso administrativo contingente.
+                    <strong>No genera contabilidad.</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-truck-loading"></i></div>
+            <div class="process-content">
+                <h4>Paso 2: Recepción (Ingreso Logístico) <span class="module-link">Botón <i
+                            class="fas fa-truck-loading"></i> en la OC</span></h4>
+                <p>Almacenaje físico. Se permite recibir cantidades parciales. El ERP actualiza inmediatamente el
+                    inventario físico valorizado usando el coste promedio.</p>
+                <div class="accounting-impact">
+                    <p><i class="fas fa-calculator"></i> <strong>Asiento Generado (Provisión de deuda por entrada
+                            material):</strong></p>
+                    <span class="debit">Cargo (Debe):</span> Inventario / Mercaderías (Activo)<br>
+                    <span class="credit">Abono (Haber):</span> <strong>Facturas por Recibir (Pasivo
+                        Transitorio)</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+            <div class="process-content">
+                <h4>Paso 3: Facturación de Proveedor <span class="module-link"><i class="fas fa-shopping-cart"></i>
+                        Facturas Proveedor</span></h4>
+                <p>Legalización de la compra frente al SII. Al ingresar el folio de la factura, esta se enruta
+                    internamente (match) con las guías recibidas previamente en el Paso 2.</p>
+                <div class="accounting-impact">
+                    <p><i class="fas fa-calculator"></i> <strong>Asiento Generado (Liquidación con Crédito
+                            Fiscal):</strong></p>
+                    <span class="debit">Cargo (Debe):</span> <strong>Facturas por Recibir</strong> (Reversa provisión) +
+                    IVA Crédito F. (Activo)<br>
+                    <span class="credit">Abono (Haber):</span> Proveedores (Pasivo Exigible real)
+                </div>
+            </div>
+        </div>
+
+        <div class="relation-box">
+            <i class="fas fa-coins"></i>
+            <div>
+                <strong>A Tesorería (Paso 4):</strong> La factura registrada crea automáticamente una cuenta pendiente
+                por pagar visible en <strong>Tesorería > Gestión de Pagos</strong>. Desde ahí se emitirá el cheque o la
+                transferencia, liquidando el pasivo "Proveedores".
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SECCION 4: VENTAS -->
+    <div class="page">
+        <h2><i class="fas fa-store"></i> 4. Módulo de Ventas (SD)</h2>
+        <p>Gestiona el ciclo comercial, el llamado flujo <strong>Order-to-Cash (O2C)</strong>. Desde la solicitud hasta
+            el reconocimiento de la rentabilidad bruta.</p>
+
+        <h3>Lógica del Proceso O2C</h3>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-clipboard-list"></i></div>
+            <div class="process-content">
+                <h4>Paso 1: Pedido de Validación <span class="module-link"><i class="fas fa-store"></i> Pedidos de
+                        Venta</span></h4>
+                <p>Documento proforma enviado por el cliente. Si hay stock en bodega, el ERP "Reserva" estas cantidades
+                    impidiendo sobreventas.</p>
+                <div class="accounting-impact">
+                    <i class="fas fa-info-circle"></i> <strong>Impacto:</strong> Operación contractual futura.
+                    <strong>No genera asientos.</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-truck"></i></div>
+            <div class="process-content">
+                <h4>Paso 2: Entrega (Despacho Logístico) <span class="module-link">Botón <i class="fas fa-truck"></i> en
+                        Pedido</span></h4>
+                <p>Salida física del almacén hacia el cliente. Obliga la rebaja de las existencias. El ERP calcula
+                    internamente el Costo de esa unidad usando el promedio del módulo de inventario.</p>
+                <div class="accounting-impact">
+                    <p><i class="fas fa-calculator"></i> <strong>Asiento Generado (Reconocimiento del Costo y
+                            Devengo):</strong></p>
+                    <span class="debit">Cargo (Debe 1):</span> <strong>Facturas por Emitir (Derecho
+                        Transitorio)</strong><br>
+                    <span class="credit">Abono (Haber 1):</span> Ventas (Ingreso Operacional)<br>
+                    <span class="debit">Cargo (Debe 2):</span> Costo de Ventas (Gasto / Pérdida)<br>
+                    <span class="credit">Abono (Haber 2):</span> Inventario / Mercaderías (Baja de Activo)
+                </div>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-file-invoice"></i></div>
+            <div class="process-content">
+                <h4>Paso 3: Facturación a Cliente <span class="module-link"><i class="fas fa-store"></i> Facturas de
+                        Venta</span></h4>
+                <p>Se emite el DTE final vinculando el despacho anterior. Agrega los tributos adeudados al fisco.</p>
+                <div class="accounting-impact">
+                    <p><i class="fas fa-calculator"></i> <strong>Asiento Generado (Titularización del Cobro):</strong>
+                    </p>
+                    <span class="debit">Cargo (Debe):</span> Clientes (Activo Exigible real)<br>
+                    <span class="credit">Abono (Haber):</span> <strong>Facturas por Emitir</strong> (Reversa) + IVA
+                    Débito F. (Pasivo)
+                </div>
+            </div>
+        </div>
+
+        <div class="relation-box">
+            <i class="fas fa-coins"></i>
+            <div>
+                <strong>A Tesorería (Paso 4):</strong> La factura de venta crea una cuenta pendiente por liquidar en
+                <strong>Tesorería > Gestión de Cobros</strong>. Cuando el cliente pague, se registrará el ingreso en
+                Banco/Caja liquidando la cuenta "Clientes".
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SECCION 5: TESORERIA Y ASIENTOS -->
+    <div class="page">
+        <h2><i class="fas fa-coins"></i> 5. Tesorería (FI) y Asientos Manuales</h2>
+
+        <p>Tesorería controla el último eslabón de todos los ciclos comerciales: <strong>Los Flujos de
+                Efectivo.</strong></p>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-money-check-alt"></i></div>
+            <div class="process-content">
+                <h4>Gestión de Pagos o Cobros <span class="module-link"><i class="fas fa-coins"></i> Tesorería >
+                        Cobros/Pagos</span></h4>
+                <p>
+                    Aquí el usuario selecciona la obligación/derecho a liquidar.<br>
+                    <strong>Lógica del Modal de Pago:</strong> Permite ingresar abonos parciales, o pagar la deuda
+                    mezclando múltiples medios de forma simultánea (Ej: Pagar una factura de $10.000 usando $2.000 en
+                    Efectivo y $8.000 en Transferencia Bancaria). El ERP contabilizará la salida desde las cuentas
+                    destino asignadas dinámicamente.
+                </p>
+                <div class="accounting-impact">
+                    <p><i class="fas fa-calculator"></i> <strong>Impacto (Ejemplo Cobro Mixto a un Cliente):</strong>
+                    </p>
+                    <span class="debit">Cargo (Debe):</span> Caja ($2.000) + Banco ($8.000)<br>
+                    <span class="credit">Abono (Haber):</span> Clientes ($10.000 extinción del derecho)
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box highlight-warning">
+            <p><i class="fas fa-university"></i> <strong>Precaución con los Cheques:</strong> Pagar/Cobrar con cheque no
+                rebaja ni aumenta la cuenta "Banco" instantáneamente. Por diseño, el dinero transita a una cuenta
+                "Documentos por Pagar/Cobrar". El estudiante deberá ir a Contabilidad y grabar manualmente la
+                compensación bancaria cuando el portador cobre el cheque real.</p>
+        </div>
+
+        <h3 style="margin-top: 40px;">Uso Correto de Asientos Manuales <span class="module-link"><i
+                    class="fas fa-book"></i> Asientos Contables</span></h3>
+        <p>El libro de Asientos Manuales en Contabilidad (GL) <strong>NO DEBE SER USADO para giros normales</strong>
+            (ventas diarias, pago de facturas), ya que esto rompería la automatización e historial logístico de
+            inventario o saldos vencidos.</p>
+
+        <div class="highlight-box highlight-danger">
+            <strong>Exclusividad Asientos Manuales:</strong> Solo utilice esta herramienta para:<br>
+            • Aperturas Iniciales de Capital.<br>
+            • Depreciaciones de Activo Fijo Mensuales.<br>
+            • Correcciones monetarias por desgaste o UF.<br>
+            • Pagos de sueldos o impuestos (si no se configuran como gasto operacional genérico).<br>
+            • Ajustes por robo, merma, desastre o corrección de descuadre.
+        </div>
+    </div>
+
+
+    <!-- SECCION 6: REPORTES AVANZADOS -->
+    <div class="page">
+        <h2><i class="fas fa-chart-bar"></i> 6. Reportes y Análisis Financiero</h2>
+        <p>Finalmente, todas las operaciones de Compras, Ventas, Caja y Asientos convergen dinámicamente en estados
+            financieros en tiempo real. <strong>Todo reporte tiene opción directa de Exportar a PDF en la
+                cabecera.</strong></p>
+
+        <h3>6.1 Balance de Comprobación y Saldos</h3>
+        <p>El primer filtro auditor para verificar la ecuación "Partida Doble". Lista el libro mayor íntegro.</p>
+        <ul>
+            <li><strong>Columna Débitos/Créditos:</strong> Mostrará los flujos masivos. Si una cuenta se pagó pero hubo
+                reversas, se verán reflejadas.</li>
+            <li><strong>Cuadre Permanente:</strong> En el borde inferior, la suma final del Debe SIEMPRE debe cuadrar a
+                nivel milimétrico con el Haber. Si la tarjeta superior dice <span class="badge"
+                    style="background:var(--error-500);color:white;padding:2px 5px;border-radius:4px;">Descuadrado</span>,
+                algún asiento manual fue forzado evadiendo reglas lógicas, impidiendo generar Estados Financieros
+                válidos.</li>
+        </ul>
+
+        <h3>6.2 Informe de Análisis de Cuentas</h3>
+        <p>Permite "Hacer Zoom" investigativo sobre las varianzas de su patrimonio y comportamiento de cuentas clave.
+        </p>
+        <ul>
+            <li><strong>Resumen Gráfico:</strong> Desglosa usando inteligibles Dashboards (gráficos *doughnut* y de
+                barras) para responder visualmente: ¿Dónde está concentrada mi riqueza? ¿Es efectivo rápido o activos
+                inmovilizados?</li>
+            <li><strong>Tabla de Detalles (Mayoización Rápida):</strong> Explora línea a línea saldo positivo (Deudor)
+                vs negativo (Acreedor) de un catálogo específico.</li>
+        </ul>
+
+        <h3>6.3 Ratios Financieros e Interpretación Asistida</h3>
+        <p>El ERP calcula en tiempo real ratios de auditoría con "Semaforización Asistida" (Excelente, Precaución,
+            Riesgo).</p>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--info);"><i class="fas fa-tint"></i></div>
+            <div class="process-content">
+                <h4>Liquidez Operacional</h4>
+                <p>Evalúa si la empresa sobrevivirá urgencias. Mide la <strong>Razón Corriente</strong> (Activo Corto
+                    Plazo / Pasivo Corto Plazo). Si es mayor a 1.5, hay luz verde. La <strong>Prueba Ácida</strong>
+                    remueve el inventario (es más lenta su venta) para juzgar el "efectivo real".</p>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--warning);"><i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="process-content">
+                <h4>Nivel de Endeudamiento (Solvencia)</h4>
+                <p>Indica de quién es realmente la empresa. <strong>Deuda sobre Activo Total</strong>. Una métrica
+                    saludable suele estar por debajo del 60%; superior a esto la AI del ERP marcará alerta naranja o
+                    roja.</p>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--success);"><i class="fas fa-chart-line"></i>
+            </div>
+            <div class="process-content">
+                <h4>Rentabilidad Múltiple (ROA / ROE / Margen)</h4>
+                <p>Respalda las utilidades del <i>Estado de Resultados</i> contra el músculo de la empresa.<br>
+                    • <strong>ROA (Retorno sobre Activos):</strong> Qué tan eficiente soy en exprimir dinero a mis
+                    bodegas y maquinaria.<br>
+                    • <strong>ROE (Retorno sobre Patrimonio):</strong> La ganancia del Dueño. Rentabilidad versus su
+                    capital inyectado.</p>
+            </div>
+        </div>
+
+        <p
+            style="margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); padding-top:20px;">
+            © 2025 EDU-TRACE ERP. Todos los derechos reservados. <br> Documento interactivo y analítico generado para
+            formación académica en contabilidad.
+        </p>
+    </div>
+
+</body>
+
+</html>

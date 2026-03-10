@@ -22,14 +22,13 @@ const TutorialSystem = {
                     title: '¡Bienvenido a EDU-TRACE ERP!',
                     content: `
                         <p>EDU-TRACE ERP es un <strong>simulador de sistema ERP</strong> diseñado para que los estudiantes 
-                        de auditoría comprendan cómo funcionan los sistemas empresariales.</p>
+                        de auditoría y contabilidad comprendan la lógica de los procesos de negocio.</p>
                         <p><strong>En este tutorial aprenderás:</strong></p>
                         <ul>
-                            <li>Navegar por los módulos del sistema</li>
-                            <li>Gestionar empresas virtuales</li>
-                            <li>Registrar operaciones contables</li>
-                            <li>Generar reportes financieros</li>
-                            <li>Validar la integridad de los datos</li>
+                            <li>Navegar por los módulos operativos</li>
+                            <li>La relación entre documentos y contabilidad</li>
+                            <li>Generar reportes financieros automáticos</li>
+                            <li>Entender la trazabilidad pedagógica</li>
                         </ul>
                     `,
                     target: null,
@@ -38,103 +37,78 @@ const TutorialSystem = {
                 {
                     title: 'Menú de Navegación',
                     content: `
-                        <p>El <strong>menú lateral</strong> contiene todos los módulos del ERP:</p>
+                        <p>El <strong>menú lateral</strong> contiene los módulos activos:</p>
                         <ul>
-                            <li><strong>Dashboard:</strong> Panel principal con KPIs</li>
-                            <li><strong>GL:</strong> Contabilidad General</li>
-                            <li><strong>MM:</strong> Compras y Proveedores</li>
-                            <li><strong>SD:</strong> Ventas y Clientes</li>
-                            <li><strong>WM:</strong> Inventario</li>
-                            <li><strong>FI:</strong> Tesorería</li>
-                            <li><strong>CO:</strong> Costos</li>
-                            <li><strong>HR:</strong> Recursos Humanos</li>
+                            <li><strong>Contabilidad (GL):</strong> El corazón financiero del sistema</li>
+                            <li><strong>Compras (MM) y Ventas (SD):</strong> Ciclos operativos</li>
+                            <li><strong>Inventario (WM):</strong> Gestión de existencias</li>
+                            <li><strong>Tesorería (FI):</strong> Flujo de caja y pagos</li>
                         </ul>
-                        <p>Haz clic en cada módulo para ver sus opciones.</p>
+                        <p>Los módulos de <strong>Costos, RRHH y Trazabilidad</strong> están en desarrollo (Etapa 2).</p>
                     `,
                     target: '#sidebar',
                     position: 'right'
                 },
                 {
-                    title: 'Selector de Empresa',
-                    content: `
-                        <p>Aquí puedes <strong>cambiar la empresa activa</strong>.</p>
-                        <p>Cada estudiante puede crear múltiples empresas virtuales para practicar 
-                        diferentes escenarios contables.</p>
-                        <p><strong>Tip:</strong> Puedes importar casos de estudio predefinidos 
-                        desde Administración → Importar/Exportar.</p>
-                    `,
-                    target: '#company-selector',
-                    position: 'right'
-                },
-                {
                     title: 'Módulo de Contabilidad',
                     content: `
-                        <p>El módulo de <strong>Contabilidad (GL)</strong> es el corazón del sistema:</p>
+                        <p>El módulo de <strong>Contabilidad (GL)</strong> es donde ocurre la integración:</p>
                         <ul>
-                            <li><strong>Plan de Cuentas:</strong> Estructura IFRS/PCGA</li>
-                            <li><strong>Asientos Contables:</strong> Registro de operaciones</li>
-                            <li><strong>Libro Mayor:</strong> Movimientos por cuenta</li>
-                            <li><strong>Libro Diario:</strong> Registro cronológico</li>
+                            <li><strong>Plan de Cuentas:</strong> Estructura IFRS</li>
+                            <li><strong>Asientos Contables:</strong> Registros manuales y automáticos</li>
+                            <li><strong>Libro Diario:</strong> Trazabilidad cronológica total</li>
                         </ul>
-                        <p>Todos los módulos generan asientos automáticos.</p>
+                        <p>Cada vez que compras o vendes, se genera un asiento automático aquí.</p>
                     `,
                     target: '[data-module="contabilidad"]',
                     position: 'right'
                 },
                 {
-                    title: 'Reportes Financieros',
+                    title: 'Ciclos Operativos (Compras y Ventas)',
                     content: `
-                        <p>En <strong>Reportes</strong> puedes generar:</p>
+                        <p>En <strong>Compras</strong> y <strong>Ventas</strong> realizarás la operación comercial:</p>
                         <ul>
-                            <li><strong>Balance General:</strong> Situación patrimonial</li>
-                            <li><strong>Estado de Resultados:</strong> Pérdidas y ganancias</li>
-                            <li><strong>Flujo de Caja:</strong> Movimientos de efectivo</li>
+                            <li>Genera órdenes de compra y recibe stock</li>
+                            <li>Crea pedidos de venta y factura a clientes</li>
+                            <li>Observa cómo el stock se mueve en tiempo real</li>
                         </ul>
-                        <p>Exporta a <strong>PDF</strong>, <strong>Excel</strong> o <strong>CSV</strong>.</p>
+                    `,
+                    target: '[data-module="compras"]',
+                    position: 'right'
+                },
+                {
+                    title: 'Tesorería y Pagos',
+                    content: `
+                        <p>En <strong>Tesorería (FI)</strong> gestionas el dinero:</p>
+                        <ul>
+                            <li>Controla pagos a proveedores y cobros a clientes</li>
+                            <li>Realiza conciliaciones bancarias</li>
+                            <li><strong>Importante:</strong> Los pagos con cheque no afectan el banco hasta su cobro efectivo.</li>
+                        </ul>
+                    `,
+                    target: '[data-module="tesoreria"]',
+                    position: 'right'
+                },
+                {
+                    title: 'Reportes y Tutoría',
+                    content: `
+                        <p>Genera tus estados financieros en <strong>Reportes</strong>:</p>
+                        <p>Consulta el Balance General, Estado de Resultados y Ratios para analizar la salud de tu empresa virtual.</p>
+                        <p><strong>Tip:</strong> Revisa el nuevo <em>Manual de Capacitación</em> para guías detalladas.</p>
                     `,
                     target: '[data-module="reportes"]',
                     position: 'right'
                 },
                 {
-                    title: 'Trazabilidad de Datos',
+                    title: 'Casos de Demostración',
                     content: `
-                        <p>La sección de <strong>Trazabilidad</strong> permite:</p>
+                        <p>¿No sabes por dónde empezar? Utiliza nuestros <strong>Casos de Demostración</strong>:</p>
                         <ul>
-                            <li><strong>Auditar operaciones:</strong> Ver el origen de cada movimiento</li>
-                            <li><strong>Validar datos:</strong> Detectar inconsistencias</li>
-                            <li><strong>Seguir el flujo:</strong> Desde documento origen hasta asiento</li>
+                            <li>Descarga guías en Excel desde GitHub</li>
+                            <li>Importa escenarios pre-configurados</li>
+                            <li>Compara tus resultados con la solución esperada</li>
                         </ul>
-                        <p>Esencial para auditoría y control interno.</p>
-                    `,
-                    target: '[data-module="trazabilidad"]',
-                    position: 'right'
-                },
-                {
-                    title: 'Administración',
-                    content: `
-                        <p>En <strong>Administración</strong> encontrarás:</p>
-                        <ul>
-                            <li><strong>Empresas:</strong> Crear y gestionar empresas</li>
-                            <li><strong>Importar/Exportar:</strong> Cargar casos de estudio</li>
-                            <li><strong>Datos Demo:</strong> Crear datos de ejemplo</li>
-                            <li><strong>Configuración:</strong> Ajustes del sistema</li>
-                        </ul>
-                        <p>Aquí puedes cargar los <strong>casos de estudio</strong> predefinidos.</p>
-                    `,
-                    target: '[data-module="admin"]',
-                    position: 'right'
-                },
-                {
-                    title: 'Diagrama Contable',
-                    content: `
-                        <p>El <strong>Diagrama Contable Interactivo</strong> es una herramienta visual para:</p>
-                        <ul>
-                            <li>Ver el flujo de una transacción comercial</li>
-                            <li>Entender la ecuación contable</li>
-                            <li>Visualizar asientos de compra y venta</li>
-                            <li>Comprender el impacto en estados financieros</li>
-                        </ul>
-                        <p>Accede desde el botón <strong>"Ver Diagrama Contable"</strong> en el Dashboard.</p>
+                        <p>Encuéntralos en el menú de <strong>Ayuda</strong> (F1) bajo la sección "Casos".</p>
                     `,
                     target: null,
                     position: 'center'
@@ -142,19 +116,14 @@ const TutorialSystem = {
                 {
                     title: '¡Listo para comenzar!',
                     content: `
-                        <p>Ahora conoces lo básico de EDU-TRACE ERP. Te recomendamos:</p>
+                        <p>Ya conoces la estructura de EDU-TRACE ERP. Te recomendamos:</p>
                         <ol>
-                            <li>Crear una empresa o cargar un caso de estudio</li>
-                            <li>Explorar el plan de cuentas</li>
-                            <li>Registrar un asiento contable</li>
-                            <li>Ver el Balance General</li>
-                            <li>Usar el Diagrama Contable para visualizar</li>
+                            <li>Cargar <strong>Datos de Ejemplo</strong> en Administración</li>
+                            <li>Realizar una compra para aumentar stock</li>
+                            <li>Vender ese producto y ver el asiento de costo de ventas</li>
+                            <li>Revisar el impacto en el Balance General</li>
                         </ol>
-                        <p><strong>¿Necesitas ayuda?</strong> Haz clic en el botón <i class="fas fa-question-circle"></i> 
-                        en cualquier momento.</p>
-                        <p style="margin-top: var(--space-3);">
-                            <strong>¡Buena suerte en tu aprendizaje!</strong> 🎓
-                        </p>
+                        <p><strong>¡Éxito en tu aprendizaje!</strong> 🎓</p>
                     `,
                     target: null,
                     position: 'center'

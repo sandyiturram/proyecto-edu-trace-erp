@@ -62,7 +62,7 @@ Este proyecto no solo sirve para nuestras clases, sino que tiene potencial para 
 
 1.  **Software como Servicio (SaaS):** Podemos permitir que otras instituciones usen nuestra plataforma a través de internet, protegiendo nuestro código pero generando un beneficio para la universidad.
 2.  **Capacitación a Profesores:** Podemos ofrecer talleres y diplomados sobre cómo enseñar contabilidad usando tecnología de simulación.
-3.  **Investigación y Desarrollo:** Al ser una innovación creada aquí, nos permite postular a fondos públicos de innovación (como FONDEF) para que el proyecto siga creciendo.
+3.  **Investigación y Desarrollo:** Al ser una innovación creada aquí, nos permite postular a fondos públicos de innovación para que el proyecto siga creciendo.
 
 ---
 > [!NOTE]

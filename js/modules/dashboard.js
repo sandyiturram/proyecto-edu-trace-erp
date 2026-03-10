@@ -208,14 +208,14 @@ const DashboardModule = {
                         Aquí tienes un resumen de la situación actual.
                     </p>
                     <div class="welcome-actions">
-                        <button class="welcome-btn primary" data-action="tutorial">
-                            <i class="fas fa-play-circle"></i> Tutorial Rápido
-                        </button>
-                        <button class="welcome-btn" data-action="system-flow">
-                            <i class="fas fa-project-diagram"></i> Diagrama del Sistema
+                        <button class="welcome-btn primary" data-action="manual">
+                            <i class="fas fa-book-open"></i> Manual de Capacitación
                         </button>
                         <button class="welcome-btn" data-action="accounting-course">
-                            <i class="fas fa-graduation-cap"></i> Curso de Contabilidad
+                            <i class="fas fa-project-diagram"></i> Diagrama Contable
+                        </button>
+                        <button class="welcome-btn" data-action="tutorial">
+                            <i class="fas fa-play-circle"></i> Tutorial Rápido
                         </button>
                         <button class="welcome-btn" data-action="help">
                             <i class="fas fa-question-circle"></i> Ayuda
@@ -570,6 +570,9 @@ const DashboardModule = {
                 break;
             case 'reports':
                 App.navigate('reportes', 'balance-general');
+                break;
+            case 'manual':
+                window.open('Manual_de_Usuario_EDU_TRACE.html', 'ManualCapacitacion', 'width=1200,height=800,scrollbars=yes,resizable=yes');
                 break;
             case 'tutorial':
                 TutorialSystem.start('quickStart');

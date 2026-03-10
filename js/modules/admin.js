@@ -446,7 +446,6 @@ const AdminModule = {
                                     <select class="form-control" name="inventoryMethod">
                                         <option value="promedio" ${settings?.inventoryMethod === 'promedio' ? 'selected' : ''}>Costo Promedio</option>
                                         <option value="fifo" ${settings?.inventoryMethod === 'fifo' ? 'selected' : ''}>FIFO (PEPS)</option>
-                                        <option value="lifo" ${settings?.inventoryMethod === 'lifo' ? 'selected' : ''}>LIFO (UEPS)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">

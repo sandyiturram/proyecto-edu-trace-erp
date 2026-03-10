@@ -13,19 +13,40 @@ const HelpSystem = {
             icon: 'fa-home',
             content: `
                 <div class="help-section">
-                    <h3>¿Qué es EDU-TRACE ERP?</h3>
-                    <p>EDU-TRACE ERP es un <strong>sistema ERP educativo</strong> diseñado específicamente para estudiantes 
-                    de auditoría y contabilidad. Simula las funcionalidades de sistemas empresariales, 
-                    permitiendo aprender la lógica de procesos de negocio sin la complejidad de un sistema real.</p>
+                    <div class="help-welcome">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>¿Qué es EDU-TRACE ERP?</h3>
+                    </div>
+                    <p>EDU-TRACE ERP es un <strong>simulador de procesos de negocio</strong> diseñado para la enseñanza de auditoría y contabilidad. 
+                    Permite a los estudiantes operar una empresa virtual, generando registros contables automáticos con trazabilidad total.</p>
                     
-                    <h3>Características Principales</h3>
-                    <ul>
-                        <li><strong>Empresas Virtuales:</strong> Cada estudiante puede crear y gestionar múltiples empresas</li>
-                        <li><strong>Módulos Integrados:</strong> Contabilidad, Compras, Ventas, Inventario, Tesorería, Costos y RRHH</li>
-                        <li><strong>Datos Offline:</strong> Todo se almacena localmente usando IndexedDB</li>
-                        <li><strong>Importar/Exportar:</strong> Comparte casos de estudio en JSON o Excel</li>
-                        <li><strong>Reportes:</strong> Genera estados financieros automáticamente</li>
-                    </ul>
+                    <div class="help-grid">
+                        <div class="help-card">
+                            <i class="fas fa-building"></i>
+                            <h4>Empresas</h4>
+                            <p>Gestión de múltiples entidades locales.</p>
+                        </div>
+                        <div class="help-card">
+                            <i class="fas fa-project-diagram"></i>
+                            <h4>Trazabilidad</h4>
+                            <p>Vínculo directo entre documento y asiento.</p>
+                        </div>
+                        <div class="help-card">
+                            <i class="fas fa-chart-pie"></i>
+                            <h4>Reportes</h4>
+                            <p>Estados financieros en tiempo real.</p>
+                        </div>
+                        <div class="help-card">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>Privacidad</h4>
+                            <p>Datos 100% locales en tu navegador.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="help-path">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span><strong>Ruta sugerida:</strong> Configurar Empresa <i class="fas fa-chevron-right"></i> Compras <i class="fas fa-chevron-right"></i> Ventas <i class="fas fa-chevron-right"></i> Reportes</span>
+                    </div>
                     
                     <h3>Primeros Pasos</h3>
                     <ol>
@@ -43,44 +64,52 @@ const HelpSystem = {
             icon: 'fa-book',
             content: `
                 <div class="help-section">
-                    <h3>Contabilidad General</h3>
-                    <p>El módulo de Contabilidad (General Ledger - GL) es el núcleo del sistema ERP. 
-                    Aquí se registran todas las transacciones financieras de la empresa.</p>
-                    
-                    <h4><i class="fas fa-sitemap"></i> Plan de Cuentas</h4>
-                    <p>El plan de cuentas viene precargado con una estructura IFRS/PCGA chilena:</p>
-                    <table class="help-table">
-                        <tr><td><strong>1</strong></td><td>Activos</td><td>Bienes y derechos</td></tr>
-                        <tr><td><strong>2</strong></td><td>Pasivos</td><td>Obligaciones</td></tr>
-                        <tr><td><strong>3</strong></td><td>Patrimonio</td><td>Capital y resultados</td></tr>
-                        <tr><td><strong>4</strong></td><td>Ingresos</td><td>Ventas y otros ingresos</td></tr>
-                        <tr><td><strong>5</strong></td><td>Costos</td><td>Costo de ventas</td></tr>
-                        <tr><td><strong>6</strong></td><td>Gastos</td><td>Gastos operacionales</td></tr>
-                    </table>
-                    
-                    <h4><i class="fas fa-file-invoice"></i> Asientos Contables</h4>
-                    <p>Para crear un asiento:</p>
-                    <ol>
-                        <li>Selecciona la fecha del documento</li>
-                        <li>Ingresa una glosa descriptiva</li>
-                        <li>Agrega líneas al Debe y al Haber</li>
-                        <li>Verifica que <strong>Debe = Haber</strong></li>
-                        <li>Guarda y contabiliza</li>
-                    </ol>
-                    
-                    <div class="help-tip">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>Los asientos deben estar balanceados. El sistema no permitirá guardar 
-                        un asiento donde el total del Debe no sea igual al total del Haber.</span>
+                    <div class="help-module-header">
+                        <i class="fas fa-book gl"></i>
+                        <h3>Contabilidad (General Ledger)</h3>
                     </div>
                     
-                    <h4><i class="fas fa-book-open"></i> Libro Mayor</h4>
-                    <p>Muestra todos los movimientos de una cuenta específica, 
-                    con saldo inicial, movimientos y saldo final.</p>
-                    
-                    <h4><i class="fas fa-list"></i> Libro Diario</h4>
-                    <p>Registro cronológico de todos los asientos contables, 
-                    ordenados por fecha de operación.</p>
+                    <div class="help-path-banner clickable" data-nav="contabilidad,plan-cuentas">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Contabilidad <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <div class="help-step-box">
+                        <div class="help-step-item clickable" data-nav="contabilidad,plan-cuentas">
+                            <div class="step-badge">1</div>
+                            <div class="step-text">
+                                <strong>Plan de Cuentas:</strong> Define la estructura IFRS. 
+                                <span><i class="fas fa-mouse-pointer"></i> Ver <em>Plan de Cuentas</em></span>
+                            </div>
+                        </div>
+                        <div class="help-step-item clickable" data-nav="contabilidad,asientos">
+                            <div class="step-badge">2</div>
+                            <div class="step-text">
+                                <strong>Asientos:</strong> Registro manual de operaciones no operativas.
+                                <span><i class="fas fa-plus-circle"></i> Ir a <em>Asientos Contables</em></span>
+                            </div>
+                        </div>
+                        <div class="help-step-item clickable" data-nav="contabilidad,libro-diario">
+                            <div class="step-badge">3</div>
+                            <div class="step-text">
+                                <strong>Libros:</strong> Visualiza el impacto acumulado.
+                                <span><i class="fas fa-eye"></i> Ver <em>Libro Diario / Mayor</em></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-sync-alt"></i> Centralizador vs Jornalizador</h5>
+                        <p>El sistema permite elegir entre dos metodologías contables (puedes cambiarlo en <a href="#" class="link-primary" data-nav="admin,configuracion">Administración > Configuración</a>):</p>
+                        <ul>
+                            <li><strong>Jornalizador:</strong> Cada transacción genera un asiento inmediato en el Libro Diario (ideal para aprendizaje inicial).</li>
+                            <li><strong>Centralizador:</strong> Los movimientos se agrupan en libros auxiliares (Ventas, Compras, etc.) y se genera un único asiento resumen mensual (práctica profesional avanzada).</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-balance-scale"></i> Ecuación de Control</h5>
+                        <p>El sistema valida que <strong>Debe = Haber</strong> en tiempo real. No se permiten asientos descuadrados.</p>
+                    </div>
                 </div>
             `
         },
@@ -90,41 +119,46 @@ const HelpSystem = {
             icon: 'fa-shopping-cart',
             content: `
                 <div class="help-section">
-                    <h3>Gestión de Compras</h3>
-                    <p>El módulo de Compras (Materials Management - MM) gestiona todo el proceso 
-                    de adquisición de bienes y servicios.</p>
+                    <div class="help-module-header">
+                        <i class="fas fa-shopping-cart mm"></i>
+                        <h3>Compras y Abastecimiento (MM)</h3>
+                    </div>
                     
-                    <h4><i class="fas fa-users"></i> Proveedores</h4>
-                    <p>Mantiene el registro de proveedores con:</p>
-                    <ul>
-                        <li>Datos fiscales (RUT, razón social)</li>
-                        <li>Información de contacto</li>
-                        <li>Condiciones de pago</li>
-                        <li>Historial de transacciones</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-file-alt"></i> Órdenes de Compra</h4>
-                    <p>Documento que formaliza una solicitud de compra:</p>
-                    <ol>
-                        <li>Selecciona el proveedor</li>
-                        <li>Agrega los productos o servicios</li>
-                        <li>Define cantidades y precios</li>
-                        <li>Aprueba la orden</li>
-                    </ol>
-                    
-                    <h4><i class="fas fa-file-invoice-dollar"></i> Facturas de Proveedor</h4>
-                    <p>Registro de documentos tributarios recibidos:</p>
-                    <ul>
-                        <li>Genera automáticamente cuentas por pagar</li>
-                        <li>Registra el IVA crédito fiscal</li>
-                        <li>Actualiza el inventario (si corresponde)</li>
-                        <li>Crea el asiento contable automático</li>
-                    </ul>
-                    
-                    <div class="help-warning">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>Las facturas de proveedor deben asociarse a una orden de compra 
-                        para mantener la trazabilidad del proceso.</span>
+                    <div class="help-path-banner clickable" data-nav="compras,ordenes-compra">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Compras <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <h5><i class="fas fa-project-diagram"></i> Lógica del Proceso (Ciclo Purchase-to-Pay)</h5>
+                    <div class="logic-steps">
+                        <div class="logic-step-item">
+                            <i class="fas fa-file-signature"></i>
+                            <div>
+                                <strong>1. Orden de Compra:</strong> Documento de planificación. <strong>No genera contabilidad</strong>. Permite autorizar el pedido al proveedor.
+                                <br><button class="btn btn-xs btn-outline" data-nav="compras,ordenes-compra">Ir a Órdenes</button>
+                            </div>
+                        </div>
+                        <div class="logic-step-item">
+                            <i class="fas fa-truck-loading"></i>
+                            <div>
+                                <strong>2. Recepción (Guía):</strong> Ingreso físico al inventario. Puede ser <strong>parcial</strong> o total.
+                                <br><small>Contabilidad: Mercaderías (D) / <strong>Facturas por Recibir (C)</strong>.</small>
+                            </div>
+                        </div>
+                        <div class="logic-step-item">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <div>
+                                <strong>3. Factura de Proveedor:</strong> Legalización de la deuda. Se vincula a la OC recibida.
+                                <br><small>Contabilidad: Facturas por Recibir (D) + IVA CF (D) / <strong>Proveedores (C)</strong>.</small>
+                                <br><button class="btn btn-xs btn-outline" data-nav="compras,facturas-proveedor">Ir a Facturas</button>
+                            </div>
+                        </div>
+                        <div class="logic-step-item">
+                            <i class="fas fa-money-check-alt"></i>
+                            <div>
+                                <strong>4. Pago:</strong> Extinción de la deuda desde el módulo de <strong>Tesorería</strong>.
+                                <br><button class="btn btn-xs btn-outline" data-nav="tesoreria,cuentas-pagar">Ir a Pagos</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `
@@ -135,36 +169,47 @@ const HelpSystem = {
             icon: 'fa-store',
             content: `
                 <div class="help-section">
-                    <h3>Gestión de Ventas</h3>
-                    <p>El módulo de Ventas (Sales & Distribution - SD) gestiona todo el proceso 
-                    comercial con clientes.</p>
+                    <div class="help-module-header">
+                        <i class="fas fa-store sd"></i>
+                        <h3>Ventas y Distribución (SD)</h3>
+                    </div>
                     
-                    <h4><i class="fas fa-user-tie"></i> Clientes</h4>
-                    <p>Registro maestro de clientes:</p>
-                    <ul>
-                        <li>Datos fiscales y comerciales</li>
-                        <li>Límite de crédito</li>
-                        <li>Condiciones de pago</li>
-                        <li>Historial de ventas</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-clipboard-list"></i> Pedidos de Venta</h4>
-                    <p>Proceso de venta:</p>
-                    <ol>
-                        <li>Registra el pedido del cliente</li>
-                        <li>Verifica disponibilidad de stock</li>
-                        <li>Confirma precios y descuentos</li>
-                        <li>Genera la factura</li>
-                    </ol>
-                    
-                    <h4><i class="fas fa-file-invoice"></i> Facturas de Venta</h4>
-                    <p>Documentos tributarios emitidos:</p>
-                    <ul>
-                        <li>Genera automáticamente cuentas por cobrar</li>
-                        <li>Registra el IVA débito fiscal</li>
-                        <li>Rebaja el inventario</li>
-                        <li>Contabiliza el ingreso</li>
-                    </ul>
+                    <div class="help-path-banner clickable" data-nav="ventas,pedidos-venta">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Ventas <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <h5><i class="fas fa-project-diagram"></i> Lógica del Proceso (Ciclo Order-to-Cash)</h5>
+                    <div class="logic-steps">
+                        <div class="logic-step-item">
+                            <i class="fas fa-clipboard-list"></i>
+                            <div>
+                                <strong>1. Pedido de Venta:</strong> Reserva comercial de productos. <strong>No genera contabilidad</strong>.
+                                <br><button class="btn btn-xs btn-outline" data-nav="ventas,pedidos-venta">Ir a Pedidos</button>
+                            </div>
+                        </div>
+                        <div class="logic-step-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <strong>2. Entrega (Guía):</strong> Salida física de productos. Permite entregas <strong>parciales</strong>.
+                                <br><small>Contabilidad: Facturas por Emitir (D) / Ventas (C) + Costo Ventas (D) / Mercaderías (C).</small>
+                            </div>
+                        </div>
+                        <div class="logic-step-item">
+                            <i class="fas fa-file-invoice"></i>
+                            <div>
+                                <strong>3. Facturación:</strong> Emisión del documento tributario legal. Salda la provisión.
+                                <br><small>Contabilidad: Clientes (D) / <strong>Facturas por Emitir (C)</strong> + IVA DF (C).</small>
+                                <br><button class="btn btn-xs btn-outline" data-nav="ventas,facturas-cliente">Ir a Facturas</button>
+                            </div>
+                        </div>
+                        <div class="logic-step-item">
+                            <i class="fas fa-cash-register"></i>
+                            <div>
+                                <strong>4. Cobro:</strong> Recepción del pago en el módulo de <strong>Tesorería</strong>.
+                                <br><button class="btn btn-xs btn-outline" data-nav="tesoreria,cuentas-cobrar">Ir a Cobros</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `
         },
@@ -174,37 +219,37 @@ const HelpSystem = {
             icon: 'fa-boxes',
             content: `
                 <div class="help-section">
-                    <h3>Gestión de Inventario</h3>
-                    <p>El módulo de Inventario (Warehouse Management - WM) controla el stock 
-                    de productos y su valorización.</p>
+                    <div class="help-module-header">
+                        <i class="fas fa-boxes wm"></i>
+                        <h3>Inventario y Bodega (WM)</h3>
+                    </div>
                     
-                    <h4><i class="fas fa-box"></i> Productos</h4>
-                    <p>Catálogo de productos y servicios:</p>
-                    <ul>
-                        <li>Código SKU único</li>
-                        <li>Descripción y categoría</li>
-                        <li>Unidad de medida</li>
-                        <li>Costo promedio y precio de venta</li>
-                        <li>Stock actual</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-exchange-alt"></i> Movimientos de Stock</h4>
-                    <p>Tipos de movimientos:</p>
-                    <ul>
-                        <li><strong>Entrada:</strong> Recepción de compras</li>
-                        <li><strong>Salida:</strong> Despacho por ventas</li>
-                        <li><strong>Ajuste (+):</strong> Corrección positiva</li>
-                        <li><strong>Ajuste (-):</strong> Mermas, pérdidas</li>
-                        <li><strong>Transferencia:</strong> Entre bodegas</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-calculator"></i> Valorización</h4>
-                    <p>Métodos de costeo disponibles:</p>
-                    <ul>
-                        <li><strong>Costo Promedio Ponderado:</strong> (Por defecto) Recalcula con cada entrada</li>
-                        <li><strong>FIFO:</strong> Primero en entrar, primero en salir</li>
-                        <li><strong>Costo Específico:</strong> Para items únicos</li>
-                    </ul>
+                    <div class="help-path-banner clickable" data-nav="inventario,productos">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Inventario <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <div class="help-grid">
+                        <div class="help-card clickable" data-nav="inventario,productos">
+                            <i class="fas fa-box"></i>
+                            <h4>Maestro</h4>
+                            <p>Registro de SKUs y Costos.</p>
+                        </div>
+                        <div class="help-card clickable" data-nav="inventario,movimientos-stock">
+                            <i class="fas fa-exchange-alt"></i>
+                            <h4>Movimientos</h4>
+                            <p>Entradas/Salidas de stock.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-calculator"></i> Valorización (PPP)</h5>
+                        <p>El sistema utiliza <strong>Costo Promedio Ponderado</strong> para valorar las existencias automáticamente tras cada compra.</p>
+                    </div>
+
+                    <div class="help-path clickable" data-nav="inventario,valoracion">
+                        <i class="fas fa-search"></i>
+                        <span><strong>Consulta rápida:</strong> <em>Inventario > Stock Actual</em> <i class="fas fa-external-link-alt"></i></span>
+                    </div>
                 </div>
             `
         },
@@ -214,41 +259,47 @@ const HelpSystem = {
             icon: 'fa-coins',
             content: `
                 <div class="help-section">
-                    <h3>Gestión de Tesorería</h3>
-                    <p>El módulo de Tesorería (Financial - FI) controla el flujo de efectivo 
-                    y las obligaciones financieras.</p>
+                    <div class="help-module-header">
+                        <i class="fas fa-coins fi"></i>
+                        <h3>Tesorería y Finanzas (FI)</h3>
+                    </div>
                     
-                    <h4><i class="fas fa-file-invoice-dollar"></i> Cuentas por Pagar</h4>
-                    <p>Control de obligaciones con proveedores:</p>
-                    <ul>
-                        <li>Facturas pendientes de pago</li>
-                        <li>Vencimientos y antigüedad</li>
-                        <li>Estado de pagos parciales</li>
-                    </ul>
+                    <div class="help-path-banner clickable" data-nav="tesoreria,bancos">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Tesorería <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <div class="help-grid">
+                        <div class="help-card-sm clickable" data-nav="tesoreria,bancos">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <strong>Efectivo</strong>
+                            <span>Saldo Caja</span>
+                        </div>
+                        <div class="help-card-sm clickable" data-nav="tesoreria,bancos">
+                            <i class="fas fa-university"></i>
+                            <strong>Transf.</strong>
+                            <span>Saldo Banco</span>
+                        </div>
+                        <div class="help-card-sm highlight clickable" data-nav="tesoreria,cuentas-pagar">
+                            <i class="fas fa-money-check"></i>
+                            <strong>Cheques</strong>
+                            <span>Por cobrar/pagar</span>
+                        </div>
+                    </div>
+
+                    <div class="help-info-block" style="margin-top: var(--space-4);">
+                        <h5><i class="fas fa-map-signs"></i> Gestión de Pagos/Cobros</h5>
+                        <ol>
+                            <li>Ve a <strong>Tesorería > Control de Pagos</strong> (o Cobros).</li>
+                            <li>Selecciona la factura pendiente en la lista.</li>
+                            <li>Haz clic en el botón de la derecha para abrir el modal de registro.</li>
+                            <li>Distribuye el pago (admite múltiples métodos como Cheque, Caja o Banco).</li>
+                        </ol>
+                    </div>
                     
-                    <h4><i class="fas fa-hand-holding-usd"></i> Cuentas por Cobrar</h4>
-                    <p>Control de créditos con clientes:</p>
-                    <ul>
-                        <li>Facturas pendientes de cobro</li>
-                        <li>Análisis de morosidad</li>
-                        <li>Gestión de cobranza</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-university"></i> Bancos</h4>
-                    <p>Gestión de cuentas bancarias:</p>
-                    <ul>
-                        <li>Registro de cuentas corrientes</li>
-                        <li>Movimientos bancarios</li>
-                        <li>Saldos disponibles</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-balance-scale"></i> Conciliación Bancaria</h4>
-                    <p>Comparación entre libro banco y cartola:</p>
-                    <ul>
-                        <li>Identificar cheques pendientes</li>
-                        <li>Detectar depósitos en tránsito</li>
-                        <li>Cuadrar saldos contables con reales</li>
-                    </ul>
+                    <div class="help-tip">
+                        <i class="fas fa-shield-alt"></i>
+                        <span><strong>Trazabilidad:</strong> El sistema vincula el pago directamente con la factura, permitiendo ver el flujo desde el GL.</span>
+                    </div>
                 </div>
             `
         },
@@ -258,33 +309,16 @@ const HelpSystem = {
             icon: 'fa-calculator',
             content: `
                 <div class="help-section">
-                    <h3>Contabilidad de Costos</h3>
-                    <p>El módulo de Costos (Controlling - CO) permite analizar y controlar 
-                    los costos de la organización.</p>
-                    
-                    <h4><i class="fas fa-sitemap"></i> Centros de Costo</h4>
-                    <p>Unidades organizacionales para acumular costos:</p>
-                    <ul>
-                        <li>Departamentos (Ventas, Administración, Producción)</li>
-                        <li>Sucursales o unidades de negocio</li>
-                        <li>Proyectos específicos</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-tasks"></i> Órdenes Internas</h4>
-                    <p>Para control de costos específicos:</p>
-                    <ul>
-                        <li>Proyectos con presupuesto definido</li>
-                        <li>Campañas de marketing</li>
-                        <li>Mantenimiento de activos</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-chart-pie"></i> Análisis de Costos</h4>
-                    <p>Reportes de gestión:</p>
-                    <ul>
-                        <li>Presupuesto vs Real</li>
-                        <li>Distribución de costos</li>
-                        <li>Tendencias y variaciones</li>
-                    </ul>
+                    <div class="stage-2-banner">
+                        <i class="fas fa-clock"></i>
+                        <span>Etapa 2: Próximamente disponible</span>
+                    </div>
+                    <div class="help-module-header disabled">
+                        <i class="fas fa-calculator co"></i>
+                        <h3>Contabilidad de Costos (CO)</h3>
+                    </div>
+                    <p>Este módulo está planificado para la siguiente fase del proyecto EDU-TRACE ERP. 
+                    Permitirá el análisis detallado por centros de costo y órdenes internas.</p>
                 </div>
             `
         },
@@ -294,35 +328,16 @@ const HelpSystem = {
             icon: 'fa-users',
             content: `
                 <div class="help-section">
-                    <h3>Recursos Humanos</h3>
-                    <p>El módulo de RRHH (Human Resources - HR) gestiona el personal 
-                    y la nómina de la empresa.</p>
-                    
-                    <h4><i class="fas fa-id-card"></i> Empleados</h4>
-                    <p>Ficha del personal:</p>
-                    <ul>
-                        <li>Datos personales y contrato</li>
-                        <li>Cargo y departamento</li>
-                        <li>Remuneración pactada</li>
-                        <li>Fechas de ingreso y términos</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-money-check-alt"></i> Nómina</h4>
-                    <p>Cálculo de remuneraciones (normativa chilena):</p>
-                    <table class="help-table">
-                        <tr><td>AFP</td><td>10.00% + comisión</td></tr>
-                        <tr><td>Salud</td><td>7.00%</td></tr>
-                        <tr><td>Seguro Cesantía</td><td>0.60%</td></tr>
-                        <tr><td>Impuesto Único</td><td>Según tabla SII</td></tr>
-                    </table>
-                    
-                    <h4><i class="fas fa-piggy-bank"></i> Provisiones</h4>
-                    <p>Obligaciones laborales:</p>
-                    <ul>
-                        <li><strong>Vacaciones:</strong> 15 días hábiles al año</li>
-                        <li><strong>Indemnización:</strong> Un mes por año de servicio</li>
-                        <li><strong>Gratificación:</strong> 25% sobre sueldo con tope</li>
-                    </ul>
+                    <div class="stage-2-banner">
+                        <i class="fas fa-clock"></i>
+                        <span>Etapa 2: Próximamente disponible</span>
+                    </div>
+                    <div class="help-module-header disabled">
+                        <i class="fas fa-users hr"></i>
+                        <h3>Recursos Humanos (HR)</h3>
+                    </div>
+                    <p>La gestión de recursos humanos y el cálculo de remuneraciones según normativa chilena 
+                    estarán disponibles en la Etapa 2.</p>
                 </div>
             `
         },
@@ -332,41 +347,36 @@ const HelpSystem = {
             icon: 'fa-chart-bar',
             content: `
                 <div class="help-section">
-                    <h3>Estados Financieros</h3>
-                    <p>Genera los reportes contables y financieros de la empresa.</p>
+                    <div class="help-module-header">
+                        <i class="fas fa-chart-bar rpts"></i>
+                        <h3>Reportes y Estados Financieros</h3>
+                    </div>
                     
-                    <h4><i class="fas fa-balance-scale-right"></i> Balance General</h4>
-                    <p>Estado de situación financiera:</p>
-                    <p style="text-align: center; padding: var(--space-3); background: var(--neutral-100); 
-                        border-radius: var(--radius-md); font-weight: 600;">
-                        Activos = Pasivos + Patrimonio
-                    </p>
-                    <p>Muestra los bienes, derechos y obligaciones a una fecha determinada.</p>
-                    
-                    <h4><i class="fas fa-chart-line"></i> Estado de Resultados</h4>
-                    <p>Pérdidas y ganancias del período:</p>
-                    <ul>
-                        <li>(+) Ingresos operacionales</li>
-                        <li>(-) Costos de venta</li>
-                        <li>(=) Margen bruto</li>
-                        <li>(-) Gastos operacionales</li>
-                        <li>(=) Resultado operacional</li>
-                        <li>(±) Otros ingresos/gastos</li>
-                        <li>(=) Resultado antes de impuestos</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-money-bill-wave"></i> Flujo de Caja</h4>
-                    <p>Movimientos de efectivo clasificados:</p>
-                    <ul>
-                        <li><strong>Operación:</strong> Actividades del giro</li>
-                        <li><strong>Inversión:</strong> Compra/venta de activos</li>
-                        <li><strong>Financiamiento:</strong> Préstamos, aportes</li>
-                    </ul>
-                    
-                    <div class="help-tip">
-                        <i class="fas fa-download"></i>
-                        <span>Todos los reportes pueden exportarse a PDF, Excel o CSV 
-                        usando los botones en la barra superior.</span>
+                    <div class="help-path-banner">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Reportes
+                    </div>
+
+                    <div class="help-path-banner clickable" data-nav="reportes,balance-general">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Reportes <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <div class="help-grid">
+                        <div class="help-card clickable" data-nav="reportes,balance-general">
+                            <i class="fas fa-balance-scale"></i>
+                            <h4>Balance</h4>
+                            <p>Situación Financiera.</p>
+                        </div>
+                        <div class="help-card clickable" data-nav="reportes,estado-resultados">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Resultados</h4>
+                            <p>Pérdidas y Ganancias.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-file-export"></i> Exportación de Datos</h5>
+                        <p>Todos los estados financieros pueden exportarse a <strong>PDF</strong> para presentaciones académicas.</p>
+                        <span><i class="fas fa-mouse-pointer"></i> Busca el botón <i class="fas fa-download"></i> en la esquina superior de cada reporte.</span>
                     </div>
                 </div>
             `
@@ -377,41 +387,15 @@ const HelpSystem = {
             icon: 'fa-search-dollar',
             content: `
                 <div class="help-section">
-                    <h3>Trazabilidad y Auditoría</h3>
-                    <p>El módulo de Trazabilidad permite rastrear el origen y destino de cada 
-                    transacción en el sistema, esencial para la auditoría.</p>
-                    
-                    <h4><i class="fas fa-link"></i> Seguimiento de Documentos</h4>
-                    <p>Cada documento está vinculado a su origen:</p>
-                    <ul>
-                        <li><strong>Orden de Compra → Factura → Asiento</strong></li>
-                        <li><strong>Pedido de Venta → Despacho → Factura → Asiento</strong></li>
-                        <li><strong>Movimiento de Inventario → Asiento</strong></li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-check-double"></i> Validación de Datos</h4>
-                    <p>El sistema valida automáticamente:</p>
-                    <ul>
-                        <li>Ecuación contable (Activos = Pasivos + Patrimonio)</li>
-                        <li>Balance de asientos (Debe = Haber)</li>
-                        <li>Integridad de referencias entre documentos</li>
-                        <li>Consistencia de saldos de cuentas</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-history"></i> Log de Auditoría</h4>
-                    <p>Registro de todas las acciones del sistema:</p>
-                    <ul>
-                        <li>Creación de registros</li>
-                        <li>Modificaciones y quién las realizó</li>
-                        <li>Eliminaciones y motivos</li>
-                        <li>Fecha y hora de cada acción</li>
-                    </ul>
-                    
-                    <div class="help-tip">
-                        <i class="fas fa-lightbulb"></i>
-                        <span>La trazabilidad es fundamental para demostrar la integridad de los 
-                        datos ante una auditoría externa.</span>
+                    <div class="stage-2-banner">
+                        <i class="fas fa-clock"></i>
+                        <span>Etapa 2: Próximamente disponible</span>
                     </div>
+                    <div class="help-module-header disabled">
+                        <i class="fas fa-project-diagram trace"></i>
+                        <h3>Trazabilidad Avanzada</h3>
+                    </div>
+                    <p>Diagramas de flujo automáticos y validaciones en tiempo real para el seguimiento pedagógico estarán disponibles en la Etapa 2.</p>
                 </div>
             `
         },
@@ -421,38 +405,80 @@ const HelpSystem = {
             icon: 'fa-cog',
             content: `
                 <div class="help-section">
-                    <h3>Administración</h3>
-                    <p>Gestiona las empresas, configuración y datos del sistema.</p>
+                    <div class="help-module-header">
+                        <i class="fas fa-cog admin"></i>
+                        <h3>Administración y Casos</h3>
+                    </div>
                     
-                    <h4><i class="fas fa-building"></i> Gestión de Empresas</h4>
-                    <p>Desde aquí puedes:</p>
-                    <ul>
-                        <li>Crear nuevas empresas virtuales</li>
-                        <li>Editar datos de la empresa actual</li>
-                        <li>Cambiar entre empresas</li>
-                        <li>Eliminar empresas (con precaución)</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-file-import"></i> Importar/Exportar</h4>
-                    <p>Funciones de respaldo y transferencia:</p>
-                    <ul>
-                        <li><strong>Exportar JSON:</strong> Respaldo completo de la empresa</li>
-                        <li><strong>Exportar Excel:</strong> Datos en hojas separadas</li>
-                        <li><strong>Importar JSON:</strong> Restaurar respaldo o caso de estudio</li>
-                    </ul>
-                    
-                    <h4><i class="fas fa-database"></i> Datos de Demostración</h4>
-                    <p>Carga casos de estudio predefinidos:</p>
-                    <ul>
-                        <li><strong>Caso Comercial:</strong> Empresa de comercio con inventario</li>
-                        <li><strong>Caso Servicios:</strong> Consultora de servicios profesionales</li>
-                        <li><strong>Datos Básicos:</strong> Proveedores, clientes y productos de ejemplo</li>
-                    </ul>
-                    
+                    <div class="help-path-banner clickable" data-nav="admin,empresas">
+                        <i class="fas fa-folder-open"></i> Menú Lateral <i class="fas fa-chevron-right"></i> Administración <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-file-import"></i> Importar Casos de Estudio</h5>
+                        <ol>
+                            <li>Ve a <em>Administración > Importar/Exportar</em></li>
+                            <li>Haz clic en "Seleccionar archivo .json"</li>
+                            <li>Elige el archivo del caso entregado por el profesor.</li>
+                        </ol>
+                    </div>
+
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-tools"></i> Configuración de Parámetros</h5>
+                        <p>En el módulo de <strong>Configuración</strong> puedes ajustar:</p>
+                        <ul>
+                            <li class="clickable" data-nav="admin,configuracion"><i class="fas fa-building"></i> Nombre y RUT de la Empresa.</li>
+                            <li class="clickable" data-nav="admin,configuracion"><i class="fas fa-calendar-alt"></i> Periodo Contable.</li>
+                        </ul>
+                    </div>
+
                     <div class="help-warning">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <span>Recuerda hacer respaldos periódicos exportando tu empresa a JSON. 
-                        Los datos solo se guardan en el navegador.</span>
+                        <span>Importar un caso **reemplaza** los datos actuales de la empresa. Asegúrate de respaldar antes mediante "Exportar JSON".</span>
+                    </div>
+                </div>
+            `
+        },
+
+        casos: {
+            title: 'Casos de Demostración',
+            icon: 'fa-file-excel',
+            content: `
+                <div class="help-section">
+                    <div class="help-module-header">
+                        <i class="fas fa-file-excel cases"></i>
+                        <h3>Casos de Demostración</h3>
+                    </div>
+                    
+                    <p>Explora el funcionamiento del ERP mediante escenarios pre-configurados. Cada caso incluye un archivo Excel con la historia del negocio y un archivo JSON para cargar en el sistema.</p>
+
+                    <div class="help-grid">
+                        <div class="help-card-sm highlight" style="border-color: #27ae60; background: #f0fff4;">
+                            <i class="fas fa-file-excel" style="color: #27ae60;"></i>
+                            <strong>Caso 1: Comercial</strong>
+                            <span>Retail y Ventas</span>
+                            <a href="https://github.com/sandymena/proyecto-edu-trace-erp/raw/main/casos/Caso_1_Empresa_Comercial.xlsx" class="btn btn-xs" target="_blank" style="margin-top:5px; background:#27ae60; color:white; text-decoration:none;">Excel</a>
+                        </div>
+                        <div class="help-card-sm highlight" style="border-color: #27ae60; background: #f0fff4;">
+                            <i class="fas fa-file-excel" style="color: #27ae60;"></i>
+                            <strong>Caso 2: Servicios</strong>
+                            <span>Honorarios y Gastos</span>
+                            <a href="https://github.com/sandymena/proyecto-edu-trace-erp/raw/main/casos/Caso_2_Empresa_Servicios.xlsx" class="btn btn-xs" target="_blank" style="margin-top:5px; background:#27ae60; color:white; text-decoration:none;">Excel</a>
+                        </div>
+                    </div>
+
+                    <div class="help-info-block" style="margin-top: var(--space-4);">
+                        <h5><i class="fas fa-rocket"></i> ¿Cómo usar un caso?</h5>
+                        <ol>
+                            <li>Descarga y revisa el <strong>archivo Excel</strong> para entender el contexto del negocio.</li>
+                            <li>En la misma carpeta de GitHub, busca el archivo <code>.json</code> correspondiente.</li>
+                            <li>Ve a <strong class="clickable" data-nav="admin,empresas">Administración > Cargar</strong> y utiliza la opción de importar JSON.</li>
+                        </ol>
+                    </div>
+
+                    <div class="help-tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Los archivos Excel contienen la "Memoria Explicativa", enunciados y la solución esperada para contrastar con el ERP.</span>
                     </div>
                 </div>
             `
@@ -463,37 +489,35 @@ const HelpSystem = {
             icon: 'fa-project-diagram',
             content: `
                 <div class="help-section">
-                    <h3>Diagrama Contable</h3>
-                    <p>Herramienta visual para entender el flujo de las transacciones contables.</p>
+                    <div class="help-module-header">
+                        <i class="fas fa-project-diagram gl"></i>
+                        <h3>Diagrama Contable Interactivo</h3>
+                    </div>
+
+                    <div class="help-path-banner clickable" data-nav="dashboard,null">
+                        <i class="fas fa-mouse-pointer"></i> Dashboard <i class="fas fa-chevron-right"></i> Ver Diagrama Contable <i class="fas fa-external-link-alt"></i>
+                    </div>
+
+                    <p>Herramienta visual para entender el flujo de las transacciones contables en tiempo real.</p>
                     
-                    <h4><i class="fas fa-exchange-alt"></i> Flujo de Transacción</h4>
-                    <p>Visualiza cómo una operación afecta las cuentas:</p>
-                    <ul>
-                        <li>Documento origen (factura, nota, etc.)</li>
-                        <li>Cuentas afectadas al Debe y Haber</li>
-                        <li>Impacto en el Balance General</li>
-                    </ul>
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-exchange-alt"></i> Flujo de Transacción</h5>
+                        <p>Visualiza cómo cada operación (Venta, Compra, Pago) impacta el Balance mediante animaciones que conectan documentos con cuentas contables.</p>
+                    </div>
                     
-                    <h4><i class="fas fa-balance-scale"></i> Ecuación Contable</h4>
-                    <p>Muestra en tiempo real cómo se cumple:</p>
-                    <p style="text-align: center; padding: var(--space-3); background: var(--success-50); 
-                        border-radius: var(--radius-md); font-weight: 600; color: var(--success-600);">
-                        ACTIVO = PASIVO + PATRIMONIO
-                    </p>
-                    
-                    <h4><i class="fas fa-shopping-cart"></i> Ejemplos Interactivos</h4>
-                    <p>Practica con transacciones comunes:</p>
-                    <ul>
-                        <li><strong>Compra a crédito:</strong> Aumenta inventario y proveedores</li>
-                        <li><strong>Venta al contado:</strong> Aumenta caja e ingresos</li>
-                        <li><strong>Pago a proveedor:</strong> Disminuye caja y proveedores</li>
-                        <li><strong>Cobro a cliente:</strong> Aumenta caja, disminuye clientes</li>
-                    </ul>
+                    <div class="help-info-block">
+                        <h5><i class="fas fa-balance-scale"></i> Ecuación Dinámica</h5>
+                        <p>Muestra cómo se mantiene el equilibrio: <strong>ACTIVO = PASIVO + PATRIMONIO</strong> tras cada registro.</p>
+                    </div>
                     
                     <div class="help-tip">
                         <i class="fas fa-lightbulb"></i>
-                        <span>Accede al Diagrama Contable desde el botón "Ver Diagrama Contable" 
-                        en el Dashboard principal.</span>
+                        <span>Ideal para entender la metodología de <strong>Partida Doble</strong> de forma gráfica.</span>
+                    </div>
+
+                    <div class="help-path clickable" onclick="Modal.close(); window.open('diagrama-contable.html', 'CursoContabilidad', 'width=1400,height=900,scrollbars=yes,resizable=yes');">
+                        <i class="fas fa-play-circle"></i>
+                        <span><strong>Abrir Diagrama ahora</strong> <i class="fas fa-external-link-alt"></i></span>
                     </div>
                 </div>
             `
@@ -521,12 +545,12 @@ const HelpSystem = {
             answer: 'Los datos de EDU-TRACE ERP se perderán. Recomendamos hacer respaldos periódicos exportando la empresa a JSON.'
         },
         {
-            question: '¿Puedo compartir casos con compañeros?',
-            answer: 'Sí, exporta tu empresa a JSON y comparte el archivo. Tu compañero puede importarlo en su navegador.'
+            question: '¿Por qué mi pago con cheque no aparece en el Banco?',
+            answer: 'Por diseño pedagógico, los cheques se mantienen en cuentas transitorias hasta que se confirma su movimiento bancario real, permitiendo al alumno entender la diferencia entre el pago administrativo y el movimiento de fondos.'
         },
         {
-            question: '¿Se generan asientos automáticos?',
-            answer: 'Sí, al registrar facturas de compra, venta, pagos y otros documentos, el sistema genera automáticamente los asientos contables correspondientes.'
+            question: '¿Dónde puedo encontrar el manual completo?',
+            answer: 'Existe un <strong>Manual de Capacitación interactivo</strong> externo con guías paso a paso detalladas por proceso lógico. Consulte con su profesor para obtener el enlace local o remoto.'
         },
         {
             question: '¿Qué normativa contable usa el sistema?',
@@ -583,7 +607,7 @@ const HelpSystem = {
             `
         });
 
-        // Bind navigation
+        // Bind navigation between help topics
         document.querySelectorAll('.help-nav li').forEach(li => {
             li.addEventListener('click', () => {
                 const moduleId = li.dataset.module;
@@ -592,7 +616,24 @@ const HelpSystem = {
                     document.querySelectorAll('.help-nav li').forEach(l => l.classList.remove('active'));
                     li.classList.add('active');
                     document.getElementById('help-content').innerHTML = doc.content;
+                    this.bindContentActions(); // Re-bind deep links
                 }
+            });
+        });
+
+        this.bindContentActions();
+    },
+
+    /**
+     * Bind de acciones dentro del contenido de ayuda (Deep Links)
+     */
+    bindContentActions() {
+        document.querySelectorAll('.help-content [data-nav]').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                const [module, view] = el.dataset.nav.split(',');
+                Modal.close();
+                App.navigate(module, view);
             });
         });
     },
@@ -762,177 +803,152 @@ helpStyles.textContent = `
         max-height: 500px;
     }
     
-    .help-section h3 {
-        margin: 0 0 var(--space-3);
-        color: var(--text-primary);
-        font-size: var(--font-size-lg);
-    }
-    
-    .help-section h4 {
-        margin: var(--space-5) 0 var(--space-2);
-        color: var(--primary-600);
-        font-size: var(--font-size-base);
+    .help-welcome {
         display: flex;
         align-items: center;
-        gap: var(--space-2);
-    }
-    
-    .help-section p {
-        margin: 0 0 var(--space-3);
-        line-height: 1.6;
-        color: var(--text-secondary);
-    }
-    
-    .help-section ul, .help-section ol {
-        margin: var(--space-2) 0;
-        padding-left: var(--space-5);
-        color: var(--text-secondary);
-    }
-    
-    .help-section li {
-        margin-bottom: var(--space-1);
-        line-height: 1.5;
-    }
-    
-    .help-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: var(--space-3) 0;
-        font-size: var(--font-size-sm);
-    }
-    
-    .help-table td {
-        padding: var(--space-2) var(--space-3);
-        border: 1px solid var(--border-light);
-    }
-    
-    .help-table tr:nth-child(even) {
-        background: var(--neutral-50);
-    }
-    
-    .help-tip, .help-warning {
-        display: flex;
         gap: var(--space-3);
+        margin-bottom: var(--space-4);
+        color: var(--primary-600);
+    }
+    
+    .help-welcome i { font-size: 2rem; }
+    
+    .help-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+        margin: var(--space-4) 0;
+    }
+    
+    .help-card {
+        padding: var(--space-3);
+        background: var(--neutral-50);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-light);
+        text-align: center;
+    }
+    
+    .help-card i { font-size: 1.5rem; color: var(--primary-500); margin-bottom: var(--space-2); }
+    .help-card h4 { margin: 0 0 var(--space-1); font-size: var(--font-size-sm); }
+    .help-card p { margin: 0; font-size: var(--font-size-xs); color: var(--text-tertiary); }
+    
+    .help-card-sm {
+        padding: var(--space-2);
+        background: white;
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-md);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .help-card-sm.highlight { border-color: var(--warning-400); background: var(--warning-50); }
+    .help-card-sm strong { font-size: var(--font-size-xs); }
+    .help-card-sm span { font-size: 10px; color: var(--text-tertiary); }
+    
+    .help-path {
+        background: var(--neutral-800);
+        color: white;
         padding: var(--space-3);
         border-radius: var(--radius-md);
-        margin: var(--space-4) 0;
         font-size: var(--font-size-sm);
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
     }
     
-    .help-tip {
-        background: var(--info-50);
-        color: var(--info-500);
+    .help-path-banner {
+        background: var(--neutral-100);
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-sm);
+        font-size: var(--font-size-xs);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-4);
+        border-left: 3px solid var(--primary-500);
+    }
+
+    .help-module-header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        margin-bottom: var(--space-2);
     }
     
-    .help-warning {
-        background: var(--warning-50);
-        color: var(--warning-600);
+    .help-module-header i {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-500);
+        color: white;
+        border-radius: var(--radius-md);
+        font-size: 1.25rem;
     }
     
-    .help-tip i, .help-warning i {
-        font-size: var(--font-size-lg);
-        flex-shrink: 0;
-    }
-    
-    /* FAQ Styles */
-    .faq-list {
+    .help-module-header i.gl { background: linear-gradient(135deg, #0a6ed1, #064280); }
+    .help-module-header i.mm { background: linear-gradient(135deg, #df6e0c, #c45f0a); }
+    .help-module-header i.sd { background: linear-gradient(135deg, #107e3e, #0d6630); }
+    .help-module-header i.fi { background: linear-gradient(135deg, #6c5ce7, #5f3dc4); }
+    .help-module-header i.cases { background: linear-gradient(135deg, #27ae60, #1e8449); }
+
+    .help-step-box {
         display: flex;
         flex-direction: column;
         gap: var(--space-2);
+        margin: var(--space-4) 0;
     }
     
-    .faq-item {
+    .help-step-item {
+        display: flex;
+        gap: var(--space-3);
+        align-items: flex-start;
+    }
+    
+    .step-badge {
+        width: 22px;
+        height: 22px;
+        background: var(--primary-500);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    
+    .step-text { font-size: var(--font-size-sm); }
+    .step-text span { display: block; font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+    .process-flow {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: var(--space-4);
+        background: var(--neutral-50);
+        border-radius: var(--radius-lg);
+        margin: var(--space-4) 0;
+    }
+    
+    .process-node { text-align: center; display: flex; flex-direction: column; gap: 4px; }
+    .process-node i { font-size: 1.25rem; color: var(--primary-600); }
+    .process-node span { font-size: var(--font-size-xs); font-weight: 600; }
+    .process-node small { font-size: 10px; color: var(--text-tertiary); }
+    .process-arrow { color: var(--neutral-300); }
+
+    .help-info-block {
+        padding: var(--space-3);
         border: 1px solid var(--border-light);
         border-radius: var(--radius-md);
-        overflow: hidden;
+        margin: var(--space-4) 0;
     }
     
-    .faq-question {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: var(--space-4);
-        cursor: pointer;
-        font-weight: 500;
-        background: var(--neutral-50);
-        transition: all var(--transition-fast);
-    }
-    
-    .faq-question:hover {
-        background: var(--neutral-100);
-    }
-    
-    .faq-question i {
-        transition: transform var(--transition-fast);
-        color: var(--text-tertiary);
-    }
-    
-    .faq-item.open .faq-question i {
-        transform: rotate(180deg);
-    }
-    
-    .faq-answer {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height var(--transition-normal);
-    }
-    
-    .faq-item.open .faq-answer {
-        max-height: 200px;
-    }
-    
-    .faq-answer p {
-        padding: var(--space-4);
-        margin: 0;
-        color: var(--text-secondary);
-        border-top: 1px solid var(--border-light);
-    }
-    
-    /* Shortcuts Styles */
-    .shortcuts-list {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-5);
-    }
-    
-    .shortcut-group h4 {
-        margin: 0 0 var(--space-3);
-        font-size: var(--font-size-sm);
-        color: var(--text-tertiary);
-        text-transform: uppercase;
-    }
-    
-    .shortcut-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: var(--space-2) 0;
-        border-bottom: 1px solid var(--border-light);
-    }
-    
-    .shortcut-item:last-child {
-        border-bottom: none;
-    }
-    
-    .shortcut-keys {
-        display: flex;
-        gap: var(--space-1);
-    }
-    
-    .shortcut-keys kbd {
-        background: var(--neutral-100);
-        border: 1px solid var(--border-medium);
-        border-radius: var(--radius-sm);
-        padding: var(--space-1) var(--space-2);
-        font-family: monospace;
-        font-size: var(--font-size-xs);
-        box-shadow: 0 1px 0 var(--neutral-300);
-    }
-    
-    .shortcut-desc {
-        color: var(--text-secondary);
-        font-size: var(--font-size-sm);
-    }
+    .help-info-block h5 { margin: 0 0 var(--space-2); font-size: var(--font-size-sm); color: var(--primary-600); }
+    .help-info-block p, .help-info-block li { font-size: var(--font-size-sm); margin: 0; }
+    .help-info-block ul { padding-left: var(--space-4); margin-top: var(--space-2); }
 `;
 document.head.appendChild(helpStyles);
 

@@ -159,7 +159,7 @@ const Migrations = {
         await DB.add('settings', {
             companyId: company.id,
             fiscalYear: company.fiscalYear,
-            inventoryMethod: 'promedio', // promedio, fifo, lifo
+            inventoryMethod: 'promedio', // promedio, fifo
             taxRate: 19, // IVA Chile
             incomeTaxRate: 27, // Primera categoría
             decimalPlaces: 0,

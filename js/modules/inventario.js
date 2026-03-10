@@ -85,7 +85,6 @@ const InventarioModule = {
                     <select class="form-control" id="valuation-method" style="width: 180px;">
                         <option value="promedio">Costo Promedio</option>
                         <option value="fifo">FIFO (PEPS)</option>
-                        <option value="lifo">LIFO (UEPS)</option>
                     </select>
                     <button class="btn btn-primary" id="btn-calculate">
                         <i class="fas fa-calculator"></i> Calcular
@@ -155,29 +154,6 @@ const InventarioModule = {
 
                     unitCost = (p.stock || 0) > 0 ? totalCost / p.stock : baseCost;
                 }
-            } else if (method === 'lifo') {
-                // LIFO: Última Entrada, Primera Salida  
-                // El inventario restante tiene el costo de las PRIMERAS compras
-                if (entries.length > 0) {
-                    let remainingQty = p.stock || 0;
-                    let totalCost = 0;
-
-                    for (const entry of entries) { // Primeras compras primero
-                        if (remainingQty <= 0) break;
-                        const entryQty = entry.quantity || 0;
-                        const entryCost = entry.unitCost || baseCost;
-                        const qtyToUse = Math.min(remainingQty, entryQty);
-                        totalCost += qtyToUse * entryCost;
-                        remainingQty -= qtyToUse;
-                    }
-
-                    // Si aún queda stock sin asignar, usar costo base
-                    if (remainingQty > 0) {
-                        totalCost += remainingQty * baseCost;
-                    }
-
-                    unitCost = (p.stock || 0) > 0 ? totalCost / p.stock : baseCost;
-                }
             }
 
             return {
@@ -192,8 +168,7 @@ const InventarioModule = {
 
         const methodNames = {
             promedio: 'Costo Promedio Ponderado',
-            fifo: 'FIFO (Primera Entrada, Primera Salida)',
-            lifo: 'LIFO (Última Entrada, Primera Salida)'
+            fifo: 'FIFO (Primera Entrada, Primera Salida)'
         };
 
         return `
