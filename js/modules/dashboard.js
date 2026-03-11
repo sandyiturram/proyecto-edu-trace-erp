@@ -314,21 +314,51 @@ const DashboardModule = {
             'UPDATE': { icon: 'fa-edit', class: 'info', label: 'Modificación' },
             'DELETE': { icon: 'fa-trash', class: 'error', label: 'Eliminación' },
             'POST': { icon: 'fa-check-circle', class: 'success', label: 'Contabilización' },
-            'CANCEL': { icon: 'fa-times-circle', class: 'warning', label: 'Anulación' }
+            'CANCEL': { icon: 'fa-times-circle', class: 'warning', label: 'Anulación' },
+            'ADD_TO_AUXILIARY': { icon: 'fa-book-open', class: 'info', label: 'Registro en Auxiliar' },
+            'CENTRALIZE': { icon: 'fa-layer-group', class: 'primary', label: 'Centralización' }
+        };
+
+        const entityNames = {
+            'journalEntry': 'Comprobante Contable',
+            'sales': 'Ventas',
+            'purchases': 'Compras',
+            'treasury': 'Tesorería',
+            'company': 'Empresa',
+            'account': 'Cuenta Contable',
+            'product': 'Producto',
+            'customer': 'Cliente',
+            'supplier': 'Proveedor'
         };
 
         return `
             <div class="activity-list">
                 ${recentLogs.map(log => {
             const type = activityTypes[log.action] || { icon: 'fa-circle', class: 'neutral', label: log.action };
+            const entity = entityNames[log.entity] || log.entity;
+
+            // Preparar el string de detalles de manera legible
+            let detailString = '';
+            if (log.details) {
+                if (log.details.number) detailString = `<strong>Nº ${log.details.number}</strong>`;
+                else if (log.details.period) detailString = `Período: <strong>${log.details.period}</strong>`;
+                else if (log.details.reason) detailString = `<em>${log.details.reason}</em>`;
+                else if (log.details.name) detailString = `<strong>${log.details.name}</strong>`;
+                else {
+                    // Limpiar el json base de llaves
+                    const jsonClean = JSON.stringify(log.details).replace(/[{""}]/g, '').replace(/:/g, ': ').replace(/,/g, ' | ');
+                    detailString = jsonClean.substring(0, 50);
+                }
+            }
+
             return `
                         <div class="activity-item">
                             <div class="activity-icon ${type.class}">
                                 <i class="fas ${type.icon}"></i>
                             </div>
                             <div class="activity-content">
-                                <div class="activity-title">${type.label} de ${log.entity}</div>
-                                <div class="activity-desc">${JSON.stringify(log.details).substring(0, 50)}...</div>
+                                <div class="activity-title">${type.label} de ${entity}</div>
+                                <div class="activity-desc">${detailString}</div>
                             </div>
                             <div class="activity-time">${Formatters.relativeTime(log.timestamp)}</div>
                         </div>
@@ -388,41 +418,80 @@ const DashboardModule = {
         if (!company) return this.getEmptyStats();
 
         try {
-            // Obtener cuentas y calcular totales
-            const accounts = await AccountingService.getChartOfAccounts();
+            // Fechas del mes actual
+            const today = new Date();
+            const firstDayCurrent = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+            const lastDayCurrent = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
 
+            // Fechas del mes pasado
+            const firstDayLast = new Date(today.getFullYear(), today.getMonth() - 1, 1).toISOString().split('T')[0];
+            const lastDayLast = new Date(today.getFullYear(), today.getMonth(), 0).toISOString().split('T')[0];
+
+            // Obtener Estado de Resultados (Este integra Libros Auxiliares si es Centralizador)
+            const statementCurrent = await AccountingService.getIncomeStatement(firstDayCurrent, lastDayCurrent);
+            const statementLast = await AccountingService.getIncomeStatement(firstDayLast, lastDayLast);
+
+            const currentRevenue = statementCurrent.revenues.total;
+            const currentExpenses = statementCurrent.expenses.total;
+
+            const lastRevenue = statementLast.revenues.total;
+            const lastExpenses = statementLast.expenses.total;
+
+            // Calcular Tendencias (%)
+            const calcTrend = (current, last) => {
+                if (last === 0) return current > 0 ? 100 : 0;
+                return ((current - last) / last) * 100;
+            };
+
+            const revenueTrend = calcTrend(currentRevenue, lastRevenue);
+            const expensesTrend = calcTrend(currentExpenses, lastExpenses);
+
+            // Obtener cuentas para el Patrimonio Global
+            const accounts = await AccountingService.getChartOfAccounts();
             const assets = accounts.filter(a => a.type === 'asset' && !a.isGroup);
             const liabilities = accounts.filter(a => a.type === 'liability' && !a.isGroup);
             const equity = accounts.filter(a => a.type === 'equity' && !a.isGroup);
-            const revenues = accounts.filter(a => a.type === 'revenue' && !a.isGroup);
-            const expenses = accounts.filter(a => a.type === 'expense' && !a.isGroup);
 
             const totalAssets = Helpers.sumBy(assets, 'balance');
             const totalLiabilities = Helpers.sumBy(liabilities, 'balance');
             const totalEquity = Helpers.sumBy(equity, 'balance');
-            const totalRevenue = Helpers.sumBy(revenues, 'balance');
-            const totalExpenses = Helpers.sumBy(expenses, 'balance');
 
-            // Obtener facturas pendientes
+            // Cuentas por Cobrar y Pagar usando Saldos Contables directos (+ comprobantes pendientes)
+            // Primero, buscamos facturas
             const customerInvoices = await DB.getByIndex('customerInvoices', 'companyId', company.id);
             const supplierInvoices = await DB.getByIndex('supplierInvoices', 'companyId', company.id);
 
-            const pendingInvoices = customerInvoices.filter(i => i.status === 'pending' || i.status === 'partial');
-            const pendingBills = supplierInvoices.filter(i => i.status === 'pending' || i.status === 'partial');
+            const pendingInvoices = customerInvoices.filter(i => i.status === 'pending' || i.status === 'partial' || i.status === 'emitted');
+            const pendingBills = supplierInvoices.filter(i => i.status === 'pending' || i.status === 'partial' || i.status === 'emitted' || i.status === 'received');
+
+            // Ahora sumamos el total de los clientes y proveedores contables en el plan de cuentas (1.1.03 Clientes, 2.1.01 Proveedores aprox)
+            const receivableAccounts = accounts.filter(a => !a.isGroup && (a.name.toLowerCase().includes('cliente') || a.name.toLowerCase().includes('por cobrar')));
+            const payableAccounts = accounts.filter(a => !a.isGroup && (a.name.toLowerCase().includes('proveedor') || a.name.toLowerCase().includes('por pagar')));
+
+            const totalReceivable = Helpers.sumBy(receivableAccounts, 'balance');
+            const totalPayable = Helpers.sumBy(payableAccounts, 'balance');
+
+            // Preferimos el contable. Si la vista de facturas difiere contablemente, se sobreentiende que hay descuadre. 
+            // Para ser coherente con el ERP, tomaremos el Contable, ya que las facturas no centralizadas se liquidan ahí de todos modos si operan bien.
+            const accountsReceivable = totalReceivable > 0 ? totalReceivable : Helpers.sumBy(pendingInvoices, 'balance');
+            const accountsPayable = totalPayable > 0 ? totalPayable : Helpers.sumBy(pendingBills, 'balance');
+
+            // El Resultado del Ejercicio en el resumen financiero debe ser el ACUMULADO de la empresa a la fecha, no solo del mes.
+            const globalResult = await AccountingService.getNetIncome(today.toISOString().split('T')[0]);
 
             return {
-                monthlyRevenue: totalRevenue,
-                monthlyExpenses: totalExpenses,
-                revenueTrend: 5.2, // Demo data
-                expensesTrend: -2.1, // Demo data
-                accountsReceivable: Helpers.sumBy(pendingInvoices, 'balance'),
-                accountsPayable: Helpers.sumBy(pendingBills, 'balance'),
+                monthlyRevenue: currentRevenue,
+                monthlyExpenses: currentExpenses,
+                revenueTrend: revenueTrend,
+                expensesTrend: expensesTrend,
+                accountsReceivable: accountsReceivable,
+                accountsPayable: accountsPayable,
                 pendingInvoices: pendingInvoices.length,
                 pendingBills: pendingBills.length,
                 totalAssets,
                 totalLiabilities,
                 netEquity: totalEquity,
-                netIncome: totalRevenue - totalExpenses
+                netIncome: globalResult.netIncome
             };
         } catch (err) {
             console.error('Error getting stats:', err);
@@ -444,24 +513,76 @@ const DashboardModule = {
     /**
      * Inicializa gráficos después de renderizar
      */
-    initCharts() {
+    async initCharts() {
         const company = CompanyService.getCurrent();
         if (!company) return; // No hay gráficos si no hay empresa
 
-        // Gráfico de ingresos vs gastos
-        Charts.bar('revenue-expenses-chart', {
-            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
-            datasets: [
-                { label: 'Ingresos', data: [1200000, 1500000, 1300000, 1800000, 1600000, 2000000], color: Charts.colors.success },
-                { label: 'Gastos', data: [800000, 900000, 850000, 950000, 880000, 920000], color: Charts.colors.error }
-            ]
-        }, { currency: true });
+        try {
+            const today = new Date();
+            const labels = [];
+            const revenueData = [];
+            const expenseData = [];
 
-        // Gráfico de distribución de gastos
-        Charts.doughnut('expenses-distribution-chart', {
-            labels: ['Remuneraciones', 'Arriendos', 'Servicios', 'Marketing', 'Otros'],
-            values: [45, 20, 15, 10, 10]
-        }, { currency: false });
+            const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+            // 1. Gráfico de barras: últimos 6 meses
+            for (let i = 5; i >= 0; i--) {
+                const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+                const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0];
+                const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().split('T')[0];
+
+                labels.push(monthNames[date.getMonth()]);
+
+                const statement = await AccountingService.getIncomeStatement(firstDay, lastDay);
+                revenueData.push(statement.revenues.total);
+                expenseData.push(statement.expenses.total);
+            }
+
+            Charts.bar('revenue-expenses-chart', {
+                labels: labels,
+                datasets: [
+                    { label: 'Ingresos', data: revenueData, color: Charts.colors.success },
+                    { label: 'Gastos', data: expenseData, color: Charts.colors.error }
+                ]
+            }, { currency: true });
+
+            // 2. Gráfico de anillo: Distribución de gastos del mes actual
+            const firstDayCurrent = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+            const lastDayCurrent = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
+            const currentStatement = await AccountingService.getIncomeStatement(firstDayCurrent, lastDayCurrent);
+
+            // Filtrar items que tengan saldo mayor a cero y ordenar
+            const expenseItems = currentStatement.expenses.items
+                .filter(e => e.balance > 0)
+                .sort((a, b) => b.balance - a.balance);
+
+            let doughnutLabels = [];
+            let doughnutValues = [];
+
+            if (expenseItems.length > 0) {
+                const top4 = expenseItems.slice(0, 4);
+                const others = expenseItems.slice(4).reduce((sum, item) => sum + item.balance, 0);
+
+                doughnutLabels = top4.map(i => i.name.length > 15 ? i.name.substring(0, 15) + '...' : i.name);
+                doughnutValues = top4.map(i => i.balance);
+
+                if (others > 0) {
+                    doughnutLabels.push('Otros');
+                    doughnutValues.push(others);
+                }
+            } else {
+                doughnutLabels = ['Sin Gastos Registrados'];
+                doughnutValues = [0.001];
+            }
+
+            Charts.doughnut('expenses-distribution-chart', {
+                labels: doughnutLabels,
+                values: doughnutValues
+            }, { currency: true });
+
+        } catch (error) {
+            console.error('Error inicializando gráficos:', error);
+        }
     },
 
     /**
@@ -505,6 +626,18 @@ const DashboardModule = {
             fields: [
                 { name: 'name', label: 'Nombre de la Empresa', required: true, placeholder: 'Ej: Mi Empresa S.A.' },
                 { name: 'rut', label: 'RUT', required: true, placeholder: 'Ej: 76.123.456-7' },
+                {
+                    name: 'companyType',
+                    label: 'Tipo de Sociedad',
+                    type: 'select',
+                    options: [
+                        { value: 'eirl', label: 'E.I.R.L. / Persona Natural' },
+                        { value: 'ltda', label: 'Soc. Responsabilidad Limitada (Ltda.)' },
+                        { value: 'spa', label: 'Sociedades por Acciones (SpA)' },
+                        { value: 'sa', label: 'Sociedad Anónima (S.A.)' }
+                    ],
+                    default: 'spa'
+                },
                 { name: 'address', label: 'Dirección', placeholder: 'Dirección comercial' },
                 { name: 'phone', label: 'Teléfono', placeholder: '+56 9 1234 5678' },
                 { name: 'email', label: 'Email', type: 'email', placeholder: 'contacto@empresa.cl' },
@@ -527,6 +660,7 @@ const DashboardModule = {
                     const company = await CompanyService.create({
                         name: data.name,
                         rut: Helpers.formatRUT(data.rut),
+                        companyType: data.companyType,
                         address: data.address,
                         phone: data.phone,
                         email: data.email,
@@ -572,7 +706,7 @@ const DashboardModule = {
                 App.navigate('reportes', 'balance-general');
                 break;
             case 'manual':
-                window.open('Manual_de_Usuario_EDU_TRACE.html', 'ManualCapacitacion', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+                window.open(`Manual_de_Usuario_EDU_TRACE.html?v=${Date.now()}`, 'ManualCapacitacion', 'width=1200,height=800,scrollbars=yes,resizable=yes');
                 break;
             case 'tutorial':
                 TutorialSystem.start('quickStart');

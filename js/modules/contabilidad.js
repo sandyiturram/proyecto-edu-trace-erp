@@ -1407,7 +1407,131 @@ Esto procesará todos los asientos contabilizados y actualizará los saldos de l
     },
 
     async showAccountModal(accountId = null) {
-        Toast.info('Modal de cuenta ' + (accountId ? 'editar' : 'nueva'));
+        const isEdit = !!accountId;
+        let accountData = {
+            code: '',
+            name: '',
+            type: 'asset',
+            nature: 'debit',
+            isGroup: false,
+            parentId: null
+        };
+
+        if (isEdit) {
+            accountData = await AccountingService.getAccount(accountId);
+        }
+
+        // Obtener cuentas "grupo" para el select de "Cuenta Padre"
+        const allAccounts = await AccountingService.getChartOfAccounts();
+        const parentOptions = allAccounts
+            .filter(a => a.isGroup && a.id !== accountId) // Solo grupos y que no sea ella misma
+            .map(a => `<option value="${a.id}" ${accountData.parentId === a.id ? 'selected' : ''}>${a.code} - ${a.name}</option>`)
+            .join('');
+
+        const typeOptions = [
+            { value: 'asset', label: 'Activo' },
+            { value: 'liability', label: 'Pasivo' },
+            { value: 'equity', label: 'Patrimonio' },
+            { value: 'revenue', label: 'Ingreso' },
+            { value: 'expense', label: 'Gasto' }
+        ].map(t => `<option value="${t.value}" ${accountData.type === t.value ? 'selected' : ''}>${t.label}</option>`).join('');
+
+        const natureOptions = [
+            { value: 'debit', label: 'Deudora' },
+            { value: 'credit', label: 'Acreedora' }
+        ].map(n => `<option value="${n.value}" ${accountData.nature === n.value ? 'selected' : ''}>${n.label}</option>`).join('');
+
+
+        Modal.open({
+            title: isEdit ? 'Editar Cuenta Contable' : 'Nueva Cuenta Contable',
+            size: 'medium',
+            content: `
+                <form id="account-form">
+                    <div class="form-group">
+                        <label class="form-label required">Tipo de Cuenta (isGroup)</label>
+                        <select class="form-control" id="account-is-group" name="isGroup" required>
+                            <option value="false" ${!accountData.isGroup ? 'selected' : ''}>Cuenta Imputable (Mueve saldos)</option>
+                            <option value="true" ${accountData.isGroup ? 'selected' : ''}>Cuenta Agrupadora (Título/Carpeta)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">Código</label>
+                            <input type="text" class="form-control" name="code" value="${accountData.code}" placeholder="Ej: 1.1.01.01" required>
+                        </div>
+                        <div class="form-group" style="flex: 2;">
+                            <label class="form-label required">Nombre de la Cuenta</label>
+                            <input type="text" class="form-control" name="name" value="${accountData.name}" placeholder="Ej: Banco Santander" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cuenta Padre (Rubro/Subrubro)</label>
+                        <select class="form-control" name="parentId">
+                            <option value="">-- Ninguna (Cuenta Raíz) --</option>
+                            ${parentOptions}
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">Clasificación</label>
+                            <select class="form-control" name="type" required>
+                                ${typeOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Naturaleza</label>
+                            <select class="form-control" name="nature" required>
+                                ${natureOptions}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            `,
+            footer: `
+                <button type="button" class="btn btn-secondary" onclick="Modal.close()">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-save-account">Guardar Cuenta</button>
+            `
+        });
+
+        document.getElementById('btn-save-account').onclick = async () => {
+            const form = document.getElementById('account-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const formData = new FormData(form);
+            const isGroup = formData.get('isGroup') === 'true';
+
+            const newAccountData = {
+                code: formData.get('code'),
+                name: formData.get('name'),
+                type: formData.get('type'),
+                nature: formData.get('nature'),
+                isGroup: isGroup,
+                parentId: formData.get('parentId') || null,
+            };
+
+            const loading = Toast.loading('Guardando cuenta...');
+
+            try {
+                if (isEdit) {
+                    await AccountingService.updateAccount(accountId, newAccountData);
+                } else {
+                    await AccountingService.createAccount(newAccountData);
+                }
+
+                loading.success('Cuenta guardada correctamente');
+                Modal.close();
+                App.navigate('contabilidad', 'plan-cuentas');
+
+            } catch (err) {
+                loading.error(err.message);
+            }
+        };
     }
 };
 

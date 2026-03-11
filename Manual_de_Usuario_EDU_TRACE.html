@@ -359,12 +359,13 @@
     <div class="page">
         <div class="cover">
             <div class="cover-logo">
-                <i class="fas fa-graduation-cap"></i>
+                <img src="img/logo_uv.png" alt="Universidad de Valparaíso"
+                    style="max-height: 140px; width: auto; max-width: 100%;">
             </div>
             <h1 class="cover-title">EDU-TRACE ERP</h1>
-            <p class="cover-subtitle">Manual Operativo, Lógica de Procesos y Análisis Financiero</p>
+            <p class="cover-subtitle">Manual de Usuario Edu_Trace_ERP</p>
             <div class="cover-info">
-                <p><strong>Versión:</strong> 1.0 - Edición Extendida e Interactiva</p>
+                <p><strong>Versión:</strong> 1.0</p>
                 <p><strong>Propósito:</strong> Guía Metodológica, Relación de Módulos, Impacto Contable y Reportes.</p>
                 <p><strong>Institución:</strong> Universidad de Valparaíso</p>
                 <p><strong>Autora:</strong> Sandy Iturra</p>
@@ -372,8 +373,49 @@
         </div>
     </div>
 
+    <!-- ÍNDICE -->
+    <div class="page" style="page-break-before: always;">
+        <h2><i class="fas fa-list-ul"></i> Índice de Contenidos</h2>
+        <div
+            style="background: #f8fafc; border: 1px solid var(--border); padding: 25px; border-radius: 8px; font-size: 15px; line-height: 1.8;">
+            <ul style="list-style-type: none; padding-left: 0;">
+                <li><strong><a href="#sec1" style="color: var(--primary-dark); text-decoration: none;">1. Relación de
+                            Módulos (Trazabilidad)</a></strong></li>
+                <li><strong><a href="#sec2" style="color: var(--primary-dark); text-decoration: none;">2. Administración
+                            y Configuración</a></strong>
+                    <ul style="list-style-type: none; padding-left: 20px;">
+                        <li><a href="#sec2-1" style="color: var(--text);">2.1 Creación de Empresa y Tipo de Sociedad</a>
+                        </li>
+                        <li><a href="#sec2-2" style="color: var(--text);">2.2 Parámetros Contables Generales</a></li>
+                        <li><a href="#sec2-3" style="color: var(--text);">2.3 Gestión del Plan de Cuentas</a> <span
+                                style="color: #e74c3c; font-size: 12px; font-weight: bold;">(DESTACADO)</span></li>
+                        <li><a href="#sec2-4" style="color: var(--text);">2.4 Importación, Exportación y Casos de
+                                Estudio</a></li>
+                    </ul>
+                </li>
+                <li><strong><a href="#sec3" style="color: var(--primary-dark); text-decoration: none;">3. Módulo de
+                            Compras (MM)</a></strong></li>
+                <li><strong><a href="#sec4" style="color: var(--primary-dark); text-decoration: none;">4. Módulo de
+                            Inventario (WM)</a></strong> <span
+                        style="color: #e74c3c; font-size: 12px; font-weight: bold;">(DESTACADO)</span>
+                    <ul style="list-style-type: none; padding-left: 20px;">
+                        <li><a href="#sec4-1" style="color: var(--text);">4.1 Creación y Maestro de Productos</a></li>
+                        <li><a href="#sec4-2" style="color: var(--text);">4.2 Valorización y Métodos de Costeo</a></li>
+                        <li><a href="#sec4-3" style="color: var(--text);">4.3 Rebajas de Inventario y Mermas</a></li>
+                    </ul>
+                </li>
+                <li><strong><a href="#sec5" style="color: var(--primary-dark); text-decoration: none;">5. Módulo de
+                            Ventas (SD)</a></strong></li>
+                <li><strong><a href="#sec6" style="color: var(--primary-dark); text-decoration: none;">6. Tesorería (FI)
+                            y Asientos Manuales</a></strong></li>
+                <li><strong><a href="#sec7" style="color: var(--primary-dark); text-decoration: none;">7. Reportes y
+                            Análisis Financiero</a></strong></li>
+            </ul>
+        </div>
+    </div>
+
     <!-- SECCION 1: RELACIÓN DE MÓDULOS -->
-    <div class="page">
+    <div class="page" id="sec1">
         <h2><i class="fas fa-project-diagram"></i> 1. Relación de Módulos (Trazabilidad)</h2>
         <p><strong>EDU-TRACE ERP</strong> es una aplicación web de tipo software educativo que simula un Sistema de
             Gestión Empresarial (ERP) integrado, orientado a la enseñanza de contabilidad mediante la ejecución de
@@ -412,14 +454,46 @@
     </div>
 
     <!-- SECCION 2: ADMINISTRACIÓN Y CONFIGURACIÓN -->
-    <div class="page">
+    <div class="page" id="sec2">
         <h2><i class="fas fa-cog"></i> 2. Administración y Configuración</h2>
         <p>Antes de registrar transacciones operativas, es importante configurar los parámetros base de la empresa. Esto
             afectará mecánicamente cómo el ERP registra la contabilidad.</p>
 
-        <h3>2.1 Parámetros Contables <span class="module-link"><i class="fas fa-cog"></i> Administración >
+        <h3 id="sec2-1">2.1 Creación de Empresa y Tipo de Sociedad <span class="module-link"><i
+                    class="fas fa-building"></i>
+                Dashboard > Crear Empresa</span></h3>
+        <p>El primer paso en el ERP es crear su ecosistema de trabajo. Al presionar "Nueva Empresa", el sistema le
+            pedirá los datos de identificación (Nombre, RUT) y un parámetro vital: el <strong>Tipo de Sociedad</strong>.
+        </p>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--primary);"><i class="fas fa-landmark"></i>
+            </div>
+            <div class="process-content">
+                <h4 style="color:var(--primary-dark);">Impacto del Tipo de Sociedad en el Patrimonio</h4>
+                <p>La selección que usted haga (E.I.R.L., Ltda., SpA, o S.A.) <strong>NO crea las cuentas
+                        automáticamente</strong> para evitar descuadres en sistemas ya en marcha, pero sí define la
+                    normativa que <strong>usted deberá respetar al crear su Plan de Cuentas:</strong></p>
+                <ul>
+                    <li><strong>E.I.R.L. / Persona Natural:</strong> Utilizar cuentas básicas como <i>"Capital"</i> y
+                        <i>"Retiros"</i>.
+                    </li>
+                    <li><strong>Sociedad de Responsabilidad Limitada (Ltda.):</strong> Deberá usar cuentas
+                        personalizadas como <i>"Capital Social"</i> y la cuenta deudora <i>"Cuenta Obligada Socios"</i>.
+                    </li>
+                    <li><strong>SpA o S.A.:</strong> Se rigen por acciones, requiriendo cuentas estrictas como
+                        <i>"Capital Pagado"</i>, y las cuentas regularizadoras deudoras <i>"Acciones por Suscribir"</i>
+                        y <i>"Accionistas"</i>.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 id="sec2-2">2.2 Parámetros Contables Generales <span class="module-link"><i class="fas fa-cog"></i>
+                Administración >
                 Configuración</span></h3>
-        <p>En esta sección usted puede determinar ajustes estructurales para la entidad:</p>
+        <p>Una vez creada la empresa, en esta sección usted puede afinar ajustes estructurales para la entidad y editar
+            su Tipo de Sociedad si se equivocó al inicio:</p>
         <ul>
             <li><strong>Ajustes Tributarios:</strong> Modifique la Tasa de IVA (ej: 19%) o de Impuesto a la Renta. Las
                 operaciones de Venta/Compra aplicarán automáticamente esta tasa para segregar el IVA Débito o Crédito
@@ -455,11 +529,47 @@
                     (ej: un macro asiento que resuma las 50 ventas del mes).</p>
             </div>
         </div>
+        <h3 style="margin-top: 40px;" id="sec2-3">2.3 Gestión del Plan de Cuentas <span class="module-link"><i
+                    class="fas fa-sitemap"></i> Contabilidad > Plan de Cuentas</span></h3>
+        <p>El Plan de Cuentas es el corazón financiero de su empresa. Aquí se estructuran todas las clasificaciones
+            contables (Activos, Pasivos, Patrimonio, Ingresos y Gastos) donde aterrizarán las transacciones. <strong>El
+                sistema le permite construir un árbol de cuentas jerárquico a su medida.</strong></p>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--secondary);"><i class="fas fa-sitemap"></i>
+            </div>
+            <div class="process-content">
+                <h4 style="color:var(--secondary); margin-bottom: 5px;">Cuentas Agrupadoras vs. Transaccionales</h4>
+                <ul>
+                    <li><strong>Cuenta Agrupadora (Nivel Título/Subtítulo):</strong> Se configuran marcando "Es cuenta
+                        agrupadora" al crearlas (ej: "1. Activos" o "1.1 Activos Corrientes"). <strong>No reciben montos
+                            directamente</strong>, solo suman los saldos acumulados de sus cuentas hijas.</li>
+                    <li><strong>Cuenta Transaccional (Imputable):</strong> Son las cuentas finales donde realmente se
+                        insertan los montos operacionales (ej: "1.1.01 Caja Banco Estado"). Se configuran desmarcando la
+                        opción "Es cuenta agrupadora" y asignándoles obligatoriamente una cuenta "Padre".</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="highlight-box highlight-warning">
+            <h4><i class="fas fa-balance-scale"></i> Clasificación, Naturaleza y Cuadratura</h4>
+            <p>Al crear cualquier cuenta nueva imputable, es vital definir rigurosamente tres parámetros para no
+                comprometer el motor contable del ERP:
+                <br>• <strong>Tipo:</strong> Indica a qué estado financiero pertenece (Activo, Pasivo, Patrimonio,
+                Ingreso, Gasto).
+                <br>• <strong>Naturaleza:</strong> Define si su saldo natural aumenta al Debe (Deudora) o al Haber
+                (Acreedora).
+                <br><em>Nota Técnica: Si usted configura de forma errónea la naturaleza (ej: configura la cuenta "Caja"
+                    como tipo Pasivo y naturaleza Acreedora), los libros Mayores reaccionarán al revés frente a los
+                    cobros, y su Balance de 8 Columnas mostrará graves distorsiones lógicas.</em>
+            </p>
+        </div>
     </div>
 
-    <!-- SECCION 2.5: IMPORTACION Y DEMOS -->
+    <!-- SECCION 2.4: IMPORTACION Y DEMOS -->
     <div class="page" style="page-break-before: auto !important;"> <!-- Continued from admin -->
-        <h3>2.3 Importación, Exportación y Casos de Estudio <span class="module-link"><i class="fas fa-file-import"></i>
+        <h3 id="sec2-4">2.4 Importación, Exportación y Casos de Estudio <span class="module-link"><i
+                    class="fas fa-file-import"></i>
                 Administrar > Importar/Exportar</span></h3>
 
         <p>El sistema está diseñado para que usted no empiece desde cero si no lo desea. Puede cargar ecosistemas
@@ -502,7 +612,7 @@
     </div>
 
     <!-- SECCION 3: COMPRAS -->
-    <div class="page">
+    <div class="page" id="sec3">
         <h2><i class="fas fa-shopping-cart"></i> 3. Módulo de Compras (MM)</h2>
         <p>Gestiona el ciclo de abastecimiento, conocido como <strong>Purchase-to-Pay (P2P)</strong>. Muestra cómo una
             orden desencadena la logística y el reconocimiento de obligaciones con proveedores.</p>
@@ -568,9 +678,98 @@
     </div>
 
 
-    <!-- SECCION 4: VENTAS -->
-    <div class="page">
-        <h2><i class="fas fa-store"></i> 4. Módulo de Ventas (SD)</h2>
+    <!-- SECCION 4: INVENTARIO (NUEVA) -->
+    <div class="page" id="sec4" style="page-break-before: always;">
+        <h2><i class="fas fa-boxes"></i> 4. Módulo de Inventario (WM)</h2>
+        <p>El sistema cuenta con un control de inventario perpetuo y valorizado. A diferencia de sistemas contables
+            básicos, EDU-TRACE ERP conecta el Kardex físico de la bodega directamente con los saldos del balance.</p>
+
+        <h3 id="sec4-1">4.1 Creación y Maestro de Productos <span class="module-link"><i class="fas fa-box"></i>
+                Inventario >
+                Productos</span></h3>
+        <p>Para poder comprar o vender, primero debe existir el artículo en el sistema.</p>
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-barcode"></i></div>
+            <div class="process-content">
+                <h4>Definición del Material</h4>
+                <p>Al crear un producto, usted define su <strong>SKU</strong> (Código único), <strong>Nombre</strong> y
+                    <strong>Precio de Venta Sugerido</strong>.
+                </p>
+                <div class="highlight-box highlight-warning">
+                    <h4><i class="fas fa-exclamation-triangle"></i> El Costo Inicial es Cero</h4>
+                    <p>Observe que <strong>no se le pedirá ingresar el "Costo" del producto</strong> al crearlo. El
+                        costo unitario de un artículo se calcula matemáticamente de forma automática a medida que usted
+                        realiza compras formales (Recepciones) u operaciones de ajustes valorizados, respetando el
+                        método de costeo elegido.</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 id="sec4-2">4.2 Valorización y Métodos de Costeo</h3>
+        <p>Cada vez que ingresa mercadería, el ERP determina cuánto vale ese stock en su Activo. El mecanismo se define
+            en <i>Administración > Configuración</i>:</p>
+
+        <div class="process-step">
+            <div class="process-icon" style="background-color: var(--secondary);"><i class="fas fa-balance-scale"></i>
+            </div>
+            <div class="process-content">
+                <h4>A) Costo Promedio Ponderado (PMP) - <i>Recomendado</i></h4>
+                <p>Promedia el costo de las unidades antiguas con el costo de las nuevas unidades recién compradas. El
+                    resultado es un costo unitario suavizado y único para todo el stock de ese SKU. Es el método más
+                    utilizado comercialmente.</p>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="background-color: var(--info);"><i class="fas fa-layer-group"></i></div>
+            <div class="process-content">
+                <h4>B) FIFO (First-In, First-Out)</h4>
+                <p>El sistema lleva un control estricto de "lotes" de compra. Las primeras unidades que entraron a la
+                    bodega (con su costo histórico original) serán las primeras en ser costeadas cuando se realice una
+                    venta, sin mezclar precios.</p>
+            </div>
+        </div>
+
+        <h3 id="sec4-3">4.3 Rebajas de Inventario y Mermas</h3>
+        <p>El stock sale de la bodega a través de dos canales principales: el flujo natural de las ventas, o por eventos
+            anómalos (mermas).</p>
+
+        <div class="process-step">
+            <div class="process-icon"><i class="fas fa-truck"></i></div>
+            <div class="process-content">
+                <h4>Rebaja Automática (Ventas)</h4>
+                <p>Usted no tiene que descontar el inventario manualmente por cada venta. Al momento de generar una
+                    <strong>Guía de Despacho (Salida)</strong> en el módulo de Ventas, el sistema debita de la
+                    existencia física las cantidades involucradas y determina el impacto financiero.
+                </p>
+                <div class="accounting-impact">
+                    <p><i class="fas fa-calculator"></i> <strong>Asiento Automático (Costo de Ventas):</strong></p>
+                    <span class="debit">Cargo (Debe):</span> Costo de Ventas (Pérdida)<br>
+                    <span class="credit">Abono (Haber):</span> Inventario / Mercaderías (Disminución de Activo)
+                </div>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="background-color: var(--error);"><i class="fas fa-fire-alt"></i></div>
+            <div class="process-content">
+                <h4>Rebaja Manual (Ajustes y Mermas) <span class="module-link"><i class="fas fa-sliders-h"></i>
+                        Inventario > Ajustes</span></h4>
+                <p>Si descubre que faltan productos por robo, daño, caducidad o errores de conteo, debe hacer un
+                    <strong>Ajuste de Salida</strong> seleccionando el motivo correspondiente.
+                </p>
+                <div class="accounting-impact">
+                    <p><i class="fas fa-calculator"></i> <strong>Asiento Generado por Merma:</strong></p>
+                    <span class="debit">Cargo (Debe):</span> Pérdida por Merma / Mermas de Inventario (Pérdida)<br>
+                    <span class="credit">Abono (Haber):</span> Inventario / Mercaderías (Disminución de Activo)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 5: VENTAS -->
+    <div class="page" id="sec5">
+        <h2><i class="fas fa-store"></i> 5. Módulo de Ventas (SD)</h2>
         <p>Gestiona el ciclo comercial, el llamado flujo <strong>Order-to-Cash (O2C)</strong>. Desde la solicitud hasta
             el reconocimiento de la rentabilidad bruta.</p>
 
@@ -636,9 +835,9 @@
     </div>
 
 
-    <!-- SECCION 5: TESORERIA Y ASIENTOS -->
-    <div class="page">
-        <h2><i class="fas fa-coins"></i> 5. Tesorería (FI) y Asientos Manuales</h2>
+    <!-- SECCION 6: TESORERIA Y ASIENTOS -->
+    <div class="page" id="sec6">
+        <h2><i class="fas fa-coins"></i> 6. Tesorería (FI) y Asientos Manuales</h2>
 
         <p>Tesorería controla el último eslabón de todos los ciclos comerciales: <strong>Los Flujos de
                 Efectivo.</strong></p>
@@ -671,7 +870,7 @@
                 compensación bancaria cuando el portador cobre el cheque real.</p>
         </div>
 
-        <h3 style="margin-top: 40px;">Uso Correto de Asientos Manuales <span class="module-link"><i
+        <h3 style="margin-top: 40px;">Uso Correcto de Asientos Manuales <span class="module-link"><i
                     class="fas fa-book"></i> Asientos Contables</span></h3>
         <p>El libro de Asientos Manuales en Contabilidad (GL) <strong>NO DEBE SER USADO para giros normales</strong>
             (ventas diarias, pago de facturas), ya que esto rompería la automatización e historial logístico de
@@ -688,9 +887,9 @@
     </div>
 
 
-    <!-- SECCION 6: REPORTES AVANZADOS -->
-    <div class="page">
-        <h2><i class="fas fa-chart-bar"></i> 6. Reportes y Análisis Financiero</h2>
+    <!-- SECCION 7: REPORTES AVANZADOS -->
+    <div class="page" id="sec7">
+        <h2><i class="fas fa-chart-bar"></i> 7. Reportes y Análisis Financiero</h2>
         <p>Finalmente, todas las operaciones de Compras, Ventas, Caja y Asientos convergen dinámicamente en estados
             financieros en tiempo real. <strong>Todo reporte tiene opción directa de Exportar a PDF en la
                 cabecera.</strong></p>
@@ -714,7 +913,7 @@
             <li><strong>Resumen Gráfico:</strong> Desglosa usando inteligibles Dashboards (gráficos *doughnut* y de
                 barras) para responder visualmente: ¿Dónde está concentrada mi riqueza? ¿Es efectivo rápido o activos
                 inmovilizados?</li>
-            <li><strong>Tabla de Detalles (Mayoización Rápida):</strong> Explora línea a línea saldo positivo (Deudor)
+            <li><strong>Tabla de Detalles:</strong> Explora línea a línea saldo positivo (Deudor)
                 vs negativo (Acreedor) de un catálogo específico.</li>
         </ul>
 
@@ -738,7 +937,7 @@
             <div class="process-content">
                 <h4>Nivel de Endeudamiento (Solvencia)</h4>
                 <p>Indica de quién es realmente la empresa. <strong>Deuda sobre Activo Total</strong>. Una métrica
-                    saludable suele estar por debajo del 60%; superior a esto la AI del ERP marcará alerta naranja o
+                    saludable suele estar por debajo del 60%; superior a esto el sistema marcará alerta naranja o
                     roja.</p>
             </div>
         </div>
@@ -758,8 +957,8 @@
 
         <p
             style="margin-top: 60px; text-align: center; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); padding-top:20px;">
-            © 2025 EDU-TRACE ERP. Todos los derechos reservados. <br> Documento interactivo y analítico generado para
-            formación académica en contabilidad.
+            © 2025 EDU-TRACE ERP. Todos los derechos reservados. <br> Documento generado para formación académica en
+            contabilidad.
         </p>
     </div>
 

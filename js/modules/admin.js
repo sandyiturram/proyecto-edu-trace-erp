@@ -398,9 +398,20 @@ const AdminModule = {
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
+                                    <label class="form-label">Tipo de Sociedad</label>
+                                    <select class="form-control" name="companyType">
+                                        <option value="eirl" ${company.companyType === 'eirl' ? 'selected' : ''}>E.I.R.L. / Persona Natural</option>
+                                        <option value="ltda" ${company.companyType === 'ltda' ? 'selected' : ''}>Soc. Responsabilidad Limitada (Ltda.)</option>
+                                        <option value="spa" ${company.companyType === 'spa' ? 'selected' : ''}>Sociedades por Acciones (SpA)</option>
+                                        <option value="sa" ${company.companyType === 'sa' ? 'selected' : ''}>Sociedad Anónima (S.A.)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-label">Dirección</label>
                                     <input type="text" class="form-control" name="address" value="${company.address || ''}">
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label class="form-label">Teléfono</label>
                                     <input type="text" class="form-control" name="phone" value="${company.phone || ''}">

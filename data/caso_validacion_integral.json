@@ -1,0 +1,862 @@
+{
+  "exportDate": "2026-03-10T15:00:00.000Z",
+  "companyId": "comp-val-001",
+  "companies": [
+    {
+      "id": "comp-val-001",
+      "name": "Importadora Global Ltda.",
+      "rut": "76.111.222-3",
+      "industry": "Comercio",
+      "companyType": "ltda",
+      "inventoryMethod": "PMP",
+      "accountingSystem": "centralized",
+      "creationDate": "2026-01-01T10:00:00.000Z",
+      "updatedAt": "2026-03-10T15:00:00.000Z"
+    }
+  ],
+  "accounts": [
+    {
+      "id": "acc-1",
+      "code": "1",
+      "name": "ACTIVOS",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": null,
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-11",
+      "code": "1.1",
+      "name": "ACTIVOS CORRIENTES",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-1",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1110",
+      "code": "1.1.10",
+      "name": "Efectivo y Equivalentes",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-11",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1111",
+      "code": "1.1.10.01",
+      "name": "Caja",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1112",
+      "code": "1.1.10.02",
+      "name": "Banco de Chile",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1113",
+      "code": "1.1.10.03",
+      "name": "Banco Estado",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1120",
+      "code": "1.1.20",
+      "name": "Deudores Comerciales",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-11",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1121",
+      "code": "1.1.20.01",
+      "name": "Clientes",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1122",
+      "code": "1.1.20.02",
+      "name": "Documentos por Cobrar",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1123",
+      "code": "1.1.20.03",
+      "name": "Deudores Varios",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1130",
+      "code": "1.1.30",
+      "name": "Inventarios",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-11",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1131",
+      "code": "1.1.30.01",
+      "name": "Mercaderías",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1132",
+      "code": "1.1.30.02",
+      "name": "Materias Primas",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1140",
+      "code": "1.1.40",
+      "name": "Impuestos por Recuperar",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-11",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1141",
+      "code": "1.1.40.01",
+      "name": "IVA Crédito Fiscal",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1140",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1142",
+      "code": "1.1.40.02",
+      "name": "PPM",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1140",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-12",
+      "code": "1.2",
+      "name": "ACTIVOS NO CORRIENTES",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-1",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1210",
+      "code": "1.2.10",
+      "name": "Propiedades, Planta y Equipo",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-12",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1211",
+      "code": "1.2.10.01",
+      "name": "Muebles y Útiles",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1210",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1212",
+      "code": "1.2.10.02",
+      "name": "Equipos Computacionales",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1210",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1213",
+      "code": "1.2.10.03",
+      "name": "Vehículos",
+      "type": "asset",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-1210",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-1214",
+      "code": "1.2.10.04",
+      "name": "Depreciación Acumulada",
+      "type": "asset",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-1210",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2",
+      "code": "2",
+      "name": "PASIVOS",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": null,
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-21",
+      "code": "2.1",
+      "name": "PASIVOS CORRIENTES",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-2",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2110",
+      "code": "2.1.10",
+      "name": "Cuentas por Pagar",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-21",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2111",
+      "code": "2.1.10.01",
+      "name": "Proveedores",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2112",
+      "code": "2.1.10.02",
+      "name": "Documentos por Pagar",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2113",
+      "code": "2.1.10.03",
+      "name": "Acreedores Varios",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2120",
+      "code": "2.1.20",
+      "name": "Obligaciones Bancarias",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-21",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2121",
+      "code": "2.1.20.01",
+      "name": "Préstamos Bancarios Corto Plazo",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2130",
+      "code": "2.1.30",
+      "name": "Impuestos y Leyes Sociales",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-21",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2131",
+      "code": "2.1.30.01",
+      "name": "IVA Débito Fiscal",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2132",
+      "code": "2.1.30.02",
+      "name": "IVA por Pagar",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2133",
+      "code": "2.1.30.03",
+      "name": "Impuesto a la Renta por Pagar",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2134",
+      "code": "2.1.30.04",
+      "name": "Leyes Sociales por Pagar",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-2135",
+      "code": "2.1.30.05",
+      "name": "Sueldos por Pagar",
+      "type": "liability",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-2130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3",
+      "code": "3",
+      "name": "PATRIMONIO",
+      "type": "equity",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": null,
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3110",
+      "code": "3.1.10",
+      "name": "Capital",
+      "type": "equity",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-3",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3111",
+      "code": "3.1.10.01",
+      "name": "Capital Social",
+      "type": "equity",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-3110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3112",
+      "code": "3.1.10.02",
+      "name": "Cuenta Obligada Socios",
+      "type": "equity",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-3110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3113",
+      "code": "3.1.10.03",
+      "name": "Cuenta Particular Socios",
+      "type": "equity",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-3110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3120",
+      "code": "3.1.20",
+      "name": "Resultados Acumulados",
+      "type": "equity",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-3",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3121",
+      "code": "3.1.20.01",
+      "name": "Utilidades Retenidas",
+      "type": "equity",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-3120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-3122",
+      "code": "3.1.20.02",
+      "name": "Resultado del Ejercicio",
+      "type": "equity",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-3120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-4",
+      "code": "4",
+      "name": "INGRESOS",
+      "type": "revenue",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": null,
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-4110",
+      "code": "4.1.10",
+      "name": "Ingresos Operacionales",
+      "type": "revenue",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-4",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-4111",
+      "code": "4.1.10.01",
+      "name": "Ingresos por Ventas",
+      "type": "revenue",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-4110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-4112",
+      "code": "4.1.10.02",
+      "name": "Ingresos por Servicios",
+      "type": "revenue",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-4110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-4120",
+      "code": "4.1.20",
+      "name": "Ingresos No Operacionales",
+      "type": "revenue",
+      "nature": "credit",
+      "isGroup": true,
+      "parentId": "acc-4",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-4121",
+      "code": "4.1.20.01",
+      "name": "Otros Ingresos",
+      "type": "revenue",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-4120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-4122",
+      "code": "4.1.20.02",
+      "name": "Ingresos Financieros",
+      "type": "revenue",
+      "nature": "credit",
+      "isGroup": false,
+      "parentId": "acc-4120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5",
+      "code": "5",
+      "name": "GASTOS",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": null,
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5110",
+      "code": "5.1.10",
+      "name": "Costos de Explotación",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-5",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5111",
+      "code": "5.1.10.01",
+      "name": "Costo de Ventas",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5112",
+      "code": "5.1.10.02",
+      "name": "Pérdida por Merma",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5110",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5120",
+      "code": "5.1.20",
+      "name": "Gastos de Administración",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-5",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5121",
+      "code": "5.1.20.01",
+      "name": "Sueldos Base",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5122",
+      "code": "5.1.20.02",
+      "name": "Gratificaciones",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5123",
+      "code": "5.1.20.03",
+      "name": "Aportes Patronales",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5124",
+      "code": "5.1.20.04",
+      "name": "Honorarios",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5125",
+      "code": "5.1.20.05",
+      "name": "Arriendos",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5126",
+      "code": "5.1.20.06",
+      "name": "Servicios Básicos",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5127",
+      "code": "5.1.20.07",
+      "name": "Depreciación",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5128",
+      "code": "5.1.20.08",
+      "name": "Gastos Generales",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5120",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5130",
+      "code": "5.1.30",
+      "name": "Gastos No Operacionales",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": true,
+      "parentId": "acc-5",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5131",
+      "code": "5.1.30.01",
+      "name": "Gastos Bancarios",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5132",
+      "code": "5.1.30.02",
+      "name": "Intereses Pagados",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5130",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "acc-5133",
+      "code": "5.1.30.03",
+      "name": "Diferencia de Cambio",
+      "type": "expense",
+      "nature": "debit",
+      "isGroup": false,
+      "parentId": "acc-5130",
+      "companyId": "comp-val-001"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-val-1",
+      "code": "NOTE-01",
+      "name": "Notebook Profesional X",
+      "stock": 15,
+      "price": 850000,
+      "cost": 600000,
+      "basePrice": 0,
+      "categoryId": null,
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "prod-val-2",
+      "code": "MON-24",
+      "name": "Monitor LED 24 Pulgadas",
+      "stock": 25,
+      "price": 120000,
+      "cost": 85000,
+      "basePrice": 0,
+      "categoryId": null,
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "prod-val-3",
+      "code": "KEY-MECH",
+      "name": "Teclado Mecánico RGB",
+      "stock": 50,
+      "price": 45000,
+      "cost": 25000,
+      "basePrice": 0,
+      "categoryId": null,
+      "companyId": "comp-val-001"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "supp-val-1",
+      "rut": "76.555.444-1",
+      "name": "Distribuidora Tecnológica S.A.",
+      "email": "ventas@distribtec.cl",
+      "phone": "+56911112222",
+      "address": "Av. Santiago 100",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "supp-val-2",
+      "rut": "77.888.999-5",
+      "name": "Importaciones Oriente SpA",
+      "email": "contacto@oriente.cl",
+      "phone": "+56933334444",
+      "address": "Calle Valparaíso 200",
+      "companyId": "comp-val-001"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust-val-1",
+      "rut": "15.222.333-4",
+      "name": "Juan Pérez",
+      "email": "juan@example.cl",
+      "phone": "+56955556666",
+      "address": "Av. Libertad 300",
+      "companyId": "comp-val-001"
+    },
+    {
+      "id": "cust-val-2",
+      "rut": "76.000.111-2",
+      "name": "Empresa Comercial ABC Ltda.",
+      "email": "compras@abc.cl",
+      "phone": "+56977778888",
+      "address": "Av. El Salto 400",
+      "companyId": "comp-val-001"
+    }
+  ],
+  "journalEntries": [
+    {
+      "id": "entry-val-1",
+      "date": "2026-03-01",
+      "description": "Asiento de Apertura Comercial Mensualizado",
+      "type": "opening",
+      "status": "posted",
+      "totalDebit": 25000000,
+      "totalCredit": 25000000,
+      "companyId": "comp-val-001",
+      "createdAt": "2026-03-01T10:00:00.000Z",
+      "lines": [
+        {
+          "accountId": "acc-1111",
+          "debit": 3000000,
+          "credit": 0
+        },
+        {
+          "accountId": "acc-1112",
+          "debit": 5000000,
+          "credit": 0
+        },
+        {
+          "accountId": "acc-1121",
+          "debit": 2500000,
+          "credit": 0
+        },
+        {
+          "accountId": "acc-1131",
+          "debit": 12375000,
+          "credit": 0
+        },
+        {
+          "accountId": "acc-3112",
+          "debit": 2125000,
+          "credit": 0
+        },
+        {
+          "accountId": "acc-2111",
+          "debit": 0,
+          "credit": 5000000
+        },
+        {
+          "accountId": "acc-3111",
+          "debit": 0,
+          "credit": 20000000
+        }
+      ]
+    }
+  ],
+  "invoices": [
+    {
+      "id": "inv-val-1",
+      "number": "500",
+      "type": "sale",
+      "date": "2026-02-20",
+      "dueDate": "2026-03-20",
+      "entityId": "cust-val-2",
+      "netAmount": 2100840,
+      "taxAmount": 399160,
+      "totalAmount": 2500000,
+      "status": "pending",
+      "items": [],
+      "journalEntryId": null,
+      "companyId": "comp-val-001",
+      "createdAt": "2026-02-20T10:00:00.000Z"
+    },
+    {
+      "id": "inv-val-2",
+      "number": "8500",
+      "type": "purchase",
+      "date": "2026-02-15",
+      "dueDate": "2026-03-15",
+      "entityId": "supp-val-1",
+      "netAmount": 4201681,
+      "taxAmount": 798319,
+      "totalAmount": 5000000,
+      "status": "pending",
+      "items": [],
+      "journalEntryId": null,
+      "companyId": "comp-val-001",
+      "createdAt": "2026-02-15T10:00:00.000Z"
+    }
+  ],
+  "payments": [],
+  "settings": {
+    "moduleSettings": {}
+  }
+}

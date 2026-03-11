@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Creación de Casos | EDU-TRACE ERP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a6ed1;
+            --primary-dark: #064280;
+            --primary-light: #e6f0f9;
+            --secondary: #6c5ce7;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --bg-body: #f8fafc;
+            --page-width: 210mm;
+            /* A4 Width */
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            background: var(--bg-body);
+        }
+
+        /* Paper Layout for Screen */
+        .page {
+            width: var(--page-width);
+            min-height: 297mm;
+            /* A4 Height */
+            padding: 20mm;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            /* Ensure clear breaks between main pages */
+        }
+
+        /* COVER PAGE */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 257mm;
+        }
+
+        .cover-logo {
+            font-size: 80px;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .cover-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin: 0;
+            color: var(--primary-dark);
+            line-height: 1.1;
+        }
+
+        .cover-subtitle {
+            font-size: 24px;
+            color: var(--text-muted);
+            margin: 20px 0 60px;
+        }
+
+        .cover-info {
+            border-top: 2px solid var(--primary-light);
+            padding-top: 30px;
+            width: 80%;
+            text-align: left;
+            margin: 0 auto;
+        }
+
+        .cover-info p {
+            margin: 5px 0;
+        }
+
+        /* HEADINGS */
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--primary-dark);
+            margin-top: 1.5em;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2 i {
+            width: 30px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        h3 {
+            font-size: 18px;
+            color: var(--secondary);
+            border-left: 4px solid var(--secondary);
+            padding-left: 10px;
+        }
+
+        /* CONTENT ELEMENTS */
+        .highlight-box {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            page-break-inside: avoid;
+        }
+
+        .highlight-info {
+            background: #eff6ff;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .highlight-success {
+            background: #f0fdf4;
+            border-left: 5px solid #22c55e;
+        }
+
+        .highlight-warning {
+            background: #fffbeb;
+            border-left: 5px solid #f59e0b;
+        }
+
+        .highlight-danger {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+        }
+
+        /* PROCESS STEPS (Like Help System) */
+        .process-step {
+            display: flex;
+            margin-bottom: 25px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            page-break-inside: avoid;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .process-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .process-content {
+            flex: 1;
+        }
+
+        .process-content h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .relation-box {
+            background: #fdf2f8;
+            border: 1px solid #fbcfe8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #9d174d;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            page-break-inside: avoid;
+        }
+
+        .relation-box i {
+            font-size: 24px;
+        }
+
+        /* DATA TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            page-break-inside: avoid;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        /* CODE BLOCK */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+            page-break-inside: avoid;
+        }
+
+        /* PRINT OPTIMIZATION */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                min-height: auto;
+                padding: 15mm;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            h2 {
+                page-break-before: always;
+                margin-top: 0;
+            }
+
+            .cover {
+                height: auto;
+                padding-top: 25vh;
+            }
+
+            /* Prevent breaking inside critical blocks */
+            .highlight-box,
+            .process-step,
+            .relation-box,
+            table,
+            .code-block {
+                page-break-inside: avoid;
+            }
+
+            .code-block {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+                border: 1px solid #cbd5e1;
+            }
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="print-btn no-print" onclick="window.print()">
+        <i class="fas fa-print"></i> Guardar como PDF
+    </button>
+
+    <!-- PORTADA -->
+    <div class="page">
+        <div class="cover">
+            <div class="cover-logo">
+                <img src="../img/logo_uv.png" alt="Universidad de Valparaíso"
+                    style="max-height: 140px; width: auto; max-width: 100%;">
+            </div>
+            <h1 class="cover-title">Guía de Casos Prácticos<br>EDU-TRACE ERP</h1>
+            <p class="cover-subtitle">Manual Estructurado para Docentes: Configuración e Implementación</p>
+            <div class="cover-info">
+                <p><strong>Autora:</strong> Sandy Iturra M.</p>
+                <p><strong>Destinatario:</strong> Profesores y facilitadores académicos.</p>
+                <p><strong>Propósito:</strong> Estandarizar metodologías de resolución, configuración de plan de cuentas
+                    y generación de casos mediante IA.</p>
+                <p><strong>Actualizado:</strong> 2026</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 1: TIPOLOGÍAS DE CASOS PRÁCTICOS -->
+    <div class="page">
+        <h2><i class="fas fa-sitemap"></i> 1. Tipologías de Casos Prácticos</h2>
+        <p>El sistema EDU-TRACE ERP permite trabajar bajo dos enfoques pedagógicos principales, dependiendo del nivel de
+            los estudiantes y los objetivos específicos de la clase impartida:</p>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:var(--info); background:#eff6ff;"><i class="fas fa-play"></i></div>
+            <div class="process-content">
+                <h4 style="color:var(--info);">A) Empresa desde Cero (Sin Historia Previa)</h4>
+                <p><strong>Descripción:</strong> El estudiante inicia con el sistema completamente vacío desde su propio
+                    navegador.</p>
+                <ul>
+                    <li><strong>Objetivo Pedagógico:</strong> Evaluar la capacidad del alumno para parametrizar un
+                        sistema, configurar datos maestros (clientes, proveedores, ítems, trabajadores) y realizar la
+                        apertura contable inicial.</li>
+                    <li><strong>Trabajo del Docente:</strong> Nulo a nivel de sistema. Solo debe proporcionar un
+                        planteamiento escrito (PDF) con los datos a ingresar.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:var(--success); background:#f0fdf4;"><i class="fas fa-forward"></i>
+            </div>
+            <div class="process-content">
+                <h4 style="color:var(--success);">B) Empresa en Marcha (Precargada con JSON)</h4>
+                <p><strong>Descripción:</strong> El estudiante recibe el sistema con datos preexistentes: saldos
+                    iniciales, facturas pendientes e historia.</p>
+                <ul>
+                    <li><strong>Objetivo Pedagógico:</strong> Simular el entorno real donde un analista contable se
+                        incorpora a una empresa operativa. Desarrolla habilidades de análisis, conciliación y
+                        continuidad.</li>
+                    <li><strong>Trabajo del Docente:</strong> Exige preparar un archivo de respaldo inicial (.json) para
+                        que el alumno lo importe antes de comenzar.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2><i class="fas fa-file-alt"></i> 2. Planteamiento del Estudiante</h2>
+        <p>Todo caso práctico entregado al alumno, independientemente de la modalidad (A o B), deberá contar con un PDF
+            estructurado de la siguiente forma mínima:</p>
+
+        <div class="highlight-box highlight-info">
+            <p><strong>1. Contexto de la Empresa:</strong> Razón Social, RUT (identificador tributario chileno), Giro
+                Comercial y Régimen Tributario.</p>
+            <p><strong>2. Instrucciones Previas:</strong>
+                <br><em>Caso Cero:</em> Indicar que deben empezar con la "Base de Datos Limpia".
+                <br><em>Caso en Marcha:</em> Proveer el link de descarga del archivo <code>BackupInicial.json</code> e
+                instruir la importación del mismo desde Administrar > Importar/Exportar.
+            </p>
+            <p><strong>3. Hechos Económicos:</strong> Listado cronológico de transacciones con montos, fechas e
+                identificador de documentos (Ej: Día 10, Compra factura N°100 a Proveedor ABC por $1.000.000 + IVA).</p>
+            <p><strong>4. Entregables Esperados:</strong> El docente solicitará generalmente los PDF/Excel de los
+                reportes (Balance de 8 Columnas y Cartolas) junto al JSON exportado desde el ERP al finalizar.</p>
+        </div>
+    </div>
+
+    <!-- SECCION 3: PLAN DE CUENTAS SOCIEDADES -->
+    <div class="page">
+        <h2><i class="fas fa-building"></i> 3. Manejo del Plan de Cuentas por Sociedad</h2>
+        <p>Un aspecto crucial al momento de diseñar un caso práctico es exigir (o pre-cargar) el <strong>Plan de Cuentas
+                patrimonial</strong> correcto de acuerdo con la figura legal de la empresa planteada.</p>
+
+        <div class="highlight-box highlight-info">
+            <h4><i class="fas fa-info-circle"></i> Importante: ¿Se inyectan las cuentas automáticamente?</h4>
+            <p><strong>NO.</strong> Aunque el sistema permite configurar el <em>Tipo de Sociedad</em> (E.I.R.L, Ltda.,
+                SpA o S.A.) desde la sección "Crear Empresa" o en "Configuración", <strong>el ERP no crea ni borra
+                    cuentas automáticamente en el Plan de Cuentas para evitar alterar o descuadrar balances
+                    existentes</strong>, asegurando además la libertad pedagógica del docente de evaluar la capacidad de
+                formulación de cuentas del estudiante. El tipo de empresa simplemente instruye al sistema, pero la
+                responsabilidad del ingreso recae en el Caso Práctico:</p>
+            <ul>
+                <li><strong>Si el Estudiante parte desde Cero (Caso A):</strong> El docente debe instruir explícitamente
+                    en el PDF del problema qué tipo de empresa es, e indicar al estudiante que es su responsabilidad
+                    crear en el módulo "Plan de Cuentas" las cuentas patrimoniales correctas.</li>
+                <li><strong>Si el Caso es Pre-cargado (Caso B):</strong> El docente armará el JSON asegurándose de
+                    inyectar las cuentas correctas. (Ver Sección 4: Generación con IA).</li>
+            </ul>
+        </div>
+
+        <p>A continuación se detalla cómo estructurar las cuentas de <strong>PATRIMONIO</strong> en el sistema según la
+            Ley sobre Sociedades y la normativa contable chilena:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 25%">Tipo de Sociedad</th>
+                    <th style="width: 35%">Estructura de Patrimonio Requerida</th>
+                    <th style="width: 40%">Asiento Contable de Apertura Típico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Emp. Individual / E.I.R.L.</strong></td>
+                    <td>
+                        <ul>
+                            <li>Capital</li>
+                            <li>Cuenta Particular Titular (Retiros)</li>
+                            <li>Resultado del Ejercicio</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <code>DEBE:</code> Caja / Banco<br>
+                        <code>HABER:</code> Capital
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Sociedad de Resp. Limitada (Ltda.)</strong></td>
+                    <td>
+                        <ul>
+                            <li>Capital Social</li>
+                            <li>Cuenta Obligada Socio A</li>
+                            <li>Cuenta Obligada Socio B</li>
+                            <li>Cuentas Particulares de cada socio</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <strong>1. Suscripción:</strong><br>
+                        <code>DEBE:</code> Cta. Obligada Socios<br>
+                        <code>HABER:</code> Capital Social<br>
+                        <strong>2. Pago:</strong><br>
+                        <code>DEBE:</code> Activos transferidos<br>
+                        <code>HABER:</code> Cta. Obligada Socios
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Sociedad Anónima (S.A.) ó SpA</strong></td>
+                    <td>
+                        <ul>
+                            <li>Capital Autorizado</li>
+                            <li>Acciones por Suscribir (-)</li>
+                            <li>Accionistas (Suscrito no pagado) (-)</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <strong>1. Autorización:</strong><br>
+                        <code>DEBE:</code> Acciones por Suscribir<br>
+                        <code>HABER:</code> Capital Autorizado<br>
+                        <strong>2. Suscripción:</strong><br>
+                        <code>DEBE:</code> Accionistas<br>
+                        <code>HABER:</code> Acciones por Suscribir
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box highlight-warning">
+            <h4><i class="fas fa-exclamation-triangle"></i> Validación de Naturaleza Contable</h4>
+            <p>Verifique que las cuentas regularizadoras de patrimonio (como "Acciones por Suscribir" o "Accionistas")
+                tengan su naturaleza parametricada como <strong>DEUDORA</strong> (Activo) en el Módulo de Plan de
+                Cuentas, a
+                pesar de que se muestren restando en la sección Patrimonial. De lo contrario, el Balance General no
+                cuadrará y arrojará errores de sumas.</p>
+        </div>
+    </div>
+
+    <!-- SECCION 4: INVENTARIO (NUEVA) -->
+    <div class="page">
+        <h2><i class="fas fa-boxes"></i> 4. Consideraciones Pedagógicas de Inventario (WM)</h2>
+        <p>Al diseñar casos de estudio para empresas comerciales que manejan stock, el docente debe ser riguroso en la
+            forma de plantear la gestión y valoración de los artículos para evitar confusiones en los estudiantes al
+            operar el ERP.</p>
+
+        <div class="highlight-box highlight-warning">
+            <h4><i class="fas fa-exclamation-triangle"></i> 1. Costo Inicial de un Producto Inexistente</h4>
+            <p>Es un error común en el planteamiento de casos que el docente indique: <i>"Cree el producto 'Silla', con
+                    Precio de Venta $10.000 y Costo $4.000"</i>.
+                <br><strong>Regla del ERP:</strong> El sistema EDU-TRACE (al igual que sistemas reales) <strong>NO
+                    permite digitar manualmente el Costo Unitario</strong> al crear un maestro de material. El
+                estudiante primero debe crear el producto "vacío de valor", y luego realizar al menos un <strong>Ajuste
+                    de Entrada (Inventario Inicial)</strong> o recibir una <strong>Factura de Compra</strong> valorizada
+                para que el sistema calcule recién allí el costo unitario de ese lote.
+            </p>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--secondary);"><i
+                    class="fas fa-balance-scale"></i></div>
+            <div class="process-content">
+                <h4 style="color:var(--secondary);">2. Explicitación del Método de Costeo (Obligatorio)</h4>
+                <p>Todo caso práctico que involucre compras y ventas de mercadería <strong>debe explicitar en las
+                        instrucciones previas (PDF)</strong> qué método de costeo utilizará la empresa.</p>
+                <ul>
+                    <li>Si no se indica, el estudiante no sabrá si configurar <strong>PMP (Promedio Ponderado)</strong>
+                        o <strong>FIFO</strong> en la sección <i>Administración > Configuración</i> del ERP.</li>
+                    <li>Omitir este paso hará que distintos estudiantes generen costos de venta diferentes,
+                        imposibilitando al docente tener un único <i>Balance de Cuadratura Final</i> válido (a menos que
+                        los precios de costo nunca varíen, lo cual le quita realismo al ejercicio).</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--danger);"><i class="fas fa-fire-alt"></i>
+            </div>
+            <div class="process-content">
+                <h4 style="color:var(--danger);">3. Eventos Especiales: Mermas y Ajustes</h4>
+                <p>Para exprimir las capacidades del ERP, considere agregar en su cronología de hechos económicos
+                    eventos excepcionales de inventario:
+                    <br><em>"Día 22: Fuga de agua en bodega daña 10 unidades del Producto X"</em>.
+                    <br>Esto obligará al alumno a ir al módulo <strong>Inventario > Ajustes</strong>, registrar una
+                    salida por "merma" u otro motivo, y reconocer correctamente una "Pérdida por Merma" en sus
+                    Resultados, en lugar de una simple cuenta transitoria de variaciones.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCION 5: IA Y JSON -->
+    <div class="page">
+        <h2><i class="fas fa-robot"></i> 5. Generación de casos prácticos con IA (Método JSON)</h2>
+        <p>Para crear casos de "Empresa en Marcha", en lugar de ingresar manualmente cientos de datos y transacciones,
+            usted puede apoyarse de Modelos de Lenguaje (ChatGPT, Claude, Gemini) usando un <strong>Prompt
+                Estandarizado</strong>.</p>
+
+        <h3>5.1 Prompt Estratégico (Actualizado)</h3>
+        <p>Copie el siguiente diálogo e insértelo en su IA preferida. Sustituya los datos entre corchetes
+            <code>[ ]</code> según la evaluación requerida y la IA generará todo el catálogo de cuentas de forma
+            perfecta respetando el código mercantil chileno:
+        </p>
+
+        <div class="highlight-box highlight-info" style="font-style: italic; font-size: 13.5px; line-height: 1.5;">
+            "Actúa como un desarrollador backend de software ERP educativo y Profesor Universitario de Contabilidad.
+            Genera un archivo JSON válido que servirá de
+            backup inicial e interactivo con la historia pre-cargada para un caso de estudio contable.<br><br>
+
+            <strong>Datos Empresa:</strong> Nombre [Comercializadora de Muebles SpA], RUT [76.543.210-9].<br>
+            <strong>Tipo de Empresa (companyType):</strong> [spa] <span style="font-size:11px; opacity:0.8;">(Opciones:
+                eirl, ltda, spa, sa)</span>.<br>
+            <strong>Método de Costeo (inventoryMethod):</strong> [PMP] <span
+                style="font-size:11px; opacity:0.8;">(Opciones: PMP, FIFO)</span>.<br>
+            <strong>Normativa a Aplicar:</strong> [IFRS] <span style="font-size:11px; opacity:0.8;">(Opciones: IFRS,
+                PCGA Locales)</span>.<br><br>
+
+            <strong>Reglas Técnicas del Archivo JSON:</strong><br>
+            1. Las propiedades raíz deben ser estrictamente y en la raíz: exportDate, companyId, companies (array),
+            accounts,
+            products, suppliers, customers, journalEntries.<br>
+            2. En el array <code>companies</code>, incluye los parámetros
+            <code>"companyType": "[el tipo de empresa]"</code>, <code>"inventoryMethod": "[el método señalado]"</code> y
+            el <code>"id"</code> que debe coincidir con el companyId general.<br>
+            3. <strong>accounts:</strong> Construye un Plan de Cuentas completo y exhaustivo usando niveles isGroup:
+            true/false y campos id,
+            code, name, type (asset/liability/equity/revenue/expense), nature (debit/credit), parentId y el id de la
+            empresa.<br>
+            <strong>4. NORMATIVA CONTABLE CRÍTICA (accounts):</strong>
+            A) Aplica estrictamente la Normativa solicitada. Si es 'IFRS', separa en 'Activos Corrientes/No Corrientes'
+            y 'Pasivos Corrientes/No Corrientes'. NUNCA uses la palabra 'Circulante'.<br>
+            B) Lee la variable 'companyType'. Si es 'ltda', debes usar 'Capital Social' y 'Cuentas Obligadas' (Deudora).
+            Si es 'spa' o 'sa', usa OBLIGATORIAMENTE
+            cuentas de 'Capital Pagado' y cuentas regularizadoras como 'Acciones por Suscribir' (type: equity, nature:
+            debit) y 'Accionistas' (type: equity, nature: debit). Si es 'eirl', usa simplemente 'Capital'.<br>
+            5. Crea [3] productos típicos con base a un rubro inventado y aígnales de inmediato <code>companyId</code>.
+            En este array indica el <code>stock</code>
+            inicial > 10, e inventa un <code>price</code> de venta, su <code>cost</code> promedio contable real estimado
+            y el <code>basePrice</code>.
+            Crea [2] proveedores y [2] clientes reales chilenos inyectándoles el <code>companyId</code>.<br>
+            6. <strong>journalEntries:</strong> OBLIGATORIO: Inserta 1 o más asientos tipo 'manual' y estado 'posted'.
+            El primero debe ser
+            el <strong>Asiento de Apertura Comercial</strong> que respete contablemente las reglas de apertura del
+            'companyType' que te indiqué e inyecte la provisión del <code>cost * stock</code> a la cuenta de Mercaderías
+            y el resto a Caja/Banco para cuadrar. Sus lines (líneas) deben coincidir con un 'accountId' exacto del array
+            accounts. Y debes generar 2 facturas por cobrar y 1 por pagar históricas en el array `invoices` relacionadas
+            a sus clientes/proveedores correspondientes.<br><br>
+            Imprime SOLO el código JSON de este archivo de importación. No agregues código Markdown (como ```json), ni
+            dejes comentarios explicativos en la respuesta. Todo debe ser un solo JSON contiguo para evitar errores de
+            parseo al copiar."
+        </div>
+
+        <div class="highlight-box highlight-warning" style="margin-top: 15px;">
+            <h4><i class="fas fa-save"></i> ¿Cómo crear el archivo físico para los alumnos?</h4>
+            <p style="margin-bottom:0;">Una vez que la Inteligencia Artificial le entregue la respuesta, siga estos
+                pasos estrictos:</p>
+            <ol style="margin-top:5px; margin-bottom:0;">
+                <li>Copie todo el texto que le devolvió la IA (asegúrese que comience con <code>{</code> y termine con
+                    <code>}</code>).</li>
+                <li>Abra el "Bloc de Notas" (Notepad) en Windows o "TextEdit" en Mac.</li>
+                <li>Pegue el contenido.</li>
+                <li>Haga clic en <strong>Archivo > Guardar Como...</strong></li>
+                <li>En la opción "Tipo" o "Formato", seleccione <strong>Todos los archivos (*.*)</strong>.</li>
+                <li>Nombre el archivo con extensión JSON. Ejemplo: <code>historia_empresa.json</code> y guárdelo. Este
+                    será el archivo histórico que deberá entregarle a sus estudiantes.</li>
+            </ol>
+        </div>
+
+        <h3>5.2 Estructura JSON del ERP</h3>
+        <p>El formato base esperado por la función <code>Importar/Exportar</code> del sistema es el siguiente:</p>
+        <div class="code-block">
+            {
+            "exportDate": "2026-03-10T12:00:00.000Z",
+            "companyId": "uuid-empresa",
+            "companies": [ { "id": "uuid-empresa", "name": "Mi Pyme", "rut": "...", "companyType": "spa",
+            "inventoryMethod": "PMP" } ],
+            "accounts": [ { "id": "acc-1", "code": "1.1.01", "name": "Caja", "type": "asset", "nature": "debit" } ],
+            "products": [ { "id": "prod-1", "code": "P01", "stock": 150, "price": 50000, "cost": 30000, "basePrice": 0 }
+            ],
+            "suppliers": [ ],
+            "customers": [ ],
+            "journalEntries": [ ]
+            }
+        </div>
+    </div>
+
+    <!-- SECCION 6: RECOMENDACIONES DE EVALUACIÓN -->
+    <div class="page" style="min-height: auto;">
+        <h2><i class="fas fa-check-double"></i> 6. Técnicas de Revisión y Trampas</h2>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--primary);"><i class="fas fa-compress-alt"></i>
+            </div>
+            <div class="process-content">
+                <h4>Revisión Cruzada mediante JSON</h4>
+                <p>En lugar de revisar decenas de reportes PDF de sus alumnos, solicíteles que entreguen el
+                    <strong>Archivo de Respaldo .json</strong> (botón rojo en Exportar).<br>Usted, como docente, crea
+                    una "Empresa Vacía Auxiliar" en su propio navegador y simplemente importa dicho JSON. <strong>El
+                        sistema completo de ese estudiante podrá ser revisado directamente en su pantalla</strong>.
+                    Podrá auditar la
+                    existencia de los asientos, la cuadratura, si costearon bien el inventario y por qué el balance no
+                    les cuadró.
+                </p>
+            </div>
+        </div>
+
+        <div class="process-step">
+            <div class="process-icon" style="color:#FFF; background:var(--warning);"><i class="fas fa-bomb"></i></div>
+            <div class="process-content">
+                <h4>Trampas Pedagógicas de Conciliación</h4>
+                <p>En casos precargados (JSON), deje inconsistencias deliberadas que el alumno deba subsanar el Día 1.
+                    Por ejemplo:</p>
+                <ul>
+                    <li>El Asiento de Apertura no contabilizó el saldo pendiente de una factura de un cliente.
+                        (Evaluación de regularización).</li>
+                    <li>Existe dinero en Cuenta Corriente en la Base de Datos, pero el Estado Bancario PDF del mes
+                        anterior muestra cheques aún en cartera por cobrar. (Evaluación de conciliación bancaria).</li>
+                </ul>
+            </div>
+        </div>
+
+        <p
+            style="margin-top: 40px; text-align: center; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); padding-top:20px;">
+            © 2026 EDU-TRACE ERP. Todos los derechos reservados.<br>Documento oficial para elaboración de casos prácticos Edu-Trace ERP.
+            
+        </p>
+    </div>
+
+    <!-- SECCION 7: ANEXO CASO INTEGRAL -->
+    <div class="page">
+        <h2><i class="fas fa-certificate"></i> 7. Anexo: Caso Práctico de Validación Integral (Descargable)</h2>
+        <p>Para poner a prueba la solidez del aprendizaje del estudiante y el funcionamiento cruzado de todos los
+            módulos del ERP (Comercio, Finanzas e Inventario), se propone el siguiente caso estructurado bajo la
+            <strong>Modalidad Centralizadora</strong>.
+        </p>
+
+        <div class="highlight-box highlight-success">
+            <h4><i class="fas fa-download"></i> Archivo Base JSON Incluido</h4>
+            <p>Este manual se acompaña del archivo físico <strong><code>caso_validacion_integral.json</code></strong>.
+                Este archivo contiene la historia inicial pre-cargada descrita en este anexo, lista para que el
+                estudiante la importe y comience a trabajar el Día 1.</p>
+        </div>
+
+        <h3>📚 Planteamiento para el Estudiante</h3>
+
+        <div class="process-step" style="background-color: #f8fafc; border: 1px dashed var(--secondary);">
+            <div class="process-content">
+                <h4 style="color: var(--secondary); margin-bottom: 5px;">Empresa: Importadora Global Ltda.</h4>
+                <p style="margin-top:0;"><strong>RUT:</strong> 76.111.222-3<br>
+                    <strong>Régimen:</strong> Sociedad de Responsabilidad Limitada. Sistema de Contabilización:
+                    Centralizado.<br>
+                    <strong>Método de Inventario:</strong> PMP (Precio Medio Ponderado)<br>
+                </p>
+                <hr style="border:0; border-top:1px solid #e2e8f0; margin:15px 0;">
+
+                <div
+                    style="background-color: #eef2ff; border-left: 4px solid #4f46e5; padding: 15px; margin-bottom: 20px;">
+                    <h5 style="color: #4f46e5; margin-top: 0; margin-bottom: 10px;"><i
+                            class="fas fa-chalkboard-teacher"></i> Instrucciones para el Docente (Distribución)</h5>
+                    <p style="margin-bottom: 5px; font-size: 13.5px;">Para aplicar este caso en clases, el docente debe
+                        seguir estos pasos:</p>
+                    <ol style="margin-top: 0; font-size: 13.5px; padding-left: 20px;">
+                        <li>Extraiga el archivo <code>data/caso_validacion_integral.json</code> provisto junto a este
+                            manual.</li>
+                        <li>Entregue este archivo a sus estudiantes (mediante correo, aula virtual, pendrive, etc.)
+                            junto con el "Documento de Hechos Económicos" (el listado de ejercicios a resolver).</li>
+                        <li>Asegúrese de instruir a los alumnos que <strong>no deben modificar</strong> el archivo
+                            manualmente, solo cargarlo en el sistema.</li>
+                    </ol>
+                </div>
+
+                <div
+                    style="background-color: #fdfae6; border-left: 4px solid #d97706; padding: 15px; margin-bottom: 20px;">
+                    <h5 style="color: #d97706; margin-top: 0; margin-bottom: 10px;"><i class="fas fa-user-graduate"></i>
+                        Paso a Paso para el Estudiante (Importación Inicial)</h5>
+                    <p style="margin-bottom: 5px; font-size: 13.5px;">Antes de comenzar a trabajar, el estudiante debe
+                        cargar el escenario inicial de la empresa "Importadora Global Ltda". El orden estricto a seguir
+                        es el siguiente:</p>
+                    <ol style="margin-top: 0; font-size: 13.5px; padding-left: 20px;">
+                        <li>Inicie sesión en <strong>EDU-TRACE ERP</strong>. No es necesario crear una empresa nueva.
+                        </li>
+                        <li>Diríjase al Módulo <strong>Administración</strong> usando el menú lateral y haga clic en la
+                            pestaña inferior <strong>"Importar/Exportar"</strong>.</li>
+                        <li>En la sección "Importar Datos", haga clic en <strong>Buscar archivo...</strong> y seleccione
+                            el archivo <code>caso_validacion_integral.json</code> que le entregó el profesor.</li>
+                        <li>Haga clic en el botón verde <strong>Importar Datos</strong> y espere a que el sistema
+                            confirme el éxito (alrededor de 120 registros insertados entresuentas, facturas,
+                            comprobantes y productos). Al cargar, la empresa actual cambiará automáticamente a
+                            "Importadora Global Ltda."</li>
+                        <li><strong>Verificación Vital:</strong> Para comprobar que la carga fue exitosa, diríjase al
+                            módulo <strong>Contabilidad > Libro Mayor</strong>. Asegúrese de que existe el "Asiento de
+                            Apertura" mostrando activos en Banco y Patrimonio.</li>
+                        <li>Ya está listo para comenzar a resolver los Hechos Económicos del mes.</li>
+                    </ol>
+                </div>
+
+                <p><strong>HECHOS ECONÓMICOS DEL MES:</strong></p>
+                <ul style="margin-bottom:0;">
+                    <li style="margin-bottom:10px;"><strong>Día 1 (Tesorería):</strong> El cliente "Empresa Comercial
+                        ABC Ltda." nos transfiere el pago adeudado histórico (Factura N° 500) directamente a nuestra
+                        cuenta bancaria. <i>(Instrucción oculta: Deben ir a Gestión de Cobranza y recaudar)</i>.</li>
+                    <li style="margin-bottom:10px;"><strong>Día 5 (Inventario):</strong> Ocurre un accidente en bodega y
+                        se destruyen totalmente 2 unidades de "Monitor LED 24 Pulgadas". Realizar el ajuste de salida
+                        con cargo a pérdida.</li>
+                    <li style="margin-bottom:10px;"><strong>Día 12 (Compras):</strong> Emitimos la Orden de Compra N°
+                        1001 a "Distribuidora Tecnológica S.A." por 50 unidades de "Teclado Mecánico RGB" a un precio
+                        unitario de $25.000 + IVA. Ese mismo día se recepciona la mercadería con Guía de Despacho y
+                        llega la Factura asociada, la cual <strong>se paga al contado</strong> con cheque.</li>
+                    <li style="margin-bottom:10px;"><strong>Día 18 (Ventas):</strong> El Cliente "Juan Pérez" nos compra
+                        10 Notebooks Profesional X y 5 Monitores LED. Emitimos Guía de Despacho de salida (rebajando
+                        inventario de forma automática) y la Factura a Crédito 30 días.</li>
+                    <li><strong>Fin de Mes (Contabilidad):</strong> Al ser una empresa Centralizadora, los libros
+                        auxiliares no han ido al Mayor. Vaya al Módulo Contabilidad > <strong>Centralización</strong> y
+                        genere el traspaso final del mes para poder emitir el Balance de 8 Columnas cuadrado.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
