@@ -894,7 +894,7 @@ Genera el JSON completo y válido, listo para copiar e importar.`;
             }
             const loading = Toast.loading('Cargando caso de estudio comercial...');
             try {
-                const response = await fetch('data/caso_estudio_comercial.json');
+                const response = await fetch('./data/caso_estudio_comercial.json');
                 if (!response.ok) throw new Error('No se pudo cargar el archivo');
                 const data = await response.json();
                 await CompanyService.importData(data);
@@ -932,7 +932,7 @@ Genera el JSON completo y válido, listo para copiar e importar.`;
             }
             const loading = Toast.loading('Cargando caso de sistema dual...');
             try {
-                const response = await fetch('data/caso_prueba_sistema_dual.json');
+                const response = await fetch('./data/caso_prueba_sistema_dual.json');
                 if (!response.ok) throw new Error('No se pudo cargar el archivo');
                 const data = await response.json();
                 const result = await CompanyService.importData(data);
@@ -952,7 +952,7 @@ Genera el JSON completo y válido, listo para copiar e importar.`;
             }
             const loading = Toast.loading('Cargando caso de estudio servicios...');
             try {
-                const response = await fetch('data/caso_estudio_servicios.json');
+                const response = await fetch('./data/caso_estudio_servicios.json');
                 if (!response.ok) throw new Error('No se pudo cargar el archivo');
                 const data = await response.json();
                 await CompanyService.importData(data);
