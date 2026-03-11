@@ -887,11 +887,6 @@ Genera el JSON completo y válido, listo para copiar e importar.`;
 
         // Cargar caso de estudio comercial
         document.getElementById('btn-load-case-study')?.addEventListener('click', async () => {
-            const company = CompanyService.getCurrent();
-            if (!company) {
-                Toast.warning('Seleccione una empresa primero');
-                return;
-            }
             const loading = Toast.loading('Cargando caso de estudio comercial...');
             try {
                 const response = await fetch('./data/caso_estudio_comercial.json');
@@ -925,11 +920,6 @@ Genera el JSON completo y válido, listo para copiar e importar.`;
 
         // Cargar caso de sistema dual (Centralizador)
         document.getElementById('btn-load-dual-case')?.addEventListener('click', async () => {
-            const company = CompanyService.getCurrent();
-            if (!company) {
-                Toast.warning('Seleccione una empresa primero');
-                return;
-            }
             const loading = Toast.loading('Cargando caso de sistema dual...');
             try {
                 const response = await fetch('./data/caso_prueba_sistema_dual.json');
@@ -945,11 +935,6 @@ Genera el JSON completo y válido, listo para copiar e importar.`;
 
         // Cargar caso de estudio servicios
         document.getElementById('btn-load-service-case')?.addEventListener('click', async () => {
-            const company = CompanyService.getCurrent();
-            if (!company) {
-                Toast.warning('Seleccione una empresa primero');
-                return;
-            }
             const loading = Toast.loading('Cargando caso de estudio servicios...');
             try {
                 const response = await fetch('./data/caso_estudio_servicios.json');
