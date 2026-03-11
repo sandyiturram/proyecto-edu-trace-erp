@@ -186,6 +186,21 @@ const DashboardModule = {
                         <i class="fas fa-file-import"></i> Importar Datos
                     </button>
                 </div>
+                
+                <div class="welcome-actions" style="margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--border-light); display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: center; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <button class="btn btn-outline" data-action="manual">
+                        <i class="fas fa-book-open"></i> Manual de Capacitación
+                    </button>
+                    <button class="btn btn-outline" data-action="accounting-course">
+                        <i class="fas fa-project-diagram"></i> Diagrama Contable
+                    </button>
+                    <button class="btn btn-outline" data-action="tutorial">
+                        <i class="fas fa-play-circle"></i> Tutorial Rápido
+                    </button>
+                    <button class="btn btn-outline" data-action="help">
+                        <i class="fas fa-question-circle"></i> Ayuda
+                    </button>
+                </div>
             </div>
         `;
     },

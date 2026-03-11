@@ -72,7 +72,7 @@ html_output = [
     "</style>",
     "</head>",
     "<body>",
-    "<h1>CÓDIGO FUENTE - PROYECTO ERP<br><small>Autora: Sandy Iturra Mena</small></h1>"
+    "<h1>PROYECTO EDU-TRACE ERP - CÓDIGO FUENTE<br><small>Autora: Sandy Iturra Mena</small></h1>"
 ]
 
 for filepath, ext in files_to_process:
