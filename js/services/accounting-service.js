@@ -217,10 +217,10 @@ const AccountingService = {
                 const debit = line.debit || 0;
                 const credit = line.credit || 0;
 
-                if (account.isContra) {
-                    account.balance += debitNature ? (credit - debit) : (debit - credit);
+                if (debitNature) {
+                    account.balance += (debit - credit);
                 } else {
-                    account.balance += debitNature ? (debit - credit) : (credit - debit);
+                    account.balance += (credit - debit);
                 }
                 processedLines++;
             }
