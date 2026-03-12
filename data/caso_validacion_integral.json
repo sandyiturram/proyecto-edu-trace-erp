@@ -897,7 +897,7 @@
       ]
     }
   ],
-  "invoices": [
+  "customerInvoices": [
     {
       "id": "inv-val-1",
       "number": "500",
@@ -905,15 +905,19 @@
       "date": "2026-02-20",
       "dueDate": "2026-03-20",
       "entityId": "cust-val-2",
-      "netAmount": 2100840,
-      "taxAmount": 399160,
-      "totalAmount": 2500000,
+      "net": 2100840,
+      "tax": 399160,
+      "total": 2500000,
+      "paid": 0,
+      "balance": 2500000,
       "status": "pending",
       "items": [],
       "journalEntryId": null,
       "companyId": "comp-val-001",
       "createdAt": "2026-02-20T10:00:00.000Z"
-    },
+    }
+  ],
+  "supplierInvoices": [
     {
       "id": "inv-val-2",
       "number": "8500",
@@ -921,9 +925,11 @@
       "date": "2026-02-15",
       "dueDate": "2026-03-15",
       "entityId": "supp-val-1",
-      "netAmount": 4201681,
-      "taxAmount": 798319,
-      "totalAmount": 5000000,
+      "net": 4201681,
+      "tax": 798319,
+      "total": 5000000,
+      "paid": 0,
+      "balance": 5000000,
       "status": "pending",
       "items": [],
       "journalEntryId": null,
