@@ -23,7 +23,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": null,
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-11",
@@ -33,7 +34,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-1",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1110",
@@ -43,7 +45,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-11",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1111",
@@ -53,7 +56,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 3000000
     },
     {
       "id": "acc-1112",
@@ -63,7 +67,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 5000000
     },
     {
       "id": "acc-1113",
@@ -73,7 +78,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1120",
@@ -83,7 +89,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-11",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1121",
@@ -93,7 +100,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 2500000
     },
     {
       "id": "acc-1122",
@@ -103,7 +111,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1123",
@@ -113,7 +122,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1130",
@@ -123,7 +133,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-11",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1131",
@@ -133,7 +144,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 12375000
     },
     {
       "id": "acc-1132",
@@ -143,7 +155,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1140",
@@ -153,7 +166,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-11",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1141",
@@ -163,7 +177,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1140",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1142",
@@ -173,7 +188,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1140",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-12",
@@ -183,7 +199,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-1",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1210",
@@ -193,7 +210,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-12",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1211",
@@ -203,7 +221,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1210",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1212",
@@ -213,7 +232,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1210",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1213",
@@ -223,7 +243,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-1210",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-1214",
@@ -233,7 +254,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-1210",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2",
@@ -243,7 +265,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": null,
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-21",
@@ -253,7 +276,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-2",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2110",
@@ -263,7 +287,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-21",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2111",
@@ -273,7 +298,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 5000000
     },
     {
       "id": "acc-2112",
@@ -283,7 +309,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2113",
@@ -293,7 +320,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2120",
@@ -303,7 +331,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-21",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2121",
@@ -313,7 +342,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2130",
@@ -323,7 +353,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-21",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2131",
@@ -333,7 +364,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2132",
@@ -343,7 +375,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2133",
@@ -353,7 +386,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2134",
@@ -363,7 +397,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-2135",
@@ -373,7 +408,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-2130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-3",
@@ -383,7 +419,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": null,
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-3110",
@@ -393,7 +430,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-3",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-3111",
@@ -403,7 +441,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-3110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 20000000
     },
     {
       "id": "acc-3112",
@@ -413,7 +452,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-3110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 2125000
     },
     {
       "id": "acc-3113",
@@ -423,7 +463,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-3110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-3120",
@@ -433,7 +474,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-3",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-3121",
@@ -443,7 +485,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-3120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-3122",
@@ -453,7 +496,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-3120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-4",
@@ -463,7 +507,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": null,
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-4110",
@@ -473,7 +518,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-4",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-4111",
@@ -483,7 +529,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-4110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-4112",
@@ -493,7 +540,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-4110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-4120",
@@ -503,7 +551,8 @@
       "nature": "credit",
       "isGroup": true,
       "parentId": "acc-4",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-4121",
@@ -513,7 +562,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-4120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-4122",
@@ -523,7 +573,8 @@
       "nature": "credit",
       "isGroup": false,
       "parentId": "acc-4120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5",
@@ -533,7 +584,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": null,
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5110",
@@ -543,7 +595,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-5",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5111",
@@ -553,7 +606,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5112",
@@ -563,7 +617,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5110",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5120",
@@ -573,7 +628,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-5",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5121",
@@ -583,7 +639,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5122",
@@ -593,7 +650,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5123",
@@ -603,7 +661,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5124",
@@ -613,7 +672,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5125",
@@ -623,7 +683,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5126",
@@ -633,7 +694,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5127",
@@ -643,7 +705,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5128",
@@ -653,7 +716,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5120",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5130",
@@ -663,7 +727,8 @@
       "nature": "debit",
       "isGroup": true,
       "parentId": "acc-5",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5131",
@@ -673,7 +738,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5132",
@@ -683,7 +749,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "acc-5133",
@@ -693,7 +760,8 @@
       "nature": "debit",
       "isGroup": false,
       "parentId": "acc-5130",
-      "companyId": "comp-val-001"
+      "companyId": "comp-val-001",
+      "balance": 0
     }
   ],
   "products": [

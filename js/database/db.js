@@ -409,6 +409,12 @@ const DB = {
             }
         }
 
+        // Recalcular saldos después de importar si hay asientos
+        if (data.journalEntries && data.journalEntries.length > 0) {
+            console.log('Recalculando saldos tras importación...');
+            await AccountingService.recalculateAccountBalances();
+        }
+
         return results;
     },
 
