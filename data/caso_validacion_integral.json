@@ -1,5 +1,13 @@
 {
   "exportDate": "2026-03-10T15:00:00.000Z",
+  "instructions": [
+    {
+      "day": 1,
+      "module": "Tesorería",
+      "action": "El cliente \"Empresa Comercial ABC Ltda.\" nos transfiere el pago adeudado histórico (Factura N° 500) directamente a nuestra cuenta bancaria.",
+      "hiddenInstruction": "Deben ir a Gestión de Cobranza y recaudar."
+    }
+  ],
   "companyId": "comp-val-001",
   "companies": [
     {
