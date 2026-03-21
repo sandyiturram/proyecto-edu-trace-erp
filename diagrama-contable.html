@@ -3748,17 +3748,17 @@
             const targetHash = `#${module}/${view}`;
 
             // Try to use opener window if available
-            if (window.opener && !window.opener.closed) {
-                try {
+            try {
+                if (window.opener && !window.opener.closed) {
                     // Check if App is available in opener
                     if (window.opener.App && typeof window.opener.App.navigate === 'function') {
                         window.opener.App.navigate(module, view);
                         window.opener.focus();
                         return;
                     }
-                } catch (e) {
-                    console.log('Cannot access opener, redirecting...', e);
                 }
+            } catch (e) {
+                console.log('Cannot access opener, redirecting...', e);
             }
 
             // Get the base path (same directory as this file)
