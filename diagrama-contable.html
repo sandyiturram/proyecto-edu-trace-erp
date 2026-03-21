@@ -3761,12 +3761,8 @@
                 console.log('Cannot access opener, redirecting...', e);
             }
 
-            // Get the base path (same directory as this file)
-            const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-            const targetUrl = basePath + 'index.html' + targetHash;
-
-            // Direct fallback: redirect current window to avoid popup blockers and origin issues
-            window.location.href = targetUrl;
+            // Direct fallback: redirect current window using native browser relative path resolution
+            window.location.href = 'index.html' + targetHash;
         };
 
         // Simulation navigation
