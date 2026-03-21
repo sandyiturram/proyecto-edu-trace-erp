@@ -3747,11 +3747,8 @@
             // Build the target URL with hash
             const targetHash = `#${module}/${view}`;
 
-            // Avoid Blocked frame origin errors when using file:// protocol locally
-            const isLocal = window.location.protocol === 'file:';
-
-            // Try to use opener window if available and not local
-            if (!isLocal && window.opener && !window.opener.closed) {
+            // Try to use opener window if available
+            if (window.opener && !window.opener.closed) {
                 try {
                     // Check if App is available in opener
                     if (window.opener.App && typeof window.opener.App.navigate === 'function') {

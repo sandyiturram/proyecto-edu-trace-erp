@@ -39,6 +39,33 @@ const AccountingService = {
     },
 
     /**
+     * Crea una nueva cuenta contable
+     */
+    async createAccount(data) {
+        const company = CompanyService.getCurrent();
+        if (!company) throw new Error('No hay empresa seleccionada');
+
+        // Validar código único
+        const existingCode = await this.getAccountByCode(data.code);
+        if (existingCode) {
+            throw new Error(`Ya existe una cuenta con el código ${data.code}`);
+        }
+
+        const account = {
+            id: Helpers.generateId(),
+            companyId: company.id,
+            ...data,
+            balance: 0,
+            isActive: true,
+            createdAt: new Date().toISOString()
+        };
+
+        const result = await DB.add('accounts', account);
+        await DB.logAudit(company.id, 'Contabilidad', 'cuenta_creada', `Cuenta ${account.code} creada`, account.id);
+        return result;
+    },
+
+    /**
      * Crea un nuevo asiento contable
      */
     async createJournalEntry(data) {

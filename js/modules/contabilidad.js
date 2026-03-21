@@ -1446,6 +1446,25 @@ Esto procesará todos los asientos contabilizados y actualizará los saldos de l
             title: isEdit ? 'Editar Cuenta Contable' : 'Nueva Cuenta Contable',
             size: 'medium',
             content: `
+                <div class="educational-help" style="margin-bottom: var(--space-4);">
+                    <button class="btn btn-outline" type="button" onclick="document.getElementById('account-help-content').classList.toggle('hidden');" style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: var(--warning-50); border-color: var(--warning-200);">
+                        <span><i class="fas fa-lightbulb" style="color: var(--warning-500); margin-right: 8px;"></i> Ayuda Pedagógica: ¿Cómo crear una cuenta?</span>
+                        <i class="fas fa-chevron-down" style="color: var(--warning-500);"></i>
+                    </button>
+                    <div id="account-help-content" class="hidden" style="background: var(--warning-50); border: 1px solid var(--warning-200); border-top: none; padding: var(--space-4); border-bottom-left-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary);">
+                        <p style="margin-bottom: var(--space-2);"><strong>1. Tipo de Cuenta:</strong><br>
+                        - <strong style="color: var(--primary-600);">Imputable:</strong> Recibe movimientos y se usa en asientos contables (Ej: "Caja" o "Banco").<br>
+                        - <strong style="color: var(--primary-600);">Agrupadora:</strong> Es una "carpeta" que suma el saldo de sus cuentas hijas. Nunca se usa en asientos (Ej: "Activo Corriente").</p>
+                        
+                        <p style="margin-bottom: var(--space-2);"><strong>2. Naturaleza y Clasificación:</strong><br>
+                        - Las cuentas de <strong style="color: var(--primary-600);">Activo y Gasto</strong> generalmente son de naturaleza <strong>Deudora</strong> (Aumentan por el Debe, disminuyen por el Haber).<br>
+                        - Las cuentas de <strong style="color: var(--primary-600);">Pasivo, Patrimonio e Ingreso</strong> generalmente son de naturaleza <strong>Acreedora</strong> (Aumentan por el Haber, disminuyen por el Debe).</p>
+                        
+                        <p><strong>3. Código (Jerarquía):</strong><br>
+                        Sigue un orden jerárquico lógico. Por ejemplo, si "Activo" es <em>1</em>, "Activo Corriente" puede ser <em>1.1</em>, y "Caja" sería <em>1.1.01</em>.</p>
+                    </div>
+                </div>
+
                 <form id="account-form">
                     <div class="form-group">
                         <label class="form-label required">Tipo de Cuenta (isGroup)</label>
