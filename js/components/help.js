@@ -515,7 +515,7 @@ const HelpSystem = {
                         <span>Ideal para entender la metodología de <strong>Partida Doble</strong> de forma gráfica.</span>
                     </div>
 
-                    <div class="help-path clickable" onclick="Modal.close(); window.open('diagrama-contable.html', 'CursoContabilidad', 'width=1400,height=900,scrollbars=yes,resizable=yes');">
+                    <div class="help-path clickable" onclick="Modal.close(); window.location.href = 'diagrama-contable.html';">
                         <i class="fas fa-play-circle"></i>
                         <span><strong>Abrir Diagrama ahora</strong> <i class="fas fa-external-link-alt"></i></span>
                     </div>

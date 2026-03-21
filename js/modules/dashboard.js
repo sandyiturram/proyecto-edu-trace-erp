@@ -733,8 +733,8 @@ const DashboardModule = {
                 SystemFlowDiagram.show();
                 break;
             case 'accounting-course':
-                // Abrir curso de contabilidad en ventana separada
-                window.open('diagrama-contable.html', 'CursoContabilidad', 'width=1400,height=900,scrollbars=yes,resizable=yes');
+                // Abrir curso de contabilidad en la misma ventana
+                window.location.href = 'diagrama-contable.html';
                 break;
         }
     }
