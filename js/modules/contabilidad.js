@@ -38,7 +38,7 @@ const ContabilidadModule = {
         return `
             <div class="page-header">
                 <h1 class="page-title">Plan de Cuentas</h1>
-                <p class="page-subtitle">Estructura contable según normativa IFRS chilena</p>
+                <p class="page-subtitle">Estructura contable según normativa IFRS</p>
             </div>
             
             <div class="toolbar">
