@@ -348,6 +348,12 @@ body {
     margin-bottom: var(--space-1)
 }
 
+.sidebar-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: var(--space-4) var(--space-5);
+}
+
 .nav-link {
     display: flex;
     align-items: center;
