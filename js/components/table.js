@@ -154,6 +154,10 @@ const DataTable = {
                                 const status = Formatters.status(value);
                                 value = `<span class="badge ${status.class}">${status.label}</span>`;
                                 break;
+                            case 'statusInvoice':
+                                const statusInv = Formatters.statusInvoice(value);
+                                value = `<span class="badge ${statusInv.class}">${statusInv.label}</span>`;
+                                break;
                         }
                     }
 

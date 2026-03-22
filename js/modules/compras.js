@@ -923,24 +923,8 @@ const ComprasModule = {
 
             const loading = Toast.loading('Procesando recepción...');
             try {
-                const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
-
-                let inventoryAccount = accounts.find(a =>
-                    a.type === 'asset' && (a.name?.toLowerCase().includes('mercader') || a.name?.toLowerCase().includes('inventario'))
-                ) || accounts.find(a => a.type === 'asset' && a.code === '1.1.07');
-
-                let bridgeAccount = accounts.find(a =>
-                    a.code === '2.1.05' || a.name?.toLowerCase().includes('facturas por recibir')
-                );
-
-                if (!inventoryAccount) {
-                    inventoryAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.07', name: 'Mercaderías', type: 'asset', nature: 'debit', level: 2, isActive: true };
-                    await DB.add('accounts', inventoryAccount);
-                }
-                if (!bridgeAccount) {
-                    bridgeAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.05', name: 'Proveedores - Facturas por Recibir', type: 'liability', nature: 'credit', level: 2, isActive: true };
-                    await DB.add('accounts', bridgeAccount);
-                }
+                // La recepción solo actualiza stock e inventario físico.
+                // La contabilización se hace con la factura del proveedor (un solo asiento).
 
                 // Update inventory and order lines
                 for (const data of receiptData) {
@@ -971,24 +955,6 @@ const ComprasModule = {
                             comment: data.comment || line.comment
                         });
                     }
-                }
-
-                // Accounting entry: Mercaderías (D) / Proveedores-Facturas por Recibir (C)
-                if (totalReceiptValueNet > 0) {
-                    await AccountingService.registerTransaction('purchases', {
-                        date: Helpers.getCurrentDate(),
-                        description: `Recepción Guía s/OC ${order.number} - ${supplier?.name || 'Proveedor'}`,
-                        reference: `GR-${order.number}`,
-                        sourceDocument: 'purchaseOrder',
-                        sourceDocumentId: order.id,
-                        autoPost: true,
-                        lines: [
-                            { accountId: inventoryAccount.id, description: `Ingreso mercadería OC ${order.number}`, debit: totalReceiptValueNet, credit: 0 },
-                            { accountId: bridgeAccount.id, description: `Factura por recibir s/OC ${order.number}`, debit: 0, credit: totalReceiptValueNet }
-                        ]
-                    });
-                } else {
-                    console.warn('[receiveOrder] totalReceiptValueNet es 0 o negativo, no se genera asiento:', totalReceiptValueNet);
                 }
 
                 // Update order status
@@ -1029,7 +995,7 @@ const ComprasModule = {
                 { key: 'supplierName', label: 'Proveedor' },
                 { key: 'dueDate', label: 'Vencimiento', format: 'date' },
                 { key: 'total', label: 'Total', format: 'currency', class: 'text-right' },
-                { key: 'status', label: 'Estado', format: 'status' }
+                { key: 'status', label: 'Estado', format: 'statusInvoice' }
             ],
             data: invoices,
             actions: [
@@ -1079,7 +1045,7 @@ const ComprasModule = {
                     <div class="alert alert-info" style="margin-bottom: 1rem;">
                         <i class="fas fa-info-circle"></i>
                         <strong>Secuencia documental:</strong> Seleccione la Orden de Compra recibida para pre-completar los datos.
-                        El asiento de esta factura será: <em>Proveedores-Facturas por Recibir (D) + IVA CF (D) / Proveedores (C)</em>
+                        El asiento de esta factura será: <em>Mercaderías (D) + IVA CF (D) / Proveedores (C)</em>
                     </div>
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <label class="form-label">Vincular con Orden de Compra recibida (opcional)</label>
@@ -1245,12 +1211,12 @@ const ComprasModule = {
             newRow.className = 'invoice-line';
             newRow.dataset.idx = lineIdx++;
             newRow.innerHTML = `
-    < td >
-    <select class="form-control product-select" name="productId">
-        <option value="">Seleccione...</option>
-        ${products.map(p => `<option value="${p.id}" data-cost="${p.cost}">${p.code} - ${p.name}</option>`).join('')}
-    </select>
-                </td >
+                <td>
+                    <select class="form-control product-select" name="productId">
+                        <option value="">Seleccione...</option>
+                        ${products.map(p => `<option value="${p.id}" data-cost="${p.cost}">${p.code} - ${p.name}</option>`).join('')}
+                    </select>
+                </td>
                 <td><input type="number" class="form-control quantity-input" name="quantity" value="1" min="1"></td>
                 <td><input type="number" class="form-control price-input" name="price" value="0" min="0"></td>
                 <td class="text-right iva-amount">$0</td>
@@ -1404,72 +1370,102 @@ const ComprasModule = {
             if (autoPost) {
                 const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
 
-                // Buscar cuentas
-                let purchasesAccount = accounts.find(a =>
-                    a.type === 'expense' && (a.code?.includes('5.1') || a.name?.toLowerCase().includes('compra'))
+                // Buscar Mercaderías (Activo) - la compra activa inventario, NO es gasto
+                let mercaderiasAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'asset' && a.code === '1.1.30.01'
                 );
-                let ivaCredAccount = accounts.find(a =>
-                    a.type === 'asset' && (a.code?.includes('1.1.07') || a.name?.toLowerCase().includes('iva') && a.name?.toLowerCase().includes('crédito'))
-                );
-                let suppliersAccount = accounts.find(a =>
-                    a.type === 'liability' && (a.code?.includes('2.1.01') || a.name?.toLowerCase().includes('proveedor'))
-                );
-
-                // Crear cuentas si no existen
-                if (!purchasesAccount) {
-                    purchasesAccount = {
+                if (!mercaderiasAccount) {
+                    mercaderiasAccount = accounts.find(a =>
+                        !a.isGroup && a.type === 'asset' &&
+                        (a.name?.toLowerCase().includes('mercadería') || a.name?.toLowerCase().includes('mercaderias'))
+                    );
+                }
+                if (!mercaderiasAccount) {
+                    mercaderiasAccount = accounts.find(a =>
+                        !a.isGroup && a.type === 'asset' && a.code === '1.1.07'
+                    );
+                }
+                if (!mercaderiasAccount) {
+                    mercaderiasAccount = {
                         id: Helpers.generateId(),
                         companyId: company.id,
-                        code: '5.1.01',
-                        name: 'Compras',
-                        type: 'expense',
+                        code: '1.1.30.01',
+                        name: 'Mercaderías',
+                        type: 'asset',
                         nature: 'debit',
                         level: 2,
-                        isActive: true
+                        isActive: true,
+                        parentId: null
                     };
-                    await DB.add('accounts', purchasesAccount);
+                    await DB.add('accounts', mercaderiasAccount);
                 }
 
+                // Buscar IVA Crédito Fiscal (Activo)
+                let ivaCredAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'asset' && a.code === '1.1.40.01'
+                );
+                if (!ivaCredAccount) {
+                    ivaCredAccount = accounts.find(a =>
+                        !a.isGroup && a.type === 'asset' &&
+                        a.name?.toLowerCase().includes('iva') && a.name?.toLowerCase().includes('crédito')
+                    );
+                }
                 if (!ivaCredAccount) {
                     ivaCredAccount = {
                         id: Helpers.generateId(),
                         companyId: company.id,
-                        code: '1.1.07',
+                        code: '1.1.40.01',
                         name: 'IVA Crédito Fiscal',
                         type: 'asset',
                         nature: 'debit',
                         level: 2,
-                        isActive: true
+                        isActive: true,
+                        parentId: null
                     };
                     await DB.add('accounts', ivaCredAccount);
                 }
 
+                // Buscar Proveedores (Pasivo)
+                let suppliersAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'liability' && a.code === '2.1.10.01'
+                );
+                if (!suppliersAccount) {
+                    suppliersAccount = accounts.find(a =>
+                        !a.isGroup && a.type === 'liability' &&
+                        a.name?.toLowerCase().includes('proveedor')
+                    );
+                }
                 if (!suppliersAccount) {
                     suppliersAccount = {
                         id: Helpers.generateId(),
                         companyId: company.id,
-                        code: '2.1.01',
+                        code: '2.1.10.01',
                         name: 'Proveedores',
                         type: 'liability',
                         nature: 'credit',
                         level: 2,
-                        isActive: true
+                        isActive: true,
+                        parentId: null
                     };
                     await DB.add('accounts', suppliersAccount);
                 }
 
-                // Usar sistema dual: registerTransaction decide si va al Libro Diario o Libro Auxiliar
+                console.log('[Factura Compra] Mercaderías:', mercaderiasAccount?.name, mercaderiasAccount?.code, 'ID:', mercaderiasAccount?.id);
+                console.log('[Factura Compra] IVA CF:', ivaCredAccount?.name, ivaCredAccount?.code, 'ID:', ivaCredAccount?.id);
+                console.log('[Factura Compra] Proveedores:', suppliersAccount?.name, suppliersAccount?.code, 'ID:', suppliersAccount?.id);
+
+                // Asiento: Mercaderías (D) + IVA CF (D) / Proveedores (C)
                 const transactionData = {
                     date: invoice.date,
-                    description: `Factura ${invoiceNumber} - ${supplier?.name || 'Proveedor'} `,
+                    description: `Factura ${invoiceNumber} - ${supplier?.name || 'Proveedor'}`,
                     reference: invoiceNumber,
                     sourceDocument: 'supplierInvoice',
                     sourceDocumentId: invoice.id,
                     autoPost: true,
                     lines: [
-                        { accountId: purchasesAccount.id, description: `Compras Fact.${invoiceNumber} `, debit: subtotal, credit: 0 },
-                        { accountId: ivaCredAccount.id, description: `IVA CF Fact.${invoiceNumber} `, debit: totalIva, credit: 0 },
-                        { accountId: suppliersAccount.id, description: `${supplier?.name || 'Proveedor'} - Fact.${invoiceNumber} `, debit: 0, credit: total }
+                        { accountId: mercaderiasAccount.id, description: `Mercaderías Fact.${invoiceNumber}`, debit: subtotal, credit: 0 },
+                        { accountId: ivaCredAccount.id, description: `IVA CF Fact.${invoiceNumber}`, debit: totalIva, credit: 0 },
+                        { accountId: suppliersAccount.id, description: `${supplier?.name || 'Proveedor'} - Fact.${invoiceNumber}`, debit: 0, credit: total }
                     ]
                 };
 
@@ -1503,44 +1499,45 @@ const ComprasModule = {
         for (let line of lines) {
             if (line.productId) {
                 const product = await DB.get('products', line.productId);
-                line.productName = product?.name || 'Producto';
-                line.productCode = product?.code || '';
+                line.productName = product?.name || product?.description || line.description || 'Producto';
+                line.productCode = product?.code || '-';
             } else {
-                line.productName = 'Servicio/Gasto';
+                line.productName = line.description || 'Servicio/Gasto';
                 line.productCode = '-';
             }
         }
 
         const statusLabels = {
-            pending: '<span class="badge badge-warning">Pendiente</span>',
-            posted: '<span class="badge badge-info">Contabilizada</span>',
-            paid: '<span class="badge badge-success">Pagada</span>'
+            pending: '<span class="badge badge-neutral">Borrador</span>',
+            posted: '<span class="badge badge-warning">Pendiente</span>',
+            paid: '<span class="badge badge-success">Pagada</span>',
+            partial: '<span class="badge badge-warning">Pago Parcial</span>'
         };
 
         Modal.open({
             title: `Factura ${invoice.number} `,
             size: 'large',
             content: `
-    < div style = "margin-bottom: var(--space-4);" >
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);">
-            <div>
-                <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Proveedor</label>
-                <strong>${supplier?.name || 'N/A'}</strong>
-            </div>
-            <div>
-                <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Fecha</label>
-                <strong>${Formatters.date(invoice.date)}</strong>
-            </div>
-            <div>
-                <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Vencimiento</label>
-                <strong>${Formatters.date(invoice.dueDate)}</strong>
-            </div>
-            <div>
-                <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Estado</label>
-                ${statusLabels[invoice.status] || invoice.status}
+        <div style="margin-bottom: var(--space-4);">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4);">
+                <div>
+                    <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Proveedor</label>
+                    <strong>${supplier?.name || 'N/A'}</strong>
+                </div>
+                <div>
+                    <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Fecha</label>
+                    <strong>${Formatters.date(invoice.date)}</strong>
+                </div>
+                <div>
+                    <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Vencimiento</label>
+                    <strong>${Formatters.date(invoice.dueDate)}</strong>
+                </div>
+                <div>
+                    <label style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Estado</label>
+                    ${statusLabels[invoice.status] || invoice.status}
+                </div>
             </div>
         </div>
-                </div >
     <div class="table-container">
         <table class="data-table">
             <thead>
@@ -1568,11 +1565,11 @@ const ComprasModule = {
             <tfoot>
                 <tr>
                     <td colspan="5" class="text-right">Subtotal Neto:</td>
-                    <td class="text-right">${Formatters.currency(invoice.subtotal || 0)}</td>
+                    <td class="text-right">${Formatters.currency(invoice.subtotal || (invoice.total / 1.19))}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="text-right">IVA (19%):</td>
-                    <td class="text-right">${Formatters.currency(invoice.iva || 0)}</td>
+                    <td class="text-right">${Formatters.currency(invoice.iva || (invoice.total - (invoice.total / 1.19)))}</td>
                 </tr>
                 <tr style="font-weight: 600; font-size: 1.1em;">
                     <td colspan="5" class="text-right">TOTAL:</td>
@@ -1582,8 +1579,13 @@ const ComprasModule = {
         </table>
     </div>
 `,
-            footer: `< button class="btn btn-secondary" onclick = "Modal.close()" > Cerrar</button > `
+            footer: `
+                <button class="btn btn-secondary" onclick="Modal.close()">Cerrar</button>
+                ${(invoice.status === 'posted' || invoice.status === 'partial') ? `<button class="btn btn-primary" onclick="Modal.close(); ComprasModule.paySupplierInvoice(ComprasModule._currentInvoice);"><i class="fas fa-money-bill-wave"></i> Pagar</button>` : ''}
+            `
         });
+
+        this._currentInvoice = invoice;
     },
 
     async postSupplierInvoice(invoice) {
@@ -1607,49 +1609,70 @@ const ComprasModule = {
             const supplier = await DB.get('suppliers', invoice.supplierId);
             const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
 
-            // Buscar cuentas
-            let bridgeAccount = accounts.find(a =>
-                a.type === 'liability' && a.name?.toLowerCase().includes('facturas por recibir')
-            ) || accounts.find(a => a.code === '2.1.05');
+            // Buscar Mercaderías (Activo) - Priorizar código exacto
+            let inventoryAccount = accounts.find(a =>
+                !a.isGroup && a.type === 'asset' && a.code === '1.1.30.01'
+            );
+            if (!inventoryAccount) {
+                inventoryAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'asset' &&
+                    (a.name?.toLowerCase().includes('mercadería') || a.name?.toLowerCase().includes('mercaderias'))
+                );
+            }
+            if (!inventoryAccount) {
+                inventoryAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'asset' && (a.code === '1.1.03.001' || a.code === '1.1.07')
+                );
+            }
+            if (!inventoryAccount) {
+                inventoryAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.30.01', name: 'Mercaderías', type: 'asset', nature: 'debit', level: 2, isActive: true, parentId: null };
+                await DB.add('accounts', inventoryAccount);
+            }
 
+            // Buscar IVA Crédito Fiscal (Activo)
             let ivaCredAccount = accounts.find(a =>
-                a.type === 'asset' && (a.code?.includes('1.1.07') || a.name?.toLowerCase().includes('iva'))
+                !a.isGroup && a.type === 'asset' && a.code === '1.1.40.01'
             );
-
-            let suppliersAccount = accounts.find(a =>
-                a.type === 'liability' && (a.code?.includes('2.1.01') || a.name?.toLowerCase().includes('proveedor'))
-            );
-
-            // Crear cuentas si no existen
-            if (!bridgeAccount) {
-                bridgeAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.05', name: 'Proveedores - Facturas por Recibir', type: 'liability', nature: 'credit', level: 2, isActive: true };
-                await DB.add('accounts', bridgeAccount);
+            if (!ivaCredAccount) {
+                ivaCredAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'asset' &&
+                    a.name?.toLowerCase().includes('iva') && a.name?.toLowerCase().includes('crédito')
+                );
             }
             if (!ivaCredAccount) {
-                ivaCredAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.07', name: 'IVA Crédito Fiscal', type: 'asset', nature: 'debit', level: 2, isActive: true };
+                ivaCredAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.40.01', name: 'IVA Crédito Fiscal', type: 'asset', nature: 'debit', level: 2, isActive: true, parentId: null };
                 await DB.add('accounts', ivaCredAccount);
             }
+
+            // Buscar Proveedores (Pasivo)
+            let suppliersAccount = accounts.find(a =>
+                !a.isGroup && a.type === 'liability' && a.code === '2.1.10.01'
+            );
             if (!suppliersAccount) {
-                suppliersAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.01', name: 'Proveedores', type: 'liability', nature: 'credit', level: 2, isActive: true };
+                suppliersAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'liability' && a.name?.toLowerCase().includes('proveedor')
+                );
+            }
+            if (!suppliersAccount) {
+                suppliersAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.10.01', name: 'Proveedores', type: 'liability', nature: 'credit', level: 2, isActive: true, parentId: null };
                 await DB.add('accounts', suppliersAccount);
             }
 
             const subtotal = invoice.subtotal || (invoice.total / 1.19);
             const iva = invoice.iva || (invoice.total - subtotal);
 
-            // Usar sistema dual: registerTransaction decide si va al Libro Diario o Libro Auxiliar
+            // Asiento: Mercaderías (D) + IVA CF (D) / Proveedores (C)
             const transactionData = {
                 date: invoice.date,
-                description: `Factura ${invoice.number} - ${supplier?.name || 'Proveedor'} `,
+                description: `Factura ${invoice.number} - ${supplier?.name || 'Proveedor'}`,
                 reference: invoice.number,
                 sourceDocument: 'supplierInvoice',
                 sourceDocumentId: invoice.id,
                 autoPost: true,
                 lines: [
-                    // El cargo va a la cuenta puente para saldar la provisión creada en la guía de despacho
-                    { accountId: bridgeAccount.id, description: `Facturas por Recibir Fact.${invoice.number} `, debit: subtotal, credit: 0 },
-                    { accountId: ivaCredAccount.id, description: `IVA CF Fact.${invoice.number} `, debit: iva, credit: 0 },
-                    { accountId: suppliersAccount.id, description: `${supplier?.name} - Fact.${invoice.number} `, debit: 0, credit: invoice.total }
+                    { accountId: inventoryAccount.id, description: `Mercaderías Fact.${invoice.number}`, debit: subtotal, credit: 0 },
+                    { accountId: ivaCredAccount.id, description: `IVA CF Fact.${invoice.number}`, debit: iva, credit: 0 },
+                    { accountId: suppliersAccount.id, description: `${supplier?.name || 'Proveedor'} - Fact.${invoice.number}`, debit: 0, credit: invoice.total }
                 ]
             };
 
@@ -1700,7 +1723,7 @@ const ComprasModule = {
         Modal.open({
             title: 'Registrar Pago',
             content: `
-    < form id = "payment-form" >
+                <form id="payment-form">
                     <div class="form-group">
                         <label class="form-label">Factura</label>
                         <input type="text" class="form-control" value="${invoice.number} - ${supplier?.name}" disabled>
@@ -1723,7 +1746,7 @@ const ComprasModule = {
                         <label class="form-label">Referencia (Nº Cheque/Transferencia)</label>
                         <input type="text" class="form-control" name="reference" placeholder="Opcional">
                     </div>
-                </form >
+                </form>
     `,
             footer: `
     < button class="btn btn-secondary" onclick = "Modal.close()" > Cancelar</button >

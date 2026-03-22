@@ -135,6 +135,12 @@
 
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Flow Diagram */
@@ -1243,6 +1249,9 @@
             border: 2px solid var(--gray-300);
             border-radius: 0.75rem;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
         }
 
         .fs-header {
@@ -1293,10 +1302,12 @@
         }
 
         .fs-row.highlight {
-            background: var(--primary-light);
-            padding: 0.5rem;
-            margin: 0.5rem -1rem;
+            background: #fff7ed;
+            padding: 0.5rem 0.75rem;
+            margin: 0.5rem 0;
             font-weight: 700;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary);
         }
 
         .fs-row.total {
@@ -1809,8 +1820,8 @@
                     </p>
                     <p><strong>2. Ventas → Inventario → Contabilidad</strong></p>
                     <p style="margin-left: 1rem; font-size: 0.9rem;">
-                        Al emitir una factura de venta, se rebaja el inventario y se genera un asiento
-                        (Clientes = Ingresos por Ventas + IVA Débito).
+                        Al emitir una factura de venta, se rebaja el inventario y se generan <strong>dos asientos contables</strong>:
+                        uno por el ingreso (Clientes = Ventas + IVA) y otro por el costo (Costo de Venta = Mercaderías).
                     </p>
                     <p><strong>3. Tesorería → Contabilidad</strong></p>
                     <p style="margin-left: 1rem; font-size: 0.9rem;">
@@ -1967,10 +1978,10 @@
 
                 <div class="flow-example">
                     <h5><i class="fas fa-chart-line"></i> Venta de Productos a Crédito</h5>
-                    <p style="margin-bottom: 1rem;"><strong>Situación:</strong> Venta de productos por $2.000.000 + IVA
-                        (19%)</p>
+                    <p style="margin-bottom: 1rem;"><strong>Situación:</strong> Venta de productos por $2.000.000 + IVA (19%)</p>
+                    <p style="margin-bottom: 0.5rem; font-size: 0.85rem; color: #166534; font-weight: 600;">Asiento 1: Reconocimiento del Ingreso</p>
                     <table
-                        style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; font-size: 0.9rem;">
+                        style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; font-size: 0.9rem; margin-bottom: 1rem;">
                         <thead style="background: var(--accent); color: white;">
                             <tr>
                                 <th style="padding: 0.75rem; text-align: left;">Cuenta</th>
@@ -1996,6 +2007,32 @@
                                 <td style="padding: 0.75rem;"></td>
                                 <td style="padding: 0.75rem; text-align: right; color: #16a34a; font-weight: 600;">
                                     $380.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p style="margin-bottom: 0.5rem; font-size: 0.85rem; color: #dc2626; font-weight: 600;">Asiento 2: Reconocimiento del Costo de Venta</p>
+                    <table
+                        style="width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; font-size: 0.9rem;">
+                        <thead style="background: #f97316; color: white;">
+                            <tr>
+                                <th style="padding: 0.75rem; text-align: left;">Cuenta</th>
+                                <th style="padding: 0.75rem; text-align: right;">Debe</th>
+                                <th style="padding: 0.75rem; text-align: right;">Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--gray-200);">
+                                <td style="padding: 0.75rem;">Costo de Ventas (Gasto ↑)</td>
+                                <td style="padding: 0.75rem; text-align: right; color: #dc2626; font-weight: 600;">
+                                    $1.000.000</td>
+                                <td style="padding: 0.75rem;"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem;">Mercaderías (Activo ↓)</td>
+                                <td style="padding: 0.75rem;"></td>
+                                <td style="padding: 0.75rem; text-align: right; color: #16a34a; font-weight: 600;">
+                                    $1.000.000</td>
                             </tr>
                         </tbody>
                     </table>
@@ -2615,6 +2652,9 @@
                                     <div style="font-size: 1.2rem; font-weight: 700; color: #f59e0b;">50%</div>
                                 </div>
                             </div>
+                            <div style="margin-top: 1.5rem; padding: 1rem; background: #fffbeb; border-radius: 0.75rem; border: 1px solid #fef3c7; font-size: 0.85rem; color: #92400e; line-height: 1.5;">
+                                <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i> El <strong>Costo de Venta</strong> se calcula automáticamente según el método de valorización activo (FIFO o Promedio) al momento de emitir el documento.
+                            </div>
                         </div>
 
                         <div class="flow-example" style="margin-top: 1.5rem;">
@@ -2622,7 +2662,7 @@
                             <div class="analysis-grid" style="margin-top: 1rem;">
                                 <div class="analysis-item activo">
                                     <div class="icon"><i class="fas fa-users"></i></div>
-                                    <div class="name">Clientes por Cobrar</div>
+                                    <div class="name">Clientes</div>
                                     <div class="type">ACTIVO</div>
                                     <div class="movement debit">↑ AUMENTA = DÉBITO</div>
                                 </div>
@@ -2685,9 +2725,7 @@
                                 <div style="text-align: right;">Haber</div>
                             </div>
                             <div class="journal-row animate" style="animation-delay: 0.2s;">
-                                <div class="account"><i class="fas fa-users" style="color: #3b82f6;"></i> Clientes
-                                    por
-                                    Cobrar</div>
+                                <div class="account"><i class="fas fa-users" style="color: #3b82f6;"></i> Clientes</div>
                                 <div class="debit">$4.462.500</div>
                                 <div></div>
                             </div>
@@ -2750,18 +2788,13 @@
                             </h4>
                             <ul style="list-style: none; padding: 0; margin: 0;">
                                 <li style="padding: 0.4rem; font-size: 0.9rem;">
-                                    <strong>Asiento 1:</strong> Registra el INGRESO por la venta y genera el derecho
-                                    a
-                                    cobrar al cliente
+                                    <strong>Asiento 1 (Comercial):</strong> Registra el INGRESO por la venta y genera el derecho a cobrar al cliente (Activo ↑) contra Ingresos (Patrimonio ↑) e IVA (Pasivo ↑).
                                 </li>
                                 <li style="padding: 0.4rem; font-size: 0.9rem;">
-                                    <strong>Asiento 2:</strong> Registra el COSTO de la mercadería vendida y rebaja
-                                    el
-                                    inventario
+                                    <strong>Asiento 2 (Existencias):</strong> Registra el COSTO de la mercadería vendida (Gasto ↑) y rebaja físicamente el Inventario (Activo ↓).
                                 </li>
-                                <li style="padding: 0.4rem; font-size: 0.9rem; font-weight: 600; color: #166534;">
-                                    La diferencia entre el Ingreso ($3.750.000) y el Costo ($2.500.000) es la
-                                    <strong>Utilidad Bruta: $1.250.000</strong>
+                                <li style="padding: 0.4rem; font-size: 0.9rem; font-weight: 600; color: #166534; border-top: 1px dashed #d8b4fe; margin-top: 0.5rem; padding-top: 0.5rem;">
+                                    <i class="fas fa-magic"></i> <strong>Proceso Automático:</strong> El ERP realiza ambos registros en el mismo instante que pulsas "Completar Factura", asegurando que tu contabilidad y stock estén siempre sincronizados.
                                 </li>
                             </ul>
                         </div>
@@ -2808,7 +2841,7 @@
 
                             <div class="ledger-t">
                                 <div class="ledger-t-header asset">
-                                    <i class="fas fa-users"></i> CLIENTES POR COBRAR
+                                    <i class="fas fa-users"></i> CLIENTES
                                 </div>
                                 <div class="ledger-t-body">
                                     <div class="ledger-t-side debit">
@@ -3018,7 +3051,7 @@
                                             <span>$8.000.000</span>
                                         </div>
                                         <div class="fs-row highlight">
-                                            <span>Clientes por Cobrar</span>
+                                            <span>Clientes</span>
                                             <span class="positive">$4.462.500 ↑</span>
                                         </div>
                                         <div class="fs-row">
@@ -3066,7 +3099,7 @@
                                     </div>
                                     <!-- Total Pasivo + Patrimonio -->
                                     <div class="fs-section"
-                                        style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); margin: 0 -1rem -1rem -1rem; padding: 1rem; border-radius: 0 0 0.5rem 0.5rem;">
+                                        style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); margin-top: 1rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid #bfdbfe;">
                                         <div class="fs-row total"
                                             style="font-size: 1.1rem; border-top: none; margin-top: 0; padding-top: 0;">
                                             <span style="color: #1e40af;"><strong>TOTAL PASIVO +
@@ -3113,51 +3146,49 @@
                                         </div>
                                     </div>
                                     <div class="fs-section"
-                                        style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); padding: 1rem; border-radius: 0.5rem; margin: -1rem; margin-top: 0.5rem;">
-                                        <h5 style="color: #166534; border-bottom-color: #22c55e;">Resultado
+                                        style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #bbf7d0; margin-top: 1rem;">
+                                        <h5 style="color: #166534; border-bottom: 2px solid #86efac; padding-bottom: 0.5rem; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em;">Resultado
                                             Operacional
                                         </h5>
-                                        <div class="fs-row total" style="font-size: 1.2rem;">
-                                            <span style="color: #166534;"><strong>RESULTADO OPERACIONAL (Margen
-                                                    Bruto)</strong></span>
-                                            <span style="color: #166534;"><strong>$1.250.000</strong></span>
+                                        <div class="fs-row" style="font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="color: #166534; font-weight: 800;">MARGEN BRUTO</span>
+                                            <span style="color: #166534; font-weight: 800;">$1.250.000</span>
                                         </div>
                                     </div>
 
                                     <!-- Otros Ingresos y Gastos -->
                                     <div class="fs-section" style="margin-top: 0.5rem;">
-                                        <h5>Otros Ingresos y Gastos</h5>
+                                        <h5>Otros Ingresos y Gastos <span style="font-size: 0.8rem; color: #6b7280; font-weight: normal;">(Ejemplos referenciales en valor $0)</span></h5>
                                         <div class="fs-row">
-                                            <span>Otros Ingresos</span>
-                                            <span style="color: #059669;">$200.000</span>
+                                            <span style="color: #6b7280;">Otros Ingresos</span>
+                                            <span style="color: #6b7280;">$0</span>
                                         </div>
                                         <div class="fs-row">
-                                            <span>Gastos de Administración</span>
-                                            <span style="color: #dc2626;">($800.000)</span>
+                                            <span style="color: #6b7280;">Gastos de Administración</span>
+                                            <span style="color: #6b7280;">$0</span>
                                         </div>
                                         <div class="fs-row">
-                                            <span>Gastos de Ventas</span>
-                                            <span style="color: #dc2626;">($300.000)</span>
+                                            <span style="color: #6b7280;">Gastos de Ventas</span>
+                                            <span style="color: #6b7280;">$0</span>
                                         </div>
                                         <div class="fs-row">
-                                            <span>Gastos Financieros</span>
-                                            <span style="color: #dc2626;">($100.000)</span>
+                                            <span style="color: #6b7280;">Gastos Financieros</span>
+                                            <span style="color: #6b7280;">$0</span>
                                         </div>
                                     </div>
 
                                     <!-- Resultado Neto del Ejercicio -->
                                     <div class="fs-section"
-                                        style="background: linear-gradient(135deg, #d1fae5, #f0fdf4); padding: 1rem; border-radius: 0.5rem; margin-top: 0.5rem; border: 2px solid #16a34a;">
-                                        <h5 style="color: #16a34a; border-bottom-color: #22c55e;">Resultado del
+                                        style="background: linear-gradient(135deg, #f0fdf4, #ecfdf5); padding: 1.25rem; border-radius: 0.75rem; margin-top: 1.5rem; border: 2px solid #16a34a; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                                        <h5 style="color: #16a34a; border-bottom: 2px solid #86efac; padding-bottom: 0.5rem; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.75rem;">Resultado del
                                             Ejercicio</h5>
-                                        <div class="fs-row total" style="font-size: 1.25rem; ">
-                                            <span style="color: #16a34a;"><strong>RESULTADO NETO DEL EJERCICIO
-                                                    (Ganancia)</strong></span>
-                                            <span style="color: #16a34a;"><strong>$250.000</strong></span>
+                                        <div class="fs-row" style="font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="color: #16a34a; font-weight: 900;">UTILIDAD NETA</span>
+                                            <span style="color: #16a34a; font-weight: 900;">$1.250.000</span>
                                         </div>
                                         <p
-                                            style="margin: 0.5rem 0 0; font-size: 0.85rem; color: #15803d; text-align: center;">
-                                            <i class="fas fa-info-circle"></i> Ingresos - Costos - Gastos = Ganancia
+                                            style="margin: 0.75rem 0 0; font-size: 0.8rem; color: #15803d; text-align: center; opacity: 0.8; font-style: italic;">
+                                            <i class="fas fa-info-circle"></i> Ingresos - Costos - Gastos = Resultado del Ejercicio
                                         </p>
                                     </div>
                                 </div>
@@ -3244,10 +3275,9 @@
 
             </div>
         </div>
-    </div>
 
-    <!-- Tab 6: Ratios Financieros -->
-    <div id="tab-ratios" class="tab-content">
+        <!-- Tab 6: Ratios Financieros -->
+        <div id="tab-ratios" class="tab-content">
         <div class="description-section" style="background: white;">
             <div class="description-header" style="background: var(--primary);">
                 <h2 style="color: white;"><i class="fas fa-chart-bar"></i> Ratios Financieros</h2>
@@ -3539,8 +3569,8 @@
         </div>
     </div>
 
-    <!-- Tab 8: Flujos de Trabajo (Ciclos) -->
-    <div id="tab-flujos" class="tab-content">
+        <!-- Tab 8: Flujos de Trabajo (Ciclos) -->
+        <div id="tab-flujos" class="tab-content">
         <div class="description-section" style="background: white;">
             <div class="description-header" style="background: var(--purple);">
                 <h2 style="color: white;"><i class="fas fa-exchange-alt"></i> Flujos de Trabajo y Ciclos Operativos
@@ -3585,11 +3615,12 @@
                             </div>
                             <i class="fas fa-arrow-right" style="color: #3b82f6;"></i>
                             <div
-                                style="background: #eff6ff; border: 2px solid #3b82f6; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 200px; box-shadow: var(--shadow);">
+                                style="background: #eff6ff; border: 2px solid #3b82f6; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 220px; box-shadow: var(--shadow); position: relative;">
                                 <div style="font-size: 0.7rem; color: #1e40af; font-weight: 700;">CONTABILIDAD</div>
                                 <i class="fas fa-file-signature"
                                     style="font-size: 1.5rem; color: #3b82f6; margin: 0.5rem 0;"></i>
                                 <div style="font-weight: 700;">Factura Proveedor</div>
+                                <div style="font-size: 0.7rem; color: #1e40af; margin-bottom: 0.25rem;">(Editable antes de generar)</div>
                                 <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
                                     <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
                                 </div>
@@ -3600,7 +3631,7 @@
                                 <div style="font-size: 0.7rem; color: #166534; font-weight: 700;">TESORERÍA</div>
                                 <i class="fas fa-money-bill-wave"
                                     style="font-size: 1.5rem; color: #10b981; margin: 0.5rem 0;"></i>
-                                <div style="font-weight: 700;">Pago</div>
+                                <div style="font-weight: 700;">Pago Factura</div>
                                 <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
                                     <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
                                 </div>
@@ -3659,11 +3690,15 @@
                             </div>
                             <i class="fas fa-arrow-right" style="color: #10b981;"></i>
                             <div
-                                style="background: #f0fdf4; border: 2px solid #10b981; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 200px; box-shadow: var(--shadow);">
+                                style="background: #f0fdf4; border: 2px solid #10b981; padding: 1rem; border-radius: 0.75rem; text-align: center; width: 220px; box-shadow: var(--shadow); border-style: double; border-width: 4px;">
                                 <div style="font-size: 0.7rem; color: #166534; font-weight: 700;">CONTABILIDAD</div>
                                 <i class="fas fa-file-invoice-dollar"
                                     style="font-size: 1.5rem; color: #22c55e; margin: 0.5rem 0;"></i>
-                                <div style="font-weight: 700;">Factura Cliente</div>
+                                <div style="font-weight: 700;">Factura de Venta</div>
+                                <div style="background: #dcfce7; padding: 0.25rem; border-radius: 0.25rem; font-size: 0.65rem; color: #166534; margin: 0.25rem 0; font-weight: 600;">
+                                    GENERA 2 ASIENTOS:<br>
+                                    1. Venta | 2. Costo
+                                </div>
                                 <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
                                     <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
                                 </div>
@@ -3674,7 +3709,7 @@
                                 <div style="font-size: 0.7rem; color: #1e40af; font-weight: 700;">TESORERÍA</div>
                                 <i class="fas fa-hand-holding-usd"
                                     style="font-size: 1.5rem; color: #3b82f6; margin: 0.5rem 0;"></i>
-                                <div style="font-weight: 700;">Cobro</div>
+                                <div style="font-weight: 700;">Cobro de Factura</div>
                                 <div style="font-size: 0.75rem; color: #22c55e; font-weight: 600; margin-top: 0.25rem;">
                                     <i class="fas fa-check-circle"></i> SÍ CONTABILIZA
                                 </div>
@@ -3687,9 +3722,7 @@
                         <h4 style="margin: 0 0 1rem; color: #166534;"><i class="fas fa-info-circle"></i> Importante:
                             Reconocimiento de Ingresos</h4>
                         <p style="margin: 0; font-size: 0.95rem; line-height: 1.6;">
-                            En el ERP, el ingreso se reconoce al <strong>contabilizar la factura</strong>. El cobro
-                            posterior solo cambia la forma del activo (de una Cuenta por Cobrar a Caja/Banco), pero
-                            el ingreso ya ocurrió.
+                            En el ERP, el ingreso se reconoce al <strong>generar la factura</strong>. Este proceso es automático y, para mayor claridad pedagógica, genera <strong>dos asientos contables separados</strong>: uno para la transacción comercial (Venta e IVA) y otro para la actualización de existencias (Costo de Ventas y rebaja de Inventario).
                         </p>
                         <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
                             <button class="link-btn success" onclick="goToModule('ventas', 'facturas-cliente')">
@@ -3701,7 +3734,32 @@
                             </button>
                         </div>
                     </div>
+                <!-- Valorización de Inventario -->
+                <div style="margin-top: 3rem;">
+                    <h3 style="color: #f97316; border-bottom: 2px solid #fed7aa; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                        <i class="fas fa-boxes"></i> 3. Gestión de Inventario y Valorización
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; color: #333;">
+                        El sistema permite gestionar el costo de las mercaderías vendidas mediante dos métodos principales, configurables en el módulo de Inventario:
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <div style="background: #fff7ed; padding: 1.5rem; border-radius: 1rem; border: 1px solid #fdba74;">
+                            <h4 style="color: #ea580c; margin-top: 0;"><i class="fas fa-clock"></i> Método FIFO (PEPS)</h4>
+                            <p style="font-size: 0.9rem; line-height: 1.6;">
+                                <strong>P</strong>rimeras en <strong>E</strong>ntrar, <strong>P</strong>rimeras en <strong>S</strong>alir. Los primeros productos comprados son los primeros en ser valorizados como costo al vender.
+                            </p>
+                            <span style="font-size: 0.75rem; background: #ffedd5; padding: 0.25rem 0.5rem; border-radius: 1rem; color: #9a3412; font-weight: 600;">Ideal para productos perecederos</span>
+                        </div>
+                        <div style="background: #fdf2f8; padding: 1.5rem; border-radius: 1rem; border: 1px solid #fbcfe8;">
+                            <h4 style="color: #db2777; margin-top: 0;"><i class="fas fa-calculator"></i> Precio Promedio (PPP)</h4>
+                            <p style="font-size: 0.9rem; line-height: 1.6;">
+                                <strong>P</strong>recio <strong>P</strong>romedio <strong>P</strong>onderado. El costo se calcula dividiendo el valor total de las existencias por la cantidad total disponible tras cada compra.
+                            </p>
+                            <span style="font-size: 0.75rem; background: #fce7f3; padding: 0.25rem 0.5rem; border-radius: 1rem; color: #9d174d; font-weight: 600;">Estabiliza fluctuaciones de precios</span>
+                        </div>
+                    </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

@@ -1064,66 +1064,8 @@ const VentasModule = {
                     }
                 }
 
-                // 2. Accounting: Clientes - Facturas por Emitir & Costo de Ventas vs Ventas & Mercaderías
-                const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
-
-                let inventoryAccount = accounts.find(a =>
-                    a.type === 'asset' && (a.name?.toLowerCase().includes('mercader') || a.name?.toLowerCase().includes('inventario'))
-                ) || accounts.find(a => a.type === 'asset' && a.code === '1.1.07');
-
-                let bridgeAccount = accounts.find(a =>
-                    a.type === 'asset' && a.name?.toLowerCase().includes('facturas por emitir')
-                ) || accounts.find(a => a.code === '1.1.06');
-
-                let costOfSalesAccount = accounts.find(a =>
-                    a.type === 'expense' && (a.code?.includes('5.1.02') || a.name?.toLowerCase().includes('costo de venta'))
-                );
-
-                let salesAccount = accounts.find(a =>
-                    a.type === 'revenue' && a.name?.toLowerCase().includes('venta')
-                ) || accounts.find(a => a.code?.startsWith('4.1'));
-
-                if (!inventoryAccount) {
-                    inventoryAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.07', name: 'Mercaderías', type: 'asset', nature: 'debit', level: 2, isActive: true };
-                    await DB.add('accounts', inventoryAccount);
-                }
-                if (!bridgeAccount) {
-                    bridgeAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.06', name: 'Clientes - Facturas por Emitir', type: 'asset', nature: 'debit', level: 2, isActive: true };
-                    await DB.add('accounts', bridgeAccount);
-                }
-                if (!costOfSalesAccount) {
-                    costOfSalesAccount = { id: Helpers.generateId(), companyId: company.id, code: '5.1.02', name: 'Costo de Ventas', type: 'expense', nature: 'debit', level: 2, isActive: true };
-                    await DB.add('accounts', costOfSalesAccount);
-                }
-                if (!salesAccount) {
-                    salesAccount = { id: Helpers.generateId(), companyId: company.id, code: '4.1.01', name: 'Ventas', type: 'revenue', nature: 'credit', level: 2, isActive: true };
-                    await DB.add('accounts', salesAccount);
-                }
-
-                // Crear transacción múltiple (4 líneas: 2 cargos, 2 abonos)
-                const transactionData = {
-                    date: Helpers.getCurrentDate(),
-                    description: `Guía de Despacho s/Pedido ${order.number} - ${customer?.name || 'Cliente'}`,
-                    reference: `GD-${order.number}`,
-                    sourceDocument: 'salesOrder',
-                    sourceDocumentId: order.id,
-                    autoPost: true,
-                    lines: []
-                };
-
-                if (totalRevenueNet > 0) {
-                    transactionData.lines.push({ accountId: bridgeAccount.id, description: `Provisión Facturas por Emitir s/Pedido ${order.number}`, debit: totalRevenueNet, credit: 0 });
-                    transactionData.lines.push({ accountId: salesAccount.id, description: `Reconocimiento Venta (Neto) s/Pedido ${order.number}`, debit: 0, credit: totalRevenueNet });
-                }
-
-                if (totalCost > 0) {
-                    transactionData.lines.push({ accountId: costOfSalesAccount.id, description: `Costo mercadería vendida s/Pedido ${order.number}`, debit: totalCost, credit: 0 });
-                    transactionData.lines.push({ accountId: inventoryAccount.id, description: `Salida mercadería s/Pedido ${order.number}`, debit: 0, credit: totalCost });
-                }
-
-                if (transactionData.lines.length > 0) {
-                    await AccountingService.registerTransaction('sales', transactionData);
-                }
+                // La entrega solo actualiza stock e inventario físico.
+                // La contabilización completa se hace con la factura del cliente (un solo asiento).
 
                 // 3. Update Order Status
                 const updatedLines = await DB.getByIndex('salesOrderLines', 'orderId', order.id);
@@ -1160,124 +1102,183 @@ const VentasModule = {
             return;
         }
 
-        const confirm = await Modal.confirm({
-            title: 'Emitir Factura',
-            message: `¿Generar factura por las cantidades entregadas y no facturadas del pedido ${order.number}?`,
-            confirmText: 'Generar Factura',
-            confirmClass: 'btn-primary'
+        const company = CompanyService.getCurrent();
+        const customer = await DB.get('customers', order.customerId);
+
+        // Pre-calcular líneas para mostrar en modal
+        let preSubtotal = 0;
+        const preLines = [];
+        for (const line of invoiceableLines) {
+            const toInvoice = (line.delivered || 0) - (line.invoiced || 0);
+            const product = await DB.get('products', line.productId);
+            const lineNeto = toInvoice * line.price;
+            preSubtotal += lineNeto;
+            preLines.push({ productName: product?.name || 'Producto', quantity: toInvoice, price: line.price, neto: lineNeto });
+        }
+        const preIva = Math.round(preSubtotal * 0.19);
+        const preTotal = preSubtotal + preIva;
+
+        // Modal con datos pre-cargados para revisión y edición
+        Modal.open({
+            title: `Emitir Factura - Pedido ${order.number}`,
+            size: 'large',
+            content: `
+                <div class="alert alert-info" style="margin-bottom: 1rem;">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Cliente:</strong> ${customer?.name || 'Cliente'} |
+                    <strong>Pedido:</strong> ${order.number}
+                    <br><small>Revise y ajuste los datos antes de generar la factura. Se generarán 2 asientos contables.</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Fecha de Emisión</label>
+                        <input type="date" class="form-control" id="inv-date" value="${Helpers.getCurrentDate()}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fecha de Vencimiento</label>
+                        <input type="date" class="form-control" id="inv-due-date" value="${Helpers.getDatePlusDays(30)}" required>
+                    </div>
+                </div>
+                <table class="table" style="margin-top: 1rem;">
+                    <thead><tr><th>Producto</th><th class="text-right">Cant.</th><th class="text-right">P. Unit.</th><th class="text-right">Neto</th></tr></thead>
+                    <tbody>
+                        ${preLines.map(l => `<tr><td>${l.productName}</td><td class="text-right">${l.quantity}</td><td class="text-right">$${l.price.toLocaleString('es-CL')}</td><td class="text-right">$${l.neto.toLocaleString('es-CL')}</td></tr>`).join('')}
+                    </tbody>
+                    <tfoot>
+                        <tr><td colspan="3" class="text-right"><strong>Neto</strong></td><td class="text-right">$${preSubtotal.toLocaleString('es-CL')}</td></tr>
+                        <tr><td colspan="3" class="text-right"><strong>IVA 19%</strong></td><td class="text-right">$${preIva.toLocaleString('es-CL')}</td></tr>
+                        <tr><td colspan="3" class="text-right"><strong>Total</strong></td><td class="text-right"><strong>$${preTotal.toLocaleString('es-CL')}</strong></td></tr>
+                    </tfoot>
+                </table>
+            `,
+            footer: `
+                <button class="btn btn-outline" onclick="Modal.close()">Cancelar</button>
+                <button class="btn btn-primary" id="btn-confirm-invoice"><i class="fas fa-file-invoice"></i> Generar Factura</button>
+            `
         });
 
-        if (!confirm) return;
+        document.getElementById('btn-confirm-invoice').addEventListener('click', async () => {
+            const invoiceDate = document.getElementById('inv-date').value;
+            const dueDate = document.getElementById('inv-due-date').value;
+            if (!invoiceDate || !dueDate) { Toast.error('Las fechas son obligatorias'); return; }
 
-        const loading = Toast.loading('Generando factura...');
-        try {
-            const company = CompanyService.getCurrent();
-            const customer = await DB.get('customers', order.customerId);
-            const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
+            Modal.close();
+            const loading = Toast.loading('Generando factura...');
 
-            // Generar factura
-            const invoiceNumber = await this.getNextCustomerInvoiceNumber();
-            let subtotal = 0;
+            try {
+                const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
+                const invoiceNumber = await this.getNextCustomerInvoiceNumber();
+                let subtotal = 0;
 
-            const invoice = {
-                id: Helpers.generateId(),
-                companyId: company.id,
-                customerId: order.customerId,
-                salesOrderId: order.id,
-                number: invoiceNumber,
-                date: Helpers.getCurrentDate(),
-                dueDate: Helpers.getDatePlusDays(30),
-                status: 'posted',
-                createdAt: new Date().toISOString()
-            };
-
-            await DB.add('customerInvoices', invoice);
-
-            for (const line of invoiceableLines) {
-                const toInvoice = (line.delivered || 0) - (line.invoiced || 0);
-                const lineNeto = toInvoice * line.price;
-                subtotal += lineNeto;
-
-                await DB.add('customerInvoiceLines', {
+                const invoice = {
                     id: Helpers.generateId(),
-                    invoiceId: invoice.id,
-                    productId: line.productId,
-                    quantity: toInvoice,
-                    price: line.price,
-                    neto: lineNeto,
-                    iva: lineNeto * 0.19,
-                    total: lineNeto * 1.19
+                    companyId: company.id,
+                    customerId: order.customerId,
+                    salesOrderId: order.id,
+                    number: invoiceNumber,
+                    date: invoiceDate,
+                    dueDate: dueDate,
+                    status: 'posted',
+                    createdAt: new Date().toISOString()
+                };
+
+                await DB.add('customerInvoices', invoice);
+
+                let totalCost = 0;
+                for (const line of invoiceableLines) {
+                    const toInvoice = (line.delivered || 0) - (line.invoiced || 0);
+                    const product = await DB.get('products', line.productId);
+                    const lineNeto = toInvoice * line.price;
+                    subtotal += lineNeto;
+                    totalCost += toInvoice * (product?.cost || 0);
+
+                    await DB.add('customerInvoiceLines', {
+                        id: Helpers.generateId(),
+                        invoiceId: invoice.id,
+                        productId: line.productId,
+                        quantity: toInvoice,
+                        price: line.price,
+                        neto: lineNeto,
+                        iva: lineNeto * 0.19,
+                        total: lineNeto * 1.19
+                    });
+
+                    await DB.update('salesOrderLines', {
+                        ...line,
+                        invoiced: (line.invoiced || 0) + toInvoice
+                    });
+                }
+
+                const iva = subtotal * 0.19;
+                const total = subtotal + iva;
+                await DB.update('customerInvoices', { ...invoice, subtotal, iva, total });
+
+                // === BUSCAR CUENTAS CONTABLES ===
+                let customersAccount = accounts.find(a => !a.isGroup && a.type === 'asset' && a.code === '1.1.20.01');
+                if (!customersAccount) customersAccount = accounts.find(a => !a.isGroup && a.type === 'asset' && a.name?.toLowerCase().includes('cliente') && !a.name?.toLowerCase().includes('banco') && !a.name?.toLowerCase().includes('factura'));
+                if (!customersAccount) { customersAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.20.01', name: 'Clientes', type: 'asset', nature: 'debit', level: 2, isActive: true, parentId: null }; await DB.add('accounts', customersAccount); }
+
+                let salesAccount = accounts.find(a => !a.isGroup && (a.type === 'revenue' || a.type === 'income') && a.code === '4.1.10.01');
+                if (!salesAccount) salesAccount = accounts.find(a => !a.isGroup && (a.type === 'revenue' || a.type === 'income') && a.name?.toLowerCase().includes('venta'));
+                if (!salesAccount) { salesAccount = { id: Helpers.generateId(), companyId: company.id, code: '4.1.10.01', name: 'Ingresos por Ventas', type: 'revenue', nature: 'credit', level: 2, isActive: true, parentId: null }; await DB.add('accounts', salesAccount); }
+
+                let ivaDebAccount = accounts.find(a => !a.isGroup && a.type === 'liability' && a.code === '2.1.40.01');
+                if (!ivaDebAccount) ivaDebAccount = accounts.find(a => !a.isGroup && a.type === 'liability' && a.name?.toLowerCase().includes('iva') && (a.name?.toLowerCase().includes('débito') || a.name?.toLowerCase().includes('debito')));
+                if (!ivaDebAccount) { ivaDebAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.40.01', name: 'IVA Débito Fiscal', type: 'liability', nature: 'credit', level: 2, isActive: true, parentId: null }; await DB.add('accounts', ivaDebAccount); }
+
+                let costOfSalesAccount = accounts.find(a => !a.isGroup && a.type === 'expense' && a.code === '5.1.10.01');
+                if (!costOfSalesAccount) costOfSalesAccount = accounts.find(a => !a.isGroup && a.type === 'expense' && a.name?.toLowerCase().includes('costo de venta'));
+                if (!costOfSalesAccount) { costOfSalesAccount = { id: Helpers.generateId(), companyId: company.id, code: '5.1.10.01', name: 'Costo de Ventas', type: 'expense', nature: 'debit', level: 2, isActive: true, parentId: null }; await DB.add('accounts', costOfSalesAccount); }
+
+                let mercaderiasAccount = accounts.find(a => !a.isGroup && a.type === 'asset' && a.code === '1.1.30.01');
+                if (!mercaderiasAccount) mercaderiasAccount = accounts.find(a => !a.isGroup && a.type === 'asset' && (a.name?.toLowerCase().includes('mercadería') || a.name?.toLowerCase().includes('mercaderias')));
+                if (!mercaderiasAccount) { mercaderiasAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.30.01', name: 'Mercaderías', type: 'asset', nature: 'debit', level: 2, isActive: true, parentId: null }; await DB.add('accounts', mercaderiasAccount); }
+
+                // === ASIENTO 1: Venta a crédito ===
+                // Clientes (D) / Ingresos por Ventas (C) + IVA DF (C)
+                await AccountingService.registerTransaction('sales', {
+                    date: invoiceDate,
+                    description: `Venta a crédito Fact. ${invoiceNumber} - ${customer?.name || 'Cliente'}`,
+                    reference: invoiceNumber,
+                    sourceDocument: 'customerInvoice',
+                    sourceDocumentId: invoice.id,
+                    autoPost: true,
+                    lines: [
+                        { accountId: customersAccount.id, description: `${customer?.name || 'Cliente'} - Fact. ${invoiceNumber}`, debit: total, credit: 0 },
+                        { accountId: salesAccount.id, description: `Ventas Fact. ${invoiceNumber}`, debit: 0, credit: subtotal },
+                        { accountId: ivaDebAccount.id, description: `IVA DF Fact. ${invoiceNumber}`, debit: 0, credit: iva }
+                    ]
                 });
 
-                await DB.update('salesOrderLines', {
-                    ...line,
-                    invoiced: (line.invoiced || 0) + toInvoice
-                });
+                // === ASIENTO 2: Costo de la mercadería vendida ===
+                // Costo de Ventas (D) / Mercaderías (C)
+                if (totalCost > 0) {
+                    await AccountingService.registerTransaction('sales', {
+                        date: invoiceDate,
+                        description: `Costo mercadería vendida Fact. ${invoiceNumber} - ${customer?.name || 'Cliente'}`,
+                        reference: invoiceNumber,
+                        sourceDocument: 'customerInvoice',
+                        sourceDocumentId: invoice.id,
+                        autoPost: true,
+                        lines: [
+                            { accountId: costOfSalesAccount.id, description: `Costo mercadería vendida Fact. ${invoiceNumber}`, debit: totalCost, credit: 0 },
+                            { accountId: mercaderiasAccount.id, description: `Salida mercadería Fact. ${invoiceNumber}`, debit: 0, credit: totalCost }
+                        ]
+                    });
+                }
+
+                if (customer) {
+                    await DB.update('customers', { ...customer, balance: (customer.balance || 0) + total });
+                }
+
+                loading.success(`Factura ${invoiceNumber} generada y contabilizada exitosamente`);
+                App.navigate('ventas', 'facturas-cliente');
+
+            } catch (err) {
+                loading.error('Error: ' + err.message);
+                console.error(err);
             }
-
-            const iva = subtotal * 0.19;
-            const total = subtotal + iva;
-
-            await DB.update('customerInvoices', { ...invoice, subtotal, iva, total });
-
-            // Contabilidad: Clientes vs Clientes-Facturas por Emitir & IVA DF
-            let customersAccount = accounts.find(a =>
-                a.name?.toLowerCase().includes('cliente') && !a.name?.toLowerCase().includes('banco')
-            ) || accounts.find(a => a.code === '1.1.03' && !a.name?.toLowerCase().includes('banco'));
-
-            let bridgeAccount = accounts.find(a =>
-                a.type === 'asset' && a.name?.toLowerCase().includes('facturas por emitir')
-            ) || accounts.find(a => a.code === '1.1.06');
-
-            let ivaDebAccount = accounts.find(a =>
-                a.name?.toLowerCase().includes('iva') &&
-                (a.name?.toLowerCase().includes('débito') || a.name?.toLowerCase().includes('debito'))
-            ) || accounts.find(a => a.code === '2.1.02');
-
-            if (!customersAccount) {
-                customersAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.05', name: 'Clientes por Cobrar', type: 'asset', nature: 'debit', level: 2, isActive: true };
-                await DB.add('accounts', customersAccount);
-            }
-            if (!bridgeAccount) {
-                bridgeAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.06', name: 'Clientes - Facturas por Emitir', type: 'asset', nature: 'debit', level: 2, isActive: true };
-                await DB.add('accounts', bridgeAccount);
-            }
-            if (!ivaDebAccount) {
-                ivaDebAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.02', name: 'IVA Débito Fiscal', type: 'liability', nature: 'credit', level: 2, isActive: true };
-                await DB.add('accounts', ivaDebAccount);
-            }
-
-            const salesTransactionData = {
-                date: Helpers.getCurrentDate(),
-                description: `Emisión Factura ${invoiceNumber} s/Pedido ${order.number} - ${customer?.name || 'Cliente'}`,
-                reference: invoiceNumber,
-                sourceDocument: 'customerInvoice',
-                sourceDocumentId: invoice.id,
-                autoPost: true,
-                lines: [
-                    { accountId: customersAccount.id, description: `${customer?.name} - Fact. ${invoiceNumber}`, debit: total, credit: 0 },
-                    { accountId: bridgeAccount.id, description: `Facturación de entregas s/Fact. ${invoiceNumber}`, debit: 0, credit: subtotal },
-                    { accountId: ivaDebAccount.id, description: `IVA DF Fact. ${invoiceNumber}`, debit: 0, credit: iva }
-                ]
-            };
-
-            await AccountingService.registerTransaction('sales', salesTransactionData);
-
-            if (customer) {
-                await DB.update('customers', { ...customer, balance: (customer.balance || 0) + total });
-            }
-
-            loading.success('Factura generada y contabilizada exitosamente');
-
-            Modal.info({
-                title: 'Facturación Completada',
-                message: `La Factura N° ${invoiceNumber} fue generada por el total de las entregas pendientes ($${total.toLocaleString('es-CL')}).`,
-            });
-            App.navigate('ventas', 'facturas-venta');
-
-        } catch (err) {
-            loading.error('Error: ' + err.message);
-        }
+        });
     },
 
     async initCustomerInvoices() {
@@ -1296,7 +1297,7 @@ const VentasModule = {
                 { key: 'customerName', label: 'Cliente' },
                 { key: 'dueDate', label: 'Vencimiento', format: 'date' },
                 { key: 'total', label: 'Total', format: 'currency', class: 'text-right' },
-                { key: 'status', label: 'Estado', format: 'status' }
+                { key: 'status', label: 'Estado', format: 'statusInvoice' }
             ],
             data: invoices,
             actions: [
@@ -1563,42 +1564,68 @@ const VentasModule = {
         const company = CompanyService.getCurrent();
         const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
 
-        // Buscar cuentas - priorizar por nombre para evitar confusiones
+        // Buscar Clientes (Activo)
         let customersAccount = accounts.find(a =>
-            a.name?.toLowerCase().includes('cliente') &&
-            !a.name?.toLowerCase().includes('banco')
-        ) || accounts.find(a => a.code === '1.1.05');
+            !a.isGroup && a.type === 'asset' && a.code === '1.1.20.01'
+        );
+        if (!customersAccount) {
+            customersAccount = accounts.find(a =>
+                !a.isGroup && a.type === 'asset' &&
+                a.name?.toLowerCase().includes('cliente') &&
+                !a.name?.toLowerCase().includes('banco') && !a.name?.toLowerCase().includes('factura')
+            );
+        }
+        if (!customersAccount) {
+            customersAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.20.01', name: 'Clientes', type: 'asset', nature: 'debit', level: 2, isActive: true, parentId: null };
+            await DB.add('accounts', customersAccount);
+        }
 
+        // Buscar Ingresos por Ventas (Ingreso)
         let salesAccount = accounts.find(a =>
-            a.type === 'revenue' && a.name?.toLowerCase().includes('venta')
-        ) || accounts.find(a => a.code?.startsWith('4.1'));
+            !a.isGroup && (a.type === 'revenue' || a.type === 'income') && a.code === '4.1.10.01'
+        );
+        if (!salesAccount) {
+            salesAccount = accounts.find(a =>
+                !a.isGroup && (a.type === 'revenue' || a.type === 'income') &&
+                a.name?.toLowerCase().includes('venta')
+            );
+        }
+        if (!salesAccount) {
+            salesAccount = { id: Helpers.generateId(), companyId: company.id, code: '4.1.10.01', name: 'Ingresos por Ventas', type: 'revenue', nature: 'credit', level: 2, isActive: true, parentId: null };
+            await DB.add('accounts', salesAccount);
+        }
 
+        // Buscar IVA Débito Fiscal (Pasivo)
         let ivaDebAccount = accounts.find(a =>
-            a.name?.toLowerCase().includes('iva') &&
-            (a.name?.toLowerCase().includes('débito') || a.name?.toLowerCase().includes('debito'))
-        ) || accounts.find(a => a.code === '2.1.02');
+            !a.isGroup && a.type === 'liability' && a.code === '2.1.40.01'
+        );
+        if (!ivaDebAccount) {
+            ivaDebAccount = accounts.find(a =>
+                !a.isGroup && a.type === 'liability' &&
+                a.name?.toLowerCase().includes('iva') &&
+                (a.name?.toLowerCase().includes('débito') || a.name?.toLowerCase().includes('debito'))
+            );
+        }
+        if (!ivaDebAccount) {
+            ivaDebAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.40.01', name: 'IVA Débito Fiscal', type: 'liability', nature: 'credit', level: 2, isActive: true, parentId: null };
+            await DB.add('accounts', ivaDebAccount);
+        }
 
-        if (!customersAccount) { customersAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.05', name: 'Clientes por Cobrar', type: 'asset', nature: 'debit', level: 2, isActive: true }; await DB.add('accounts', customersAccount); }
-        if (!salesAccount) { salesAccount = { id: Helpers.generateId(), companyId: company.id, code: '4.1.01', name: 'Ventas', type: 'revenue', nature: 'credit', level: 2, isActive: true }; await DB.add('accounts', salesAccount); }
-        if (!ivaDebAccount) { ivaDebAccount = { id: Helpers.generateId(), companyId: company.id, code: '2.1.02', name: 'IVA Débito Fiscal', type: 'liability', nature: 'credit', level: 2, isActive: true }; await DB.add('accounts', ivaDebAccount); }
-
-        // Preparar datos del asiento
+        // Asiento: Clientes (D) / Ventas (C) + IVA DF (C)
         const transactionData = {
             date: invoice.date,
-            description: `Factura ${invoice.number} - ${customer?.name}`,
+            description: `Factura ${invoice.number} - ${customer?.name || 'Cliente'}`,
             reference: invoice.number,
             sourceDocument: 'customerInvoice',
             sourceDocumentId: invoice.id,
-            autoPost: true,  // Contabilizar automáticamente
+            autoPost: true,
             lines: [
-                { accountId: customersAccount.id, description: `${customer?.name} - Fact. ${invoice.number}`, debit: total, credit: 0 },
+                { accountId: customersAccount.id, description: `${customer?.name || 'Cliente'} - Fact. ${invoice.number}`, debit: total, credit: 0 },
                 { accountId: salesAccount.id, description: `Ventas Fact. ${invoice.number}`, debit: 0, credit: subtotal },
                 { accountId: ivaDebAccount.id, description: `IVA DF Fact. ${invoice.number}`, debit: 0, credit: iva }
             ]
         };
 
-        // Usar el sistema dual: registerTransaction decide si va al Libro Diario o Libro Auxiliar
-        // según la configuración de la empresa (jornalizador vs centralizador)
         await AccountingService.registerTransaction('sales', transactionData);
 
         // Actualizar saldo del cliente
@@ -1613,13 +1640,18 @@ const VentasModule = {
 
         // Cargar nombres de productos
         for (let line of lines) {
-            const product = await DB.get('products', line.productId);
-            line.productName = product?.name || 'Producto';
-            line.productCode = product?.code || '';
+            if (line.productId) {
+                const product = await DB.get('products', line.productId);
+                line.productName = product?.name || product?.description || line.description || 'Producto';
+                line.productCode = product?.code || '-';
+            } else {
+                line.productName = line.description || 'Servicio/Gasto';
+                line.productCode = '-';
+            }
         }
 
-        const statusLabels = { pending: 'Pendiente', posted: 'Contabilizada', paid: 'Pagada' };
-        const statusClass = { pending: 'warning', posted: 'info', paid: 'success' };
+        const statusLabels = { pending: 'Borrador', posted: 'Pendiente', paid: 'Pagada', partial: 'Pago Parcial' };
+        const statusClass = { pending: 'neutral', posted: 'warning', paid: 'success', partial: 'warning' };
 
         Modal.open({
             title: `Factura ${invoice.number}`,
@@ -1644,7 +1676,8 @@ const VentasModule = {
                                 <th>Producto</th>
                                 <th class="text-right">Cantidad</th>
                                 <th class="text-right">Precio</th>
-                                <th class="text-right">Neto</th>
+                                <th class="text-right">IVA</th>
+                                <th class="text-right">Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1654,21 +1687,22 @@ const VentasModule = {
                                     <td>${l.productName}</td>
                                     <td class="text-right">${l.quantity}</td>
                                     <td class="text-right">${Formatters.currency(l.price)}</td>
-                                    <td class="text-right">${Formatters.currency(l.neto || l.quantity * l.price)}</td>
+                                    <td class="text-right">${Formatters.currency(l.iva || (l.quantity * l.price * 0.19))}</td>
+                                    <td class="text-right">${Formatters.currency(l.total || (l.quantity * l.price * 1.19))}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="4" class="text-right">Neto:</td>
-                                <td class="text-right">${Formatters.currency(invoice.subtotal || 0)}</td>
+                                <td colspan="5" class="text-right">Neto:</td>
+                                <td class="text-right">${Formatters.currency(invoice.subtotal || (invoice.total / 1.19))}</td>
                             </tr>
                             <tr>
-                                <td colspan="4" class="text-right">IVA (19%):</td>
-                                <td class="text-right">${Formatters.currency(invoice.iva || 0)}</td>
+                                <td colspan="5" class="text-right">IVA (19%):</td>
+                                <td class="text-right">${Formatters.currency(invoice.iva || (invoice.total - (invoice.total / 1.19)))}</td>
                             </tr>
                             <tr style="font-weight: 700; font-size: 1.1em;">
-                                <td colspan="4" class="text-right">TOTAL:</td>
+                                <td colspan="5" class="text-right">TOTAL:</td>
                                 <td class="text-right">${Formatters.currency(invoice.total)}</td>
                             </tr>
                         </tfoot>
@@ -1678,7 +1712,7 @@ const VentasModule = {
             `,
             footer: `
                 <button class="btn btn-secondary" onclick="Modal.close()">Cerrar</button>
-                ${invoice.status === 'posted' ? `<button class="btn btn-success" onclick="Modal.close(); VentasModule.collectCustomerInvoice(VentasModule._currentInvoice);"><i class="fas fa-money-bill"></i> Cobrar</button>` : ''}
+                ${(invoice.status === 'posted' || invoice.status === 'partial') ? `<button class="btn btn-success" onclick="Modal.close(); VentasModule.collectCustomerInvoice(VentasModule._currentInvoice);"><i class="fas fa-money-bill"></i> Cobrar</button>` : ''}
             `
         });
 
@@ -1780,12 +1814,12 @@ const VentasModule = {
 
                 // Buscar cuenta de clientes (por cobrar)
                 let customersAccount = accounts.find(a =>
-                    a.name?.toLowerCase().includes('cliente') &&
-                    !a.name?.toLowerCase().includes('banco')
-                ) || accounts.find(a => a.code === '1.1.05');
+                    (a.name?.toLowerCase() === 'clientes' || a.name?.toLowerCase() === 'clientes nacionales' || a.name?.toLowerCase().includes('cliente')) &&
+                    !a.name?.toLowerCase().includes('banco') && !a.name?.toLowerCase().includes('factura')
+                ) || accounts.find(a => a.code === '1.1.04');
 
                 if (!customersAccount) {
-                    customersAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.05', name: 'Clientes por Cobrar', type: 'asset', nature: 'debit', level: 2, isActive: true };
+                    customersAccount = { id: Helpers.generateId(), companyId: company.id, code: '1.1.04', name: 'Clientes', type: 'asset', nature: 'debit', level: 2, isActive: true };
                     await DB.add('accounts', customersAccount);
                 }
 
@@ -1798,6 +1832,8 @@ const VentasModule = {
                     date: paymentDate,
                     description: `Cobro Factura ${invoice.number} - ${customer?.name || 'Cliente'}`,
                     reference: reference || `COB-${invoice.number}`,
+                    sourceDocument: 'customerInvoice',
+                    sourceDocumentId: invoice.id,
                     status: 'posted',
                     totalDebit: invoice.total,
                     totalCredit: invoice.total,

@@ -25,6 +25,15 @@ const ReportesModule = {
         if (!company) return '<p>Seleccione una empresa</p>';
 
         const balanceData = await AccountingService.getBalanceSheet(Helpers.getCurrentDate());
+        
+        // Identificar cuentas que han tenido movimientos para mostrarlas aunque tengan saldo 0
+        const activeAccountIds = new Set();
+        const entries = await DB.getByIndex('journalEntries', 'companyId', company.id);
+        const postedEntries = entries.filter(e => e.status === 'posted');
+        for (const e of postedEntries) {
+            const lines = await DB.getByIndex('journalLines', 'entryId', e.id);
+            if(lines) lines.forEach(l => activeAccountIds.add(l.accountId));
+        }
 
         return `
             <div class="page-header">
@@ -73,14 +82,14 @@ const ReportesModule = {
                             </h3>
                             
                             <h4 style="color: var(--primary-600); margin-bottom: var(--space-2); font-size: var(--font-size-md);">Activos Corrientes</h4>
-                            ${this.renderAccountGroup(balanceData.assets.current.items, 'asset')}
+                            ${this.renderAccountGroup(balanceData.assets.current.items, 'asset', activeAccountIds)}
                             <div style="display: flex; justify-content: space-between; font-weight: 600; margin: var(--space-3) 0 var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px dashed var(--border-medium);">
                                 <span>Total Activos Corrientes</span>
                                 <span>${Formatters.currency(balanceData.assets.current.total)}</span>
                             </div>
 
                             <h4 style="color: var(--primary-600); margin-bottom: var(--space-2); font-size: var(--font-size-md);">Activos No Corrientes</h4>
-                            ${this.renderAccountGroup(balanceData.assets.nonCurrent.items, 'asset')}
+                            ${this.renderAccountGroup(balanceData.assets.nonCurrent.items, 'asset', activeAccountIds)}
                             <div style="display: flex; justify-content: space-between; font-weight: 600; margin: var(--space-3) 0 var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px dashed var(--border-medium);">
                                 <span>Total Activos No Corrientes</span>
                                 <span>${Formatters.currency(balanceData.assets.nonCurrent.total)}</span>
@@ -99,14 +108,14 @@ const ReportesModule = {
                             </h3>
                             
                             <h4 style="color: var(--error-600); margin-bottom: var(--space-2); font-size: var(--font-size-md);">Pasivos Corrientes</h4>
-                            ${this.renderAccountGroup(balanceData.liabilities.current.items, 'liability')}
+                            ${this.renderAccountGroup(balanceData.liabilities.current.items, 'liability', activeAccountIds)}
                             <div style="display: flex; justify-content: space-between; font-weight: 600; margin: var(--space-3) 0 var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px dashed var(--border-medium);">
                                 <span>Total Pasivos Corrientes</span>
                                 <span>${Formatters.currency(balanceData.liabilities.current.total)}</span>
                             </div>
 
                             <h4 style="color: var(--error-600); margin-bottom: var(--space-2); font-size: var(--font-size-md);">Pasivos No Corrientes</h4>
-                            ${this.renderAccountGroup(balanceData.liabilities.nonCurrent.items, 'liability')}
+                            ${this.renderAccountGroup(balanceData.liabilities.nonCurrent.items, 'liability', activeAccountIds)}
                             <div style="display: flex; justify-content: space-between; font-weight: 600; margin: var(--space-3) 0 var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px dashed var(--border-medium);">
                                 <span>Total Pasivos No Corrientes</span>
                                 <span>${Formatters.currency(balanceData.liabilities.nonCurrent.total)}</span>
@@ -120,7 +129,7 @@ const ReportesModule = {
                             <h3 style="color: var(--success-500); margin: var(--space-6) 0 var(--space-4); padding-bottom: var(--space-2); border-bottom: 2px solid var(--success-500);">
                                 PATRIMONIO
                             </h3>
-                            ${this.renderAccountGroup(balanceData.equity.items, 'equity')}
+                            ${this.renderAccountGroup(balanceData.equity.items, 'equity', activeAccountIds)}
                             ${balanceData.netIncome !== 0 ? `
                                 <div style="display: flex; justify-content: space-between; padding: var(--space-2) 1rem var(--space-2) var(--space-4); color: ${balanceData.netIncome >= 0 ? 'var(--success-600)' : 'var(--error-600)'}; font-weight: 500; border-bottom: 1px dotted var(--border-light);">
                                     <span>Resultado del Ejercicio</span>
@@ -143,8 +152,8 @@ const ReportesModule = {
         `;
     },
 
-    renderAccountGroup(accounts, type) {
-        const filtered = accounts.filter(a => a.balance !== 0);
+    renderAccountGroup(accounts, type, activeIds = new Set()) {
+        const filtered = accounts.filter(a => a.balance !== 0 || activeIds.has(a.id));
         if (filtered.length === 0) {
             return '<p style="color: var(--text-tertiary); font-style: italic;">Sin movimientos</p>';
         }
@@ -166,8 +175,17 @@ const ReportesModule = {
 
         const accounts = await AccountingService.getChartOfAccounts();
 
-        // Filtrar solo cuentas de detalle con movimientos
-        const detailAccounts = accounts.filter(a => !a.isGroup);
+        // Identificar cuentas que han tenido movimientos
+        const activeAccountIds = new Set();
+        const entries = await DB.getByIndex('journalEntries', 'companyId', company.id);
+        const postedEntries = entries.filter(e => e.status === 'posted');
+        for (const e of postedEntries) {
+            const lines = await DB.getByIndex('journalLines', 'entryId', e.id);
+            if(lines) lines.forEach(l => activeAccountIds.add(l.accountId));
+        }
+
+        // Filtrar solo cuentas de detalle con movimientos o con saldo distinto a cero
+        const detailAccounts = accounts.filter(a => !a.isGroup && (a.balance !== 0 || activeAccountIds.has(a.id)));
 
         // Calcular totales
         let totalDebit = 0;
@@ -266,7 +284,7 @@ const ReportesModule = {
                             </tr>
                         </thead>
                         <tbody>
-                            ${detailAccounts.filter(a => a.balance !== 0).map(acc => {
+                            ${detailAccounts.map(acc => {
             let debit = 0, credit = 0;
             if (acc.balance > 0) {
                 if (['asset', 'expense'].includes(acc.type)) {
@@ -453,6 +471,9 @@ const ReportesModule = {
                     </button>
                     <button class="btn btn-outline" id="btn-export-ratios-pdf">
                         <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                    <button class="btn btn-outline" id="btn-export-ratios-excel">
+                        <i class="fas fa-file-excel"></i> Excel
                     </button>
                 </div>
             </div>
@@ -720,8 +741,11 @@ const ReportesModule = {
                     </button>
                 </div>
                 <div class="toolbar-right">
-                    <button class="btn btn-outline" id="btn-export-statement">
+                    <button class="btn btn-outline" id="btn-export-statement-pdf">
                         <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                    <button class="btn btn-outline" id="btn-export-statement-excel">
+                        <i class="fas fa-file-excel"></i> Excel
                     </button>
                 </div>
             </div>
@@ -804,26 +828,36 @@ const ReportesModule = {
     renderCashFlow() {
         return `
             <div class="page-header">
-                <h1 class="page-title">Flujo de Caja</h1>
-                <p class="page-subtitle">Estado de Flujos de Efectivo</p>
+                <h1 class="page-title">Estado de Flujo de Efectivo</h1>
+                <p class="page-subtitle">Entradas y salidas de efectivo</p>
             </div>
             
             <div class="toolbar">
                 <div class="toolbar-left">
-                    <input type="date" class="form-control" id="date-from">
-                    <input type="date" class="form-control" id="date-to">
+                    <input type="date" class="form-control" id="cashflow-date-from">
+                    <input type="date" class="form-control" id="cashflow-date-to" value="${Helpers.getCurrentDate()}">
                     <button class="btn btn-primary" id="btn-generate-cashflow">
                         <i class="fas fa-sync"></i> Generar
                     </button>
                 </div>
+                <div class="toolbar-right">
+                    <button class="btn btn-outline" id="btn-print-cashflow">
+                        <i class="fas fa-print"></i> Imprimir
+                    </button>
+                    <button class="btn btn-outline" id="btn-export-cashflow-pdf">
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </button>
+                </div>
             </div>
             
-            <div class="card">
-                <div class="card-body">
-                    <div class="empty-state">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <h3>Flujo de Caja</h3>
-                        <p>Seleccione un período para generar el estado de flujo de efectivo</p>
+            <div id="cashflow-content">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="empty-state">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <h3>Flujo de Caja</h3>
+                            <p>Haga clic en Generar para calcular el flujo de efectivo</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -903,6 +937,10 @@ const ReportesModule = {
             App.navigate('reportes', 'balance-general');
         });
 
+        document.getElementById('btn-print-balance')?.addEventListener('click', () => {
+            window.print();
+        });
+
         document.getElementById('btn-export-balance-pdf')?.addEventListener('click', async () => {
             const company = CompanyService.getCurrent();
             const balanceData = await AccountingService.getBalanceSheet(document.getElementById('balance-date').value);
@@ -910,8 +948,41 @@ const ReportesModule = {
             Toast.success('PDF generado');
         });
 
-        document.getElementById('btn-export-balance-excel')?.addEventListener('click', () => {
-            Toast.info('Exportar a Excel');
+        document.getElementById('btn-export-balance-excel')?.addEventListener('click', async () => {
+            try {
+                const company = CompanyService.getCurrent();
+                const balanceData = await AccountingService.getBalanceSheet(document.getElementById('balance-date').value);
+
+                const data = [];
+                // Assets
+                data.push({ Seccion: 'ACTIVOS', Codigo: '', Cuenta: '', Saldo: '' });
+                balanceData.assets.items.filter(a => a.balance !== 0).forEach(a => {
+                    data.push({ Seccion: 'Activo', Codigo: a.code, Cuenta: a.name, Saldo: Math.abs(a.balance) });
+                });
+                data.push({ Seccion: '', Codigo: '', Cuenta: 'TOTAL ACTIVOS', Saldo: balanceData.assets.total });
+
+                // Liabilities
+                data.push({ Seccion: 'PASIVOS', Codigo: '', Cuenta: '', Saldo: '' });
+                balanceData.liabilities.items.filter(a => a.balance !== 0).forEach(a => {
+                    data.push({ Seccion: 'Pasivo', Codigo: a.code, Cuenta: a.name, Saldo: Math.abs(a.balance) });
+                });
+                data.push({ Seccion: '', Codigo: '', Cuenta: 'TOTAL PASIVOS', Saldo: balanceData.liabilities.total });
+
+                // Equity
+                data.push({ Seccion: 'PATRIMONIO', Codigo: '', Cuenta: '', Saldo: '' });
+                balanceData.equity.items.filter(a => a.balance !== 0).forEach(a => {
+                    data.push({ Seccion: 'Patrimonio', Codigo: a.code, Cuenta: a.name, Saldo: Math.abs(a.balance) });
+                });
+                if (balanceData.netIncome !== 0) {
+                    data.push({ Seccion: 'Patrimonio', Codigo: '', Cuenta: 'Resultado del Ejercicio', Saldo: balanceData.netIncome });
+                }
+                data.push({ Seccion: '', Codigo: '', Cuenta: 'TOTAL PATRIMONIO', Saldo: balanceData.equity.total });
+
+                await ExportService.toExcel(data, `Balance_General_${company.name}_${Helpers.getCurrentDate()}`, { sheetName: 'Balance General' });
+                Toast.success('Excel generado');
+            } catch (err) {
+                Toast.error('Error al exportar: ' + err.message);
+            }
         });
     },
 
@@ -925,11 +996,68 @@ const ReportesModule = {
         });
 
         document.getElementById('btn-export-trial-pdf')?.addEventListener('click', async () => {
-            Toast.info('Exportando a PDF...');
+            try {
+                const company = CompanyService.getCurrent();
+                const accounts = await AccountingService.getChartOfAccounts();
+                const detailAccounts = accounts.filter(a => !a.isGroup && a.balance !== 0);
+
+                const typeLabels = { asset: 'Activo', liability: 'Pasivo', equity: 'Patrimonio', revenue: 'Ingreso', expense: 'Gasto' };
+
+                const data = detailAccounts.map(acc => {
+                    let debit = 0, credit = 0;
+                    if (acc.balance > 0) {
+                        if (['asset', 'expense'].includes(acc.type)) debit = acc.balance;
+                        else credit = acc.balance;
+                    } else if (acc.balance < 0) {
+                        if (['asset', 'expense'].includes(acc.type)) credit = Math.abs(acc.balance);
+                        else debit = Math.abs(acc.balance);
+                    }
+                    return { codigo: acc.code, cuenta: acc.name, tipo: typeLabels[acc.type] || acc.type, debe: debit, haber: credit };
+                });
+
+                await ExportService.toPDF(data, `Balance_Comprobacion_${company.name}_${Helpers.getCurrentDate()}`, {
+                    title: 'Balance de Comprobación',
+                    subtitle: `Al ${Formatters.date(new Date(), 'long')}`,
+                    companyName: company.name,
+                    headers: [
+                        { key: 'codigo', label: 'Código' },
+                        { key: 'cuenta', label: 'Cuenta' },
+                        { key: 'tipo', label: 'Tipo' },
+                        { key: 'debe', label: 'Debe', format: 'currency' },
+                        { key: 'haber', label: 'Haber', format: 'currency' }
+                    ]
+                });
+                Toast.success('PDF generado');
+            } catch (err) {
+                Toast.error('Error al exportar: ' + err.message);
+            }
         });
 
-        document.getElementById('btn-export-trial-excel')?.addEventListener('click', () => {
-            Toast.info('Exportando a Excel...');
+        document.getElementById('btn-export-trial-excel')?.addEventListener('click', async () => {
+            try {
+                const company = CompanyService.getCurrent();
+                const accounts = await AccountingService.getChartOfAccounts();
+                const detailAccounts = accounts.filter(a => !a.isGroup && a.balance !== 0);
+
+                const typeLabels = { asset: 'Activo', liability: 'Pasivo', equity: 'Patrimonio', revenue: 'Ingreso', expense: 'Gasto' };
+
+                const data = detailAccounts.map(acc => {
+                    let debit = 0, credit = 0;
+                    if (acc.balance > 0) {
+                        if (['asset', 'expense'].includes(acc.type)) debit = acc.balance;
+                        else credit = acc.balance;
+                    } else if (acc.balance < 0) {
+                        if (['asset', 'expense'].includes(acc.type)) credit = Math.abs(acc.balance);
+                        else debit = Math.abs(acc.balance);
+                    }
+                    return { Codigo: acc.code, Cuenta: acc.name, Tipo: typeLabels[acc.type] || acc.type, Debe: debit, Haber: credit };
+                });
+
+                await ExportService.toExcel(data, `Balance_Comprobacion_${company.name}_${Helpers.getCurrentDate()}`, { sheetName: 'Balance Comprobación' });
+                Toast.success('Excel generado');
+            } catch (err) {
+                Toast.error('Error al exportar: ' + err.message);
+            }
         });
     },
 
@@ -944,7 +1072,96 @@ const ReportesModule = {
         });
 
         document.getElementById('btn-export-ratios-pdf')?.addEventListener('click', async () => {
-            Toast.info('Exportando PDF...');
+            try {
+                const company = CompanyService.getCurrent();
+                const balanceData = await AccountingService.getBalanceSheet(Helpers.getCurrentDate());
+                const range = Helpers.getYearRange();
+                const incomeData = await AccountingService.getIncomeStatement(range.start, range.end);
+
+                const totalAssets = balanceData.assets.total;
+                const totalLiabilities = balanceData.liabilities.total;
+                const totalEquity = balanceData.equity.total + balanceData.netIncome;
+                const netIncome = incomeData.netIncome;
+                const totalRevenue = incomeData.revenues.total;
+                const totalExpenses = incomeData.expenses.total;
+
+                const currentAssets = balanceData.assets.items
+                    .filter(a => ['1.1.1', '1.1.2', '1.1.3', '1.1.4', '1.1.5'].some(code => a.code.startsWith(code)))
+                    .reduce((sum, a) => sum + Math.abs(a.balance), 0) || totalAssets * 0.6;
+                const currentLiabilities = balanceData.liabilities.items
+                    .filter(a => ['2.1'].some(code => a.code.startsWith(code)))
+                    .reduce((sum, a) => sum + Math.abs(a.balance), 0) || totalLiabilities * 0.5;
+                const inventory = balanceData.assets.items
+                    .filter(a => a.code.startsWith('1.1.4'))
+                    .reduce((sum, a) => sum + Math.abs(a.balance), 0) || currentAssets * 0.3;
+
+                const data = [
+                    { Categoria: 'Liquidez', Indicador: 'Razón Corriente', Formula: 'Act. Corr. / Pas. Corr.', Valor: currentLiabilities > 0 ? (currentAssets / currentLiabilities).toFixed(2) : '0.00' },
+                    { Categoria: 'Liquidez', Indicador: 'Prueba Ácida', Formula: '(Act. Corr. - Inv.) / Pas. Corr.', Valor: currentLiabilities > 0 ? ((currentAssets - inventory) / currentLiabilities).toFixed(2) : '0.00' },
+                    { Categoria: 'Solvencia', Indicador: 'Endeudamiento', Formula: 'Pasivo / Activo x 100', Valor: totalAssets > 0 ? ((totalLiabilities / totalAssets) * 100).toFixed(1) + '%' : '0%' },
+                    { Categoria: 'Solvencia', Indicador: 'Deuda/Patrimonio', Formula: 'Pasivo / Patrimonio', Valor: totalEquity > 0 ? (totalLiabilities / totalEquity).toFixed(2) : '0.00' },
+                    { Categoria: 'Solvencia', Indicador: 'Autonomía', Formula: 'Patrimonio / Activo x 100', Valor: totalAssets > 0 ? ((totalEquity / totalAssets) * 100).toFixed(1) + '%' : '0%' },
+                    { Categoria: 'Rentabilidad', Indicador: 'ROA', Formula: 'Resultado / Activo x 100', Valor: totalAssets > 0 ? ((netIncome / totalAssets) * 100).toFixed(2) + '%' : '0%' },
+                    { Categoria: 'Rentabilidad', Indicador: 'ROE', Formula: 'Resultado / Patrimonio x 100', Valor: totalEquity > 0 ? ((netIncome / totalEquity) * 100).toFixed(2) + '%' : '0%' },
+                    { Categoria: 'Rentabilidad', Indicador: 'Margen Neto', Formula: 'Utilidad / Ventas x 100', Valor: totalRevenue > 0 ? ((netIncome / totalRevenue) * 100).toFixed(2) + '%' : '0%' }
+                ];
+
+                await ExportService.toPDF(data, `Ratios_Financieros_${company.name}_${Helpers.getCurrentDate()}`, {
+                    title: 'Ratios Financieros',
+                    subtitle: `${company.name} - Al ${Formatters.date(new Date(), 'long')}`,
+                    companyName: company.name,
+                    headers: [
+                        { key: 'Categoria', label: 'Categoría' },
+                        { key: 'Indicador', label: 'Indicador' },
+                        { key: 'Formula', label: 'Fórmula' },
+                        { key: 'Valor', label: 'Valor' }
+                    ]
+                });
+                Toast.success('PDF generado');
+            } catch (err) {
+                Toast.error('Error al exportar: ' + err.message);
+            }
+        });
+
+        document.getElementById('btn-export-ratios-excel')?.addEventListener('click', async () => {
+            try {
+                const company = CompanyService.getCurrent();
+                const balanceData = await AccountingService.getBalanceSheet(Helpers.getCurrentDate());
+                const range = Helpers.getYearRange();
+                const incomeData = await AccountingService.getIncomeStatement(range.start, range.end);
+
+                const totalAssets = balanceData.assets.total;
+                const totalLiabilities = balanceData.liabilities.total;
+                const totalEquity = balanceData.equity.total + balanceData.netIncome;
+                const netIncome = incomeData.netIncome;
+                const totalRevenue = incomeData.revenues.total;
+
+                const currentAssets = balanceData.assets.items
+                    .filter(a => ['1.1.1', '1.1.2', '1.1.3', '1.1.4', '1.1.5'].some(code => a.code.startsWith(code)))
+                    .reduce((sum, a) => sum + Math.abs(a.balance), 0) || totalAssets * 0.6;
+                const currentLiabilities = balanceData.liabilities.items
+                    .filter(a => ['2.1'].some(code => a.code.startsWith(code)))
+                    .reduce((sum, a) => sum + Math.abs(a.balance), 0) || totalLiabilities * 0.5;
+                const inventory = balanceData.assets.items
+                    .filter(a => a.code.startsWith('1.1.4'))
+                    .reduce((sum, a) => sum + Math.abs(a.balance), 0) || currentAssets * 0.3;
+
+                const data = [
+                    { Categoría: 'Liquidez', Indicador: 'Razón Corriente', Fórmula: 'Act. Corr. / Pas. Corr.', Valor: currentLiabilities > 0 ? (currentAssets / currentLiabilities).toFixed(2) : '0.00' },
+                    { Categoría: 'Liquidez', Indicador: 'Prueba Ácida', Fórmula: '(Act. Corr. - Inv.) / Pas. Corr.', Valor: currentLiabilities > 0 ? ((currentAssets - inventory) / currentLiabilities).toFixed(2) : '0.00' },
+                    { Categoría: 'Solvencia', Indicador: 'Endeudamiento', Fórmula: 'Pasivo / Activo x 100', Valor: totalAssets > 0 ? ((totalLiabilities / totalAssets) * 100).toFixed(1) + '%' : '0%' },
+                    { Categoría: 'Solvencia', Indicador: 'Deuda/Patrimonio', Fórmula: 'Pasivo / Patrimonio', Valor: totalEquity > 0 ? (totalLiabilities / totalEquity).toFixed(2) : '0.00' },
+                    { Categoría: 'Solvencia', Indicador: 'Autonomía', Fórmula: 'Patrimonio / Activo x 100', Valor: totalAssets > 0 ? ((totalEquity / totalAssets) * 100).toFixed(1) + '%' : '0%' },
+                    { Categoría: 'Rentabilidad', Indicador: 'ROA', Fórmula: 'Resultado / Activo x 100', Valor: totalAssets > 0 ? ((netIncome / totalAssets) * 100).toFixed(2) + '%' : '0%' },
+                    { Categoría: 'Rentabilidad', Indicador: 'ROE', Fórmula: 'Resultado / Patrimonio x 100', Valor: totalEquity > 0 ? ((netIncome / totalEquity) * 100).toFixed(2) + '%' : '0%' },
+                    { Categoría: 'Rentabilidad', Indicador: 'Margen Neto', Fórmula: 'Utilidad / Ventas x 100', Valor: totalRevenue > 0 ? ((netIncome / totalRevenue) * 100).toFixed(2) + '%' : '0%' }
+                ];
+
+                await ExportService.toExcel(data, `Ratios_Financieros_${company.name}_${Helpers.getCurrentDate()}`, { sheetName: 'Ratios' });
+                Toast.success('Excel generado');
+            } catch (err) {
+                Toast.error('Error al exportar: ' + err.message);
+            }
         });
 
         // Obtener datos para gráficas
@@ -1023,11 +1240,192 @@ const ReportesModule = {
         document.getElementById('btn-generate-statement')?.addEventListener('click', async () => {
             App.navigate('reportes', 'estado-resultados');
         });
+
+        document.getElementById('btn-print-statement')?.addEventListener('click', () => {
+            window.print();
+        });
+
+        document.getElementById('btn-export-statement-pdf')?.addEventListener('click', async () => {
+            try {
+                const company = CompanyService.getCurrent();
+                const dateFrom = document.getElementById('date-from')?.value;
+                const dateTo = document.getElementById('date-to')?.value;
+                const range = (dateFrom && dateTo) ? { start: dateFrom, end: dateTo } : Helpers.getYearRange();
+                const statement = await AccountingService.getIncomeStatement(range.start, range.end);
+
+                const data = [];
+                // Revenues
+                statement.revenues.items.filter(a => a.balance !== 0).forEach(a => {
+                    data.push({ Seccion: 'Ingreso', Codigo: a.code, Cuenta: a.name, Monto: Math.abs(a.balance) });
+                });
+                data.push({ Seccion: '', Codigo: '', Cuenta: 'TOTAL INGRESOS', Monto: statement.revenues.total });
+
+                // Cost of sales
+                if (statement.costOfSales && statement.costOfSales.items) {
+                    statement.costOfSales.items.filter(a => a.balance !== 0).forEach(a => {
+                        data.push({ Seccion: 'Costo Venta', Codigo: a.code, Cuenta: a.name, Monto: Math.abs(a.balance) });
+                    });
+                    data.push({ Seccion: '', Codigo: '', Cuenta: 'TOTAL COSTO VENTAS', Monto: statement.costOfSales.total });
+                    data.push({ Seccion: '', Codigo: '', Cuenta: 'MARGEN BRUTO', Monto: statement.grossProfit });
+                }
+
+                // Other expenses
+                if (statement.otherExpenses && statement.otherExpenses.items) {
+                    statement.otherExpenses.items.filter(a => a.balance !== 0).forEach(a => {
+                        data.push({ Seccion: 'Gasto', Codigo: a.code, Cuenta: a.name, Monto: Math.abs(a.balance) });
+                    });
+                    data.push({ Seccion: '', Codigo: '', Cuenta: 'TOTAL OTROS GASTOS', Monto: statement.otherExpenses.total });
+                }
+
+                data.push({ Seccion: '', Codigo: '', Cuenta: statement.netIncome >= 0 ? 'UTILIDAD DEL EJERCICIO' : 'PÉRDIDA DEL EJERCICIO', Monto: statement.netIncome });
+
+                await ExportService.toPDF(data, `Estado_Resultados_${company.name}_${Helpers.getCurrentDate()}`, {
+                    title: 'Estado de Resultados',
+                    subtitle: `Del ${Formatters.date(range.start)} al ${Formatters.date(range.end)}`,
+                    companyName: company.name,
+                    headers: [
+                        { key: 'Seccion', label: 'Sección' },
+                        { key: 'Codigo', label: 'Código' },
+                        { key: 'Cuenta', label: 'Cuenta' },
+                        { key: 'Monto', label: 'Monto', format: 'currency' }
+                    ]
+                });
+                Toast.success('PDF generado');
+            } catch (err) {
+                Toast.error('Error al exportar: ' + err.message);
+            }
+        });
+
+        document.getElementById('btn-export-statement-excel')?.addEventListener('click', async () => {
+            try {
+                const company = CompanyService.getCurrent();
+                const dateFrom = document.getElementById('date-from')?.value;
+                const dateTo = document.getElementById('date-to')?.value;
+                const range = (dateFrom && dateTo) ? { start: dateFrom, end: dateTo } : Helpers.getYearRange();
+                const statement = await AccountingService.getIncomeStatement(range.start, range.end);
+
+                const data = [];
+                // Revenues
+                statement.revenues.items.filter(a => a.balance !== 0).forEach(a => {
+                    data.push({ Sección: 'Ingreso', Código: a.code, Cuenta: a.name, Monto: Math.abs(a.balance) });
+                });
+                data.push({ Sección: '', Código: '', Cuenta: 'TOTAL INGRESOS', Monto: statement.revenues.total });
+
+                // Cost of sales
+                if (statement.costOfSales && statement.costOfSales.items) {
+                    statement.costOfSales.items.filter(a => a.balance !== 0).forEach(a => {
+                        data.push({ Sección: 'Costo Venta', Código: a.code, Cuenta: a.name, Monto: Math.abs(a.balance) });
+                    });
+                    data.push({ Sección: '', Código: '', Cuenta: 'TOTAL COSTO VENTAS', Monto: statement.costOfSales.total });
+                    data.push({ Sección: '', Código: '', Cuenta: 'MARGEN BRUTO', Monto: statement.grossProfit });
+                }
+
+                // Other expenses
+                if (statement.otherExpenses && statement.otherExpenses.items) {
+                    statement.otherExpenses.items.filter(a => a.balance !== 0).forEach(a => {
+                        data.push({ Sección: 'Gasto', Código: a.code, Cuenta: a.name, Monto: Math.abs(a.balance) });
+                    });
+                    data.push({ Sección: '', Código: '', Cuenta: 'TOTAL OTROS GASTOS', Monto: statement.otherExpenses.total });
+                }
+
+                data.push({ Sección: '', Código: '', Cuenta: statement.netIncome >= 0 ? 'UTILIDAD DEL EJERCICIO' : 'PÉRDIDA DEL EJERCICIO', Monto: statement.netIncome });
+
+                await ExportService.toExcel(data, `Estado_Resultados_${company.name}_${Helpers.getCurrentDate()}`, { sheetName: 'Estado de Resultados' });
+                Toast.success('Excel generado');
+            } catch (err) {
+                Toast.error('Error al exportar: ' + err.message);
+            }
+        });
     },
 
     initCashFlow() {
-        document.getElementById('btn-generate-cashflow')?.addEventListener('click', () => {
-            Toast.info('Generar flujo de caja');
+        document.getElementById('btn-generate-cashflow')?.addEventListener('click', async () => {
+            const dateFrom = document.getElementById('cashflow-date-from').value;
+            const dateTo = document.getElementById('cashflow-date-to').value;
+            if (!dateTo) { Toast.error('Seleccione al menos una fecha final'); return; }
+
+            const company = CompanyService.getCurrent();
+            const accounts = await AccountingService.getChartOfAccounts();
+            const cashAccounts = accounts.filter(a => ['1.1.1', '1.1.2'].some(code => a.code.startsWith(code)));
+            const cashAccountIds = new Set(cashAccounts.map(a => a.id));
+
+            const entries = await DB.getByIndex('journalEntries', 'companyId', company.id);
+            const postedEntries = entries.filter(e => e.status === 'posted' && (!dateFrom || e.date >= dateFrom) && e.date <= dateTo);
+            const journalLines = await DB.getAll('journalLines');
+
+            let totalIn = 0;
+            let totalOut = 0;
+            const detailIn = [];
+            const detailOut = [];
+
+            for (const entry of postedEntries) {
+                const lines = journalLines.filter(l => l.entryId === entry.id);
+                const cashLines = lines.filter(l => cashAccountIds.has(l.accountId));
+
+                for (const line of cashLines) {
+                    if (line.debit > 0) {
+                        totalIn += line.debit;
+                        detailIn.push({ date: entry.date, desc: line.description || entry.description, amount: line.debit });
+                    }
+                    if (line.credit > 0) {
+                        totalOut += line.credit;
+                        detailOut.push({ date: entry.date, desc: line.description || entry.description, amount: line.credit });
+                    }
+                }
+            }
+
+            const netCashFlow = totalIn - totalOut;
+            const currentBalance = totalIn - totalOut;
+
+            const contentDiv = document.getElementById('cashflow-content');
+            if (contentDiv) {
+                contentDiv.innerHTML = `
+                    <div class="dashboard-grid" style="margin-bottom: var(--space-4);">
+                        <div class="kpi-card success">
+                            <div class="kpi-header"><div class="kpi-icon success"><i class="fas fa-arrow-down"></i></div></div>
+                            <div class="kpi-value">${Formatters.currency(totalIn)}</div>
+                            <div class="kpi-label">Entradas de Efectivo</div>
+                        </div>
+                        <div class="kpi-card error">
+                            <div class="kpi-header"><div class="kpi-icon error"><i class="fas fa-arrow-up"></i></div></div>
+                            <div class="kpi-value">${Formatters.currency(totalOut)}</div>
+                            <div class="kpi-label">Salidas de Efectivo</div>
+                        </div>
+                        <div class="kpi-card span-2 ${netCashFlow >= 0 ? 'success' : 'error'}">
+                            <div class="kpi-header">
+                                <div class="kpi-icon ${netCashFlow >= 0 ? 'success' : 'error'}"><i class="fas fa-wallet"></i></div>
+                            </div>
+                            <div class="kpi-value">${Formatters.currency(netCashFlow)}</div>
+                            <div class="kpi-label">Flujo Neto del Período</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Export events update
+            const pdfBtn = document.getElementById('btn-export-cashflow-pdf');
+            if (pdfBtn) {
+                const clone = pdfBtn.cloneNode(true);
+                pdfBtn.parentNode.replaceChild(clone, pdfBtn);
+                clone.addEventListener('click', async () => {
+                    const data = [
+                        { Categoria: 'Entradas de Efectivo', Monto: totalIn },
+                        { Categoria: 'Salidas de Efectivo', Monto: totalOut },
+                        { Categoria: 'Flujo Neto', Monto: netCashFlow }
+                    ];
+                    try {
+                        await ExportService.toPDF(data, `Flujo_Caja_${company.name}_${Helpers.getCurrentDate()}`, {
+                            title: 'Estado de Flujo de Efectivo',
+                            subtitle: `Del ${Formatters.date(dateFrom || 'Inicio')} al ${Formatters.date(dateTo)}`,
+                            companyName: company.name,
+                            headers: [{ key: 'Categoria', label: 'Categoría' }, { key: 'Monto', label: 'Monto', format: 'currency' }]
+                        });
+                        Toast.success('PDF generado');
+                    } catch (err) { Toast.error(err.message); }
+                });
+            }
+
+            document.getElementById('btn-print-cashflow')?.addEventListener('click', () => { window.print(); });
         });
     },
 
@@ -1047,13 +1445,56 @@ const ReportesModule = {
         const structure = [
             { type: 'Activos', value: Helpers.sumBy(accounts.filter(a => a.type === 'asset' && !a.isGroup), 'balance') },
             { type: 'Pasivos', value: Helpers.sumBy(accounts.filter(a => a.type === 'liability' && !a.isGroup), 'balance') },
-            { type: 'Patrimonio', value: Helpers.sumBy(accounts.filter(a => a.type === 'equity' && !a.isGroup), 'balance') }
+            { type: 'Patrimonio', value: Helpers.sumBy(accounts.filter(a => a.type === 'equity' && !a.isGroup), 'balance') },
+            { type: 'Ingresos', value: Helpers.sumBy(accounts.filter(a => a.type === 'revenue' && !a.isGroup), 'balance') },
+            { type: 'Gastos', value: Helpers.sumBy(accounts.filter(a => a.type === 'expense' && !a.isGroup), 'balance') }
         ];
 
-        Charts.bar('structure-chart', {
-            labels: structure.map(s => s.type),
-            datasets: [{ label: 'Saldo', data: structure.map(s => s.value) }]
-        }, { currency: true });
+        Charts.doughnut('structure-chart', {
+            labels: structure.filter(s => s.value > 0).map(s => s.type),
+            values: structure.filter(s => s.value > 0).map(s => s.value)
+        }, { currency: true, pie: true });
+
+        // Account drill-down logic
+        const tableContainer = document.getElementById('analysis-table');
+        if (tableContainer) {
+            tableContainer.addEventListener('dblclick', async (e) => {
+                const tr = e.target.closest('tr[data-row-id]');
+                if (!tr) return;
+                
+                const accountId = tr.dataset.rowId;
+                const account = accounts.find(a => a.id === accountId);
+                if (!account) return;
+                
+                // Show modal with detailed movements
+                const ledger = await AccountingService.getLedger(accountId, null, null);
+                let tableHtml = `<table class="data-table">
+                    <thead><tr><th>Fecha</th><th>Asiento</th><th>Descripción</th><th>Debe</th><th>Haber</th></tr></thead>
+                    <tbody>`;
+                
+                if (ledger.length === 0) {
+                    tableHtml += `<tr><td colspan="5" class="text-center">No hay movimientos</td></tr>`;
+                } else {
+                    ledger.forEach(mov => {
+                        tableHtml += `<tr>
+                            <td>${Formatters.date(mov.date)}</td>
+                            <td>${mov.entryNumber}</td>
+                            <td>${mov.description}</td>
+                            <td class="text-right">${Formatters.currency(mov.debit)}</td>
+                            <td class="text-right">${Formatters.currency(mov.credit)}</td>
+                        </tr>`;
+                    });
+                }
+                tableHtml += `</tbody></table>`;
+                
+                Modal.open({
+                    title: `Detalle de Movimientos: ${account.name}`,
+                    content: tableHtml,
+                    size: 'large',
+                    actions: [{ label: 'Cerrar', class: 'btn-outline', onClick: () => Modal.close() }]
+                });
+            });
+        }
 
         // Tabla de cuentas
         DataTable.create('analysis-table', {

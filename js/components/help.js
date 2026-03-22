@@ -141,14 +141,14 @@ const HelpSystem = {
                             <i class="fas fa-truck-loading"></i>
                             <div>
                                 <strong>2. Recepción (Guía):</strong> Ingreso físico al inventario. Puede ser <strong>parcial</strong> o total.
-                                <br><small>Contabilidad: Mercaderías (D) / <strong>Facturas por Recibir (C)</strong>.</small>
+                                <br><small>Solo actualiza stock. <strong>No genera asiento contable</strong> (se contabiliza con la factura).</small>
                             </div>
                         </div>
                         <div class="logic-step-item">
                             <i class="fas fa-file-invoice-dollar"></i>
                             <div>
                                 <strong>3. Factura de Proveedor:</strong> Legalización de la deuda. Se vincula a la OC recibida.
-                                <br><small>Contabilidad: Facturas por Recibir (D) + IVA CF (D) / <strong>Proveedores (C)</strong>.</small>
+                                <br><small>Contabilidad: Mercaderías (D) + IVA CF (D) / <strong>Proveedores (C)</strong>.</small>
                                 <br><button class="btn btn-xs btn-outline" data-nav="compras,facturas-proveedor">Ir a Facturas</button>
                             </div>
                         </div>
@@ -191,14 +191,15 @@ const HelpSystem = {
                             <i class="fas fa-truck"></i>
                             <div>
                                 <strong>2. Entrega (Guía):</strong> Salida física de productos. Permite entregas <strong>parciales</strong>.
-                                <br><small>Contabilidad: Facturas por Emitir (D) / Ventas (C) + Costo Ventas (D) / Mercaderías (C).</small>
+                                <br><small>Solo actualiza stock. <strong>No genera asiento contable</strong> (se contabiliza con la factura).</small>
                             </div>
                         </div>
                         <div class="logic-step-item">
                             <i class="fas fa-file-invoice"></i>
                             <div>
-                                <strong>3. Facturación:</strong> Emisión del documento tributario legal. Salda la provisión.
-                                <br><small>Contabilidad: Clientes (D) / <strong>Facturas por Emitir (C)</strong> + IVA DF (C).</small>
+                                <strong>3. Facturación:</strong> Emisión del documento tributario legal. Genera 2 asientos contables.
+                                <br><small><strong>Asiento 1:</strong> Clientes (D) / <strong>Ventas (C)</strong> + IVA DF (C) — reconocimiento venta a crédito.</small>
+                                <br><small><strong>Asiento 2:</strong> Costo de Ventas (D) / Mercaderías (C) — salida del inventario.</small>
                                 <br><button class="btn btn-xs btn-outline" data-nav="ventas,facturas-cliente">Ir a Facturas</button>
                             </div>
                         </div>

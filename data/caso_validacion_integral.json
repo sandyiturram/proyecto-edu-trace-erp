@@ -1,11 +1,17 @@
 {
-  "exportDate": "2026-03-10T15:00:00.000Z",
+  "exportDate": "2026-03-21T16:20:00.000Z",
   "instructions": [
     {
       "day": 1,
       "module": "Tesorería",
       "action": "El cliente \"Empresa Comercial ABC Ltda.\" nos transfiere el pago adeudado histórico (Factura N° 500) directamente a nuestra cuenta bancaria.",
       "hiddenInstruction": "Deben ir a Gestión de Cobranza y recaudar."
+    },
+    {
+      "day": 5,
+      "module": "Inventario",
+      "action": "Ocurre un accidente en bodega y se destruyen totalmente 2 unidades de \"Monitor LED 24 Pulgadas\". Realizar el ajuste de salida con cargo a pérdida.",
+      "hiddenInstruction": "Deben ir a Ajuste de Inventario, rebajar 2 unidades y seleccionar motivo Merma/Pérdida."
     }
   ],
   "companyId": "comp-val-001",
@@ -19,7 +25,7 @@
       "inventoryMethod": "PMP",
       "accountingSystem": "centralized",
       "creationDate": "2026-01-01T10:00:00.000Z",
-      "updatedAt": "2026-03-10T15:00:00.000Z"
+      "updatedAt": "2026-03-21T16:15:00.000Z"
     }
   ],
   "accounts": [
@@ -76,7 +82,7 @@
       "isGroup": false,
       "parentId": "acc-1110",
       "companyId": "comp-val-001",
-      "balance": 5000000
+      "balance": 4600841
     },
     {
       "id": "acc-1113",
@@ -186,12 +192,12 @@
       "isGroup": false,
       "parentId": "acc-1140",
       "companyId": "comp-val-001",
-      "balance": 0
+      "balance": 798319
     },
     {
       "id": "acc-1142",
       "code": "1.1.40.02",
-      "name": "PPM",
+      "name": "PPM por Recuperar",
       "type": "asset",
       "nature": "debit",
       "isGroup": false,
@@ -373,7 +379,7 @@
       "isGroup": false,
       "parentId": "acc-2130",
       "companyId": "comp-val-001",
-      "balance": 0
+      "balance": 399160
     },
     {
       "id": "acc-2132",
@@ -461,7 +467,7 @@
       "isGroup": false,
       "parentId": "acc-3110",
       "companyId": "comp-val-001",
-      "balance": -2125000
+      "balance": 2125000
     },
     {
       "id": "acc-3113",
@@ -781,7 +787,7 @@
       "price": 850000,
       "cost": 600000,
       "basePrice": 0,
-      "categoryId": null,
+      "categoryId": "Tecnología",
       "companyId": "comp-val-001"
     },
     {
@@ -792,7 +798,7 @@
       "price": 120000,
       "cost": 85000,
       "basePrice": 0,
-      "categoryId": null,
+      "categoryId": "Tecnología",
       "companyId": "comp-val-001"
     },
     {
@@ -800,51 +806,48 @@
       "code": "KEY-MECH",
       "name": "Teclado Mecánico RGB",
       "stock": 50,
-      "price": 45000,
+      "price": 35000,
       "cost": 25000,
       "basePrice": 0,
-      "categoryId": null,
-      "companyId": "comp-val-001"
-    }
-  ],
-  "suppliers": [
-    {
-      "id": "supp-val-1",
-      "rut": "76.555.444-1",
-      "name": "Distribuidora Tecnológica S.A.",
-      "email": "ventas@distribtec.cl",
-      "phone": "+56911112222",
-      "address": "Av. Santiago 100",
-      "companyId": "comp-val-001"
-    },
-    {
-      "id": "supp-val-2",
-      "rut": "77.888.999-5",
-      "name": "Importaciones Oriente SpA",
-      "email": "contacto@oriente.cl",
-      "phone": "+56933334444",
-      "address": "Calle Valparaíso 200",
+      "categoryId": "Tecnología",
       "companyId": "comp-val-001"
     }
   ],
   "customers": [
     {
       "id": "cust-val-1",
-      "rut": "15.222.333-4",
-      "name": "Juan Pérez",
-      "email": "juan@example.cl",
-      "phone": "+56955556666",
-      "address": "Av. Libertad 300",
-      "companyId": "comp-val-001"
+      "name": "Comercializadora Norte Ltda.",
+      "rut": "76.444.555-6",
+      "contact": "Andrés Bello",
+      "email": "contacto@norte.cl",
+      "phone": "+56 2 2233 4455",
+      "status": "active",
+      "companyId": "comp-val-001",
+      "balance": 0
     },
     {
       "id": "cust-val-2",
-      "rut": "76.000.111-2",
       "name": "Empresa Comercial ABC Ltda.",
-      "email": "compras@abc.cl",
-      "phone": "+56977778888",
-      "address": "Av. El Salto 400",
-      "companyId": "comp-val-001"
+      "rut": "76.123.456-7",
+      "contact": "Pedro Pérez",
+      "email": "ventas@abc.cl",
+      "phone": "+56 2 1122 3344",
+      "status": "active",
+      "companyId": "comp-val-001",
+      "balance": 2500000
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "supp-val-1",
+      "name": "Distribuidora Tecnológica S.A.",
+      "rut": "96.777.888-9",
+      "contact": "María Rojas",
+      "email": "proyectos@tecnologica.cl",
+      "phone": "+56 2 5566 7788",
+      "status": "active",
+      "companyId": "comp-val-001",
+      "balance": 5000000
     }
   ],
   "journalEntries": [
@@ -854,8 +857,8 @@
       "description": "Asiento de Apertura Comercial Mensualizado",
       "type": "opening",
       "status": "posted",
-      "totalDebit": 25000000,
-      "totalCredit": 25000000,
+      "totalDebit": 25399160,
+      "totalCredit": 25399160,
       "companyId": "comp-val-001",
       "createdAt": "2026-03-01T10:00:00.000Z",
       "lines": [
@@ -866,7 +869,7 @@
         },
         {
           "accountId": "acc-1112",
-          "debit": 5000000,
+          "debit": 4600841,
           "credit": 0
         },
         {
@@ -880,6 +883,11 @@
           "credit": 0
         },
         {
+          "accountId": "acc-1141",
+          "debit": 798319,
+          "credit": 0
+        },
+        {
           "accountId": "acc-3112",
           "debit": 2125000,
           "credit": 0
@@ -888,6 +896,11 @@
           "accountId": "acc-2111",
           "debit": 0,
           "credit": 5000000
+        },
+        {
+          "accountId": "acc-2131",
+          "debit": 0,
+          "credit": 399160
         },
         {
           "accountId": "acc-3111",
@@ -910,7 +923,7 @@
       "total": 2500000,
       "paid": 0,
       "balance": 2500000,
-      "status": "pending",
+      "status": "posted",
       "items": [],
       "journalEntryId": null,
       "companyId": "comp-val-001",
@@ -930,7 +943,7 @@
       "total": 5000000,
       "paid": 0,
       "balance": 5000000,
-      "status": "pending",
+      "status": "posted",
       "items": [],
       "journalEntryId": null,
       "companyId": "comp-val-001",

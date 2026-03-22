@@ -598,12 +598,18 @@ const InventarioModule = {
             title: 'Ajuste de Inventario',
             content: `
                 <form id="adjustment-form">
-                    <div class="form-group">
-                        <label class="form-label">Producto <span class="text-danger">*</span></label>
-                        <select class="form-control" name="productId" id="adjustment-product" required>
-                            <option value="">Seleccione producto...</option>
-                            ${physicalProducts.map(p => `<option value="${p.id}" data-stock="${p.stock || 0}">${p.code} - ${p.name} (Stock actual: ${p.stock || 0})</option>`).join('')}
-                        </select>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label class="form-label">Producto <span class="text-danger">*</span></label>
+                            <select class="form-control" name="productId" id="adjustment-product" required>
+                                <option value="">Seleccione producto...</option>
+                                ${physicalProducts.map(p => `<option value="${p.id}" data-stock="${p.stock || 0}">${p.code} - ${p.name} (Stock actual: ${p.stock || 0})</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label class="form-label">Fecha de Ajuste <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" name="adjustmentDate" id="adjustment-date" value="${Helpers.getCurrentDate()}" required>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Stock Actual</label>
@@ -675,6 +681,7 @@ const InventarioModule = {
         const newStock = parseInt(formData.get('newStock'));
         const reason = formData.get('reason');
         const description = formData.get('description');
+        const adjustmentDate = formData.get('adjustmentDate') || Helpers.getCurrentDate();
 
         if (!productId) { Toast.error('Seleccione un producto'); return; }
         if (isNaN(newStock) || newStock < 0) { Toast.error('Ingrese un stock válido'); return; }
@@ -705,7 +712,7 @@ const InventarioModule = {
                 productId,
                 type: 'adjustment',
                 quantity: Math.abs(difference),
-                date: Helpers.getCurrentDate(),
+                date: adjustmentDate,
                 reference: adjustmentRef,
                 description: `${reason}: ${description || 'Ajuste de inventario'}. Stock anterior: ${currentStock}, Stock nuevo: ${newStock}`,
                 createdAt: new Date().toISOString()
@@ -716,101 +723,100 @@ const InventarioModule = {
             // ==========================================
             const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
 
-            // Buscar cuenta de Mercaderías (Activo)
-            const inventoryAccount = accounts.find(a =>
-                a.type === 'asset' &&
-                (a.name.toLowerCase().includes('mercadería') ||
-                    a.name.toLowerCase().includes('inventario') ||
-                    a.code === '1.1.07')
+            // Buscar cuenta de Mercaderías (Activo) - Priorizar código exacto
+            let inventoryAccount = accounts.find(a =>
+                !a.isGroup && a.type === 'asset' && (a.code === '1.1.30.01')
             );
+            // Fallback: buscar por nombre
+            if (!inventoryAccount) {
+                inventoryAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'asset' &&
+                    (a.name.toLowerCase().includes('mercadería') ||
+                     a.name.toLowerCase().includes('mercaderias') ||
+                     a.name.toLowerCase().includes('inventario'))
+                );
+            }
+            // Fallback: código alternativo
+            if (!inventoryAccount) {
+                inventoryAccount = accounts.find(a =>
+                    !a.isGroup && a.type === 'asset' && a.code === '1.1.07'
+                );
+            }
+            console.log('[Ajuste Inventario] Cuenta inventario encontrada:', inventoryAccount?.name, inventoryAccount?.code, 'ID:', inventoryAccount?.id);
+
 
             // Buscar cuenta de Pérdida/Ganancia por ajuste de inventario
             let adjustmentAccount;
             if (difference < 0) {
-                // Pérdida - buscar cuenta de gasto
+                // Pérdida - buscar cuenta de gasto (Merma o Ajuste)
                 adjustmentAccount = accounts.find(a =>
                     a.type === 'expense' &&
                     (a.name.toLowerCase().includes('pérdida') ||
                         a.name.toLowerCase().includes('merma') ||
                         a.name.toLowerCase().includes('ajuste'))
                 );
-                // Si no existe, buscar cualquier cuenta de gasto
+                // Fallback a Costo de Ventas si no hay específica de merma
                 if (!adjustmentAccount) {
-                    adjustmentAccount = accounts.find(a => a.type === 'expense');
+                    adjustmentAccount = accounts.find(a => a.code === '5.1.10.01' || a.name.toLowerCase().includes('costo de ventas'));
                 }
             } else {
                 // Ganancia - buscar cuenta de ingreso
                 adjustmentAccount = accounts.find(a =>
-                    a.type === 'income' &&
+                    a.type === 'revenue' || a.type === 'income' &&
                     (a.name.toLowerCase().includes('ganancia') ||
                         a.name.toLowerCase().includes('ajuste') ||
                         a.name.toLowerCase().includes('sobrante'))
                 );
-                // Si no existe, buscar cualquier cuenta de ingreso
-                if (!adjustmentAccount) {
-                    adjustmentAccount = accounts.find(a => a.type === 'income');
-                }
             }
 
+            // Fallback final
+            if (!adjustmentAccount) {
+                adjustmentAccount = accounts.find(a => difference < 0 ? a.type === 'expense' : (a.type === 'revenue' || a.type === 'income'));
+            }
+            console.log('[Ajuste Inventario] Cuenta ajuste encontrada:', adjustmentAccount?.name, adjustmentAccount?.code, 'ID:', adjustmentAccount?.id);
+            console.log('[Ajuste Inventario] Diferencia:', difference, 'Costo unitario:', product.cost, 'Valor ajuste:', Math.abs(difference) * (product.cost || 0));
+
             if (inventoryAccount && adjustmentAccount) {
+
                 // Calcular valor del ajuste (usando costo del producto)
                 const adjustmentValue = Math.abs(difference) * (product.cost || 0);
 
                 if (adjustmentValue > 0) {
-                    const entryNumber = await AccountingService.getNextEntryNumber();
-
-                    const journalEntry = {
-                        id: Helpers.generateId(),
-                        companyId: company.id,
-                        number: entryNumber,
-                        date: Helpers.getCurrentDate(),
+                    // Usar AccountingService para asegurar actualización de saldos
+                    await AccountingService.createJournalEntry({
+                        date: adjustmentDate,
                         description: `Ajuste de inventario: ${product.name} - ${reason}`,
                         reference: adjustmentRef,
-                        status: 'posted',
-                        totalDebit: adjustmentValue,
-                        totalCredit: adjustmentValue,
-                        createdAt: new Date().toISOString()
-                    };
-                    await DB.add('journalEntries', journalEntry);
-
-                    // Crear líneas del asiento
-                    if (difference < 0) {
-                        // Pérdida: Débito a Gasto, Crédito a Mercaderías
-                        await DB.add('journalLines', {
-                            id: Helpers.generateId(),
-                            entryId: journalEntry.id,
-                            accountId: adjustmentAccount.id,
-                            description: `Pérdida inventario: ${product.name}`,
-                            debit: adjustmentValue,
-                            credit: 0
-                        });
-                        await DB.add('journalLines', {
-                            id: Helpers.generateId(),
-                            entryId: journalEntry.id,
-                            accountId: inventoryAccount.id,
-                            description: `Baja inventario: ${product.name}`,
-                            debit: 0,
-                            credit: adjustmentValue
-                        });
-                    } else {
-                        // Ganancia: Débito a Mercaderías, Crédito a Ingreso
-                        await DB.add('journalLines', {
-                            id: Helpers.generateId(),
-                            entryId: journalEntry.id,
-                            accountId: inventoryAccount.id,
-                            description: `Alta inventario: ${product.name}`,
-                            debit: adjustmentValue,
-                            credit: 0
-                        });
-                        await DB.add('journalLines', {
-                            id: Helpers.generateId(),
-                            entryId: journalEntry.id,
-                            accountId: adjustmentAccount.id,
-                            description: `Ganancia inventario: ${product.name}`,
-                            debit: 0,
-                            credit: adjustmentValue
-                        });
-                    }
+                        type: 'adjustment',
+                        autoPost: true,
+                        lines: difference < 0 ? [
+                            {
+                                accountId: adjustmentAccount.id,
+                                description: `Pérdida inventario: ${product.name}`,
+                                debit: adjustmentValue,
+                                credit: 0
+                            },
+                            {
+                                accountId: inventoryAccount.id,
+                                description: `Baja inventario: ${product.name}`,
+                                debit: 0,
+                                credit: adjustmentValue
+                            }
+                        ] : [
+                            {
+                                accountId: inventoryAccount.id,
+                                description: `Alta inventario: ${product.name}`,
+                                debit: adjustmentValue,
+                                credit: 0
+                            },
+                            {
+                                accountId: adjustmentAccount.id,
+                                description: `Ganancia inventario: ${product.name}`,
+                                debit: 0,
+                                credit: adjustmentValue
+                            }
+                        ]
+                    });
                 }
             }
 
@@ -852,6 +858,22 @@ const InventarioModule = {
                     const totalCost = productMovements.reduce((sum, m) => sum + (m.quantity * (m.unitCost || p.cost)), 0);
                     const totalQty = productMovements.reduce((sum, m) => sum + m.quantity, 0);
                     unitCost = totalQty > 0 ? totalCost / totalQty : p.cost;
+                } else if (method === 'fifo' && productMovements.length > 0) {
+                    // FIFO: remaining stock has cost of latest purchases
+                    const sortedEntries = [...productMovements].sort((a, b) => new Date(a.date) - new Date(b.date));
+                    const reversedEntries = [...sortedEntries].reverse();
+                    let remainingQty = p.stock || 0;
+                    let totalCost = 0;
+                    for (const entry of reversedEntries) {
+                        if (remainingQty <= 0) break;
+                        const entryQty = entry.quantity || 0;
+                        const entryCost = entry.unitCost || p.cost || 0;
+                        const qtyToUse = Math.min(remainingQty, entryQty);
+                        totalCost += qtyToUse * entryCost;
+                        remainingQty -= qtyToUse;
+                    }
+                    if (remainingQty > 0) totalCost += remainingQty * (p.cost || 0);
+                    unitCost = (p.stock || 0) > 0 ? totalCost / p.stock : p.cost || 0;
                 }
 
                 return {

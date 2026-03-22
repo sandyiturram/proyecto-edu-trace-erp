@@ -246,6 +246,29 @@ const Migrations = {
             status: 'active'
         });
 
+        // Transacciones bancarias de demostración
+        const today = Helpers.getCurrentDate();
+        const demoTransactions = [
+            { type: 'deposit', amount: 10000000, description: 'Aporte de capital inicial', reference: 'TRF-001', reconciled: true },
+            { type: 'withdrawal', amount: 500000, description: 'Pago arriendo oficina', reference: 'TRF-002', reconciled: true },
+            { type: 'withdrawal', amount: 150000, description: 'Pago servicios básicos', reference: 'TRF-003', reconciled: false },
+            { type: 'deposit', amount: 3500000, description: 'Cobro factura cliente Comercial Norte', reference: 'TRF-004', reconciled: false },
+            { type: 'withdrawal', amount: 2380000, description: 'Pago factura proveedor ABC', reference: 'TRF-005', reconciled: false }
+        ];
+
+        for (const tx of demoTransactions) {
+            await DB.add('bankTransactions', {
+                companyId,
+                bankAccountId: bankAccount.id,
+                type: tx.type,
+                date: today,
+                amount: tx.amount,
+                description: tx.description,
+                reference: tx.reference,
+                reconciled: tx.reconciled
+            });
+        }
+
         // --- NUEVO: Asientos Contables Iniciales para que los reportes tengan datos ---
 
         // 1. Obtener cuentas necesarias por código

@@ -165,6 +165,59 @@ const AccountingService = {
         entry.cancelReason = reason;
         await DB.update('journalEntries', entry);
 
+        // Revertir estado de documento origen si corresponde
+        if (entry.sourceDocument && entry.sourceDocumentId) {
+            try {
+                if (entry.sourceDocument === 'customerInvoice' || entry.sourceDocument === 'customerPayment') {
+                    const invoice = await DB.get('customerInvoices', entry.sourceDocumentId);
+                    if (invoice && (invoice.status === 'paid' || invoice.status === 'partial')) {
+                        const newPaid = Math.max(0, (invoice.paid || invoice.total) - entry.totalDebit);
+                        
+                        await DB.update('customerInvoices', { 
+                            ...invoice, 
+                            status: newPaid <= 0 ? 'posted' : 'partial', 
+                            paid: newPaid,
+                            balance: invoice.total - newPaid,
+                            paidAt: null, 
+                            paymentReference: null 
+                        });
+                        
+                        const customer = await DB.get('customers', invoice.customerId);
+                        if (customer) {
+                            await DB.update('customers', {
+                                ...customer,
+                                balance: (customer.balance || 0) + entry.totalDebit
+                            });
+                        }
+                    }
+                } else if (entry.sourceDocument === 'supplierInvoice' || entry.sourceDocument === 'supplierPayment') {
+                    const invoice = await DB.get('supplierInvoices', entry.sourceDocumentId);
+                    if (invoice && (invoice.status === 'paid' || invoice.status === 'partial')) {
+                        const newPaid = Math.max(0, (invoice.paid || invoice.total) - entry.totalDebit);
+                        
+                        await DB.update('supplierInvoices', { 
+                            ...invoice, 
+                            status: newPaid <= 0 ? 'posted' : 'partial', 
+                            paid: newPaid,
+                            balance: invoice.total - newPaid,
+                            paidAt: null, 
+                            paymentReference: null 
+                        });
+                        
+                        const supplier = await DB.get('suppliers', invoice.supplierId);
+                        if (supplier) {
+                            await DB.update('suppliers', {
+                                ...supplier,
+                                balance: (supplier.balance || 0) + entry.totalDebit
+                            });
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Error revirtiendo documento origen:', err);
+            }
+        }
+
         await DB.logAudit(entry.companyId, 'CANCEL', 'journalEntry', entry.id, { reason });
         return entry;
     },
@@ -193,16 +246,21 @@ const AccountingService = {
      * Recalcula todos los saldos de cuentas basándose en las líneas de asientos contables
      * Útil para corregir saldos después de importación o migración de datos
      */
-    async recalculateAccountBalances() {
-        const company = CompanyService.getCurrent();
-        if (!company) throw new Error('No hay empresa seleccionada');
+    async recalculateAccountBalances(companyId = null) {
+        let activeCompanyId = companyId;
+        
+        if (!activeCompanyId) {
+            const company = CompanyService.getCurrent();
+            if (!company) throw new Error('No hay empresa seleccionada');
+            activeCompanyId = company.id;
+        }
 
         // Obtener todas las cuentas
-        const accounts = await DB.getByIndex('accounts', 'companyId', company.id);
+        const accounts = await DB.getByIndex('accounts', 'companyId', activeCompanyId);
         console.log(`[Recálculo] Cuentas encontradas: ${accounts.length}`);
 
         // Obtener todos los asientos contabilizados
-        const entries = await DB.getByIndex('journalEntries', 'companyId', company.id);
+        const entries = await DB.getByIndex('journalEntries', 'companyId', activeCompanyId);
         const postedEntries = entries.filter(e => e.status === 'posted');
         console.log(`[Recálculo] Asientos totales: ${entries.length}, Contabilizados: ${postedEntries.length}`);
 

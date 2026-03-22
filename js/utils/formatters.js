@@ -220,6 +220,20 @@ const Formatters = {
             'overdue': { label: 'Vencido', class: 'badge-error' }
         };
         return statusMap[status] || { label: status, class: 'badge-neutral' };
+    },
+
+    /**
+     * Formatea estado específico para Facturas (Nomenclatura Pedagógica)
+     */
+    statusInvoice(status) {
+        const statusMap = {
+            'pending': { label: 'Borrador', class: 'badge-neutral' },
+            'posted': { label: 'Pendiente', class: 'badge-warning' },
+            'partial': { label: 'Pago Parcial', class: 'badge-warning' },
+            'paid': { label: 'Pagada', class: 'badge-success' },
+            'cancelled': { label: 'Anulada', class: 'badge-error' }
+        };
+        return statusMap[status] || this.status(status);
     }
 };
 

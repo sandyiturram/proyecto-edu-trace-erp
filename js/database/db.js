@@ -412,7 +412,8 @@ const DB = {
         // Recalcular saldos después de importar si hay asientos
         if (data.journalEntries && data.journalEntries.length > 0) {
             console.log('Recalculando saldos tras importación...');
-            await AccountingService.recalculateAccountBalances();
+            const importedCompanyId = data.journalEntries[0].companyId;
+            await AccountingService.recalculateAccountBalances(importedCompanyId);
         }
 
         return results;

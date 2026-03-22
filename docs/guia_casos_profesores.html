@@ -492,7 +492,7 @@
         <div class="highlight-box highlight-warning">
             <h4><i class="fas fa-exclamation-triangle"></i> Validación de Naturaleza Contable</h4>
             <p>Verifique que las cuentas regularizadoras de patrimonio (como "Acciones por Suscribir" o "Accionistas")
-                tengan su naturaleza parametricada como <strong>DEUDORA</strong> (Activo) en el Módulo de Plan de
+                tengan su naturaleza parametrizada como <strong>DEUDORA</strong> (Activo) en el Módulo de Plan de
                 Cuentas, a
                 pesar de que se muestren restando en la sección Patrimonial. De lo contrario, el Balance General no
                 cuadrará y arrojará errores de sumas.</p>
@@ -595,7 +595,7 @@
             Si es 'spa' o 'sa', usa OBLIGATORIAMENTE
             cuentas de 'Capital Pagado' y cuentas regularizadoras como 'Acciones por Suscribir' (type: equity, nature:
             debit) y 'Accionistas' (type: equity, nature: debit). Si es 'eirl', usa simplemente 'Capital'.<br>
-            5. Crea [3] productos típicos con base a un rubro inventado y aígnales de inmediato <code>companyId</code>.
+            5. Crea [3] productos típicos con base en un rubro inventado y asígnales de inmediato <code>companyId</code>.
             En este array indica el <code>stock</code>
             inicial > 10, e inventa un <code>price</code> de venta, su <code>cost</code> promedio contable real estimado
             y el <code>basePrice</code>.
@@ -613,19 +613,24 @@
         </div>
 
         <div class="highlight-box highlight-warning" style="margin-top: 15px;">
-            <h4><i class="fas fa-save"></i> ¿Cómo crear el archivo físico para los alumnos?</h4>
-            <p style="margin-bottom:0;">Una vez que la Inteligencia Artificial le entregue la respuesta, siga estos
-                pasos estrictos:</p>
-            <ol style="margin-top:5px; margin-bottom:0;">
-                <li>Copie todo el texto que le devolvió la IA (asegúrese que comience con <code>{</code> y termine con
+            <h4><i class="fas fa-save"></i> ¿Cómo crear el archivo para los alumnos?</h4>
+            <p style="margin-bottom:10px;">Existen <strong>dos formas</strong> de obtener el archivo JSON para entregarlo a sus estudiantes:</p>
+
+            <p style="margin-bottom:5px;"><strong><i class="fas fa-file-download" style="color:var(--secondary);"></i> Opción A: Descarga directa desde la IA</strong></p>
+            <p style="margin-bottom:10px; font-size:13.5px;">Algunos modelos de IA (como ChatGPT, Claude o Gemini) permiten descargar la respuesta directamente como archivo. Si la IA le ofrece un botón de <em>"Descargar"</em> o genera un enlace de descarga del archivo <code>.json</code>, simplemente descárguelo y distribúyalo a los estudiantes. Esta es la forma más rápida.</p>
+
+            <p style="margin-bottom:5px;"><strong><i class="fas fa-paste" style="color:var(--info);"></i> Opción B: Crear el archivo manualmente</strong></p>
+            <p style="margin-bottom:5px; font-size:13.5px;">Si la IA solo muestra el texto en pantalla, siga estos pasos:</p>
+            <ol style="margin-top:5px; margin-bottom:0; font-size:13.5px;">
+                <li>Copie todo el texto que le devolvió la IA (asegúrese de que comience con <code>{</code> y termine con
                     <code>}</code>).</li>
                 <li>Abra el "Bloc de Notas" (Notepad) en Windows o "TextEdit" en Mac.</li>
                 <li>Pegue el contenido.</li>
-                <li>Haga clic en <strong>Archivo > Guardar Como...</strong></li>
+                <li>Haga clic en <strong>Archivo &gt; Guardar Como...</strong></li>
                 <li>En la opción "Tipo" o "Formato", seleccione <strong>Todos los archivos (*.*)</strong>.</li>
-                <li>Nombre el archivo con extensión JSON. Ejemplo: <code>historia_empresa.json</code> y guárdelo. Este
-                    será el archivo histórico que deberá entregarle a sus estudiantes.</li>
+                <li>Nombre el archivo con extensión <code>.json</code>. Ejemplo: <code>historia_empresa.json</code> y guárdelo.</li>
             </ol>
+            <p style="margin-top:10px; margin-bottom:0; font-size:13px; color:var(--text-muted);"><i class="fas fa-info-circle"></i> En ambos casos, el archivo resultante es idéntico y será importado de la misma forma en el ERP.</p>
         </div>
 
         <h3>5.2 Estructura JSON del ERP</h3>
@@ -656,13 +661,12 @@
             <div class="process-content">
                 <h4>Revisión Cruzada mediante JSON</h4>
                 <p>En lugar de revisar decenas de reportes PDF de sus alumnos, solicíteles que entreguen el
-                    <strong>Archivo de Respaldo .json</strong> (botón rojo en Exportar).<br>Usted, como docente, crea
-                    una "Empresa Vacía Auxiliar" en su propio navegador y simplemente importa dicho JSON. <strong>El
-                        sistema completo de ese estudiante podrá ser revisado directamente en su pantalla</strong>.
-                    Podrá auditar la
-                    existencia de los asientos, la cuadratura, si costearon bien el inventario y por qué el balance no
-                    les cuadró.
-                </p>
+                    <strong>Archivo de Respaldo .json</strong> exportado desde <em>Administración &gt; Importar/Exportar &gt; Exportar Datos</em>.</p>
+                <div style="background:#fffbeb; border:1px solid #f59e0b; border-radius:6px; padding:12px; margin:10px 0;">
+                    <p style="margin:0 0 8px 0; font-weight:600; color:#92400e;"><i class="fas fa-exclamation-triangle"></i> Paso previo obligatorio antes de cada revisión:</p>
+                    <p style="margin:0; font-size:13.5px;">Antes de importar el archivo de un estudiante, el docente debe <strong>eliminar todos los datos existentes</strong> de la empresa actual. Para ello, diríjase a <em>Administración &gt; Configuración</em> y utilice la opción <strong>"Borrar Todos los Datos"</strong>. Esto garantiza que los datos del estudiante anterior no se mezclen con los del siguiente.</p>
+                </div>
+                <p>Luego, importe el JSON del estudiante. <strong>El sistema completo de ese estudiante podrá ser revisado directamente en su pantalla.</strong> Podrá auditar la existencia de los asientos, la cuadratura, si costearon bien el inventario y por qué el balance no les cuadró.</p>
             </div>
         </div>
 
@@ -696,6 +700,17 @@
             <strong>Modalidad Centralizadora</strong>.
         </p>
 
+        <div class="highlight-box highlight-danger">
+            <h4><i class="fas fa-exclamation-circle"></i> Instrucción Importante sobre el Método de Contabilización</h4>
+            <p style="margin-bottom:0;">Este caso exige que los estudiantes trabajen con el <strong>sistema centralizador</strong>. Al importar los datos, el sistema puede estar configurado por defecto como <em>"Jornalizador"</em>. El estudiante debe:
+            </p>
+            <ol style="margin-top:5px; margin-bottom:0;">
+                <li>Dirigirse a <strong>Contabilidad &gt; Libros Auxiliares</strong> y verificar si aparece una alerta indicando que el sistema está configurado como <em>"Jornalizador"</em>.</li>
+                <li>Si aparece dicha alerta, ir a <strong>Administración &gt; Configuración</strong> y cambiar el <strong>Método de Contabilización</strong> a <em>"Centralizador"</em>.</li>
+                <li>Este cambio es <strong>indispensable</strong> para que al final del mes puedan ejecutar la centralización y generar el Balance de 8 Columnas correctamente.</li>
+            </ol>
+        </div>
+
         <div class="highlight-box highlight-success">
             <h4><i class="fas fa-download"></i> Archivo Base JSON Incluido</h4>
             <p>Este manual se acompaña del archivo físico <strong><code>caso_validacion_integral.json</code></strong>.
@@ -724,7 +739,7 @@
                     <ol style="margin-top: 0; font-size: 13.5px; padding-left: 20px;">
                         <li>Extraiga el archivo <code>data/caso_validacion_integral.json</code> provisto junto a este
                             manual.</li>
-                        <li>Entregue este archivo a sus estudiantes (mediante correo, aula virtual, pendrive, etc.)
+                        <li>Entregue este archivo a sus estudiantes (mediante correo electrónico, aula virtual, carpeta compartida, etc.)
                             junto con el "Documento de Hechos Económicos" (el listado de ejercicios a resolver).</li>
                         <li>Asegúrese de instruir a los alumnos que <strong>no deben modificar</strong> el archivo
                             manualmente, solo cargarlo en el sistema.</li>
@@ -736,22 +751,28 @@
                     <h5 style="color: #d97706; margin-top: 0; margin-bottom: 10px;"><i class="fas fa-user-graduate"></i>
                         Paso a Paso para el Estudiante (Importación Inicial)</h5>
                     <p style="margin-bottom: 5px; font-size: 13.5px;">Antes de comenzar a trabajar, el estudiante debe
-                        cargar el escenario inicial de la empresa "Importadora Global Ltda". El orden estricto a seguir
+                        cargar el escenario inicial de la empresa "Importadora Global Ltda.". El orden estricto a seguir
                         es el siguiente:</p>
                     <ol style="margin-top: 0; font-size: 13.5px; padding-left: 20px;">
                         <li>Inicie sesión en <strong>EDU-TRACE ERP</strong>. No es necesario crear una empresa nueva.
                         </li>
                         <li>Diríjase al Módulo <strong>Administración</strong> usando el menú lateral y haga clic en la
-                            pestaña inferior <strong>"Importar/Exportar"</strong>.</li>
+                            pestaña <strong>"Importar/Exportar"</strong>.</li>
                         <li>En la sección "Importar Datos", haga clic en <strong>Buscar archivo...</strong> y seleccione
                             el archivo <code>caso_validacion_integral.json</code> que le entregó el profesor.</li>
                         <li>Haga clic en el botón verde <strong>Importar Datos</strong> y espere a que el sistema
-                            confirme el éxito (alrededor de 120 registros insertados entresuentas, facturas,
+                            confirme el éxito (87 registros insertados entre cuentas, facturas,
                             comprobantes y productos). Al cargar, la empresa actual cambiará automáticamente a
                             "Importadora Global Ltda."</li>
                         <li><strong>Verificación Vital:</strong> Para comprobar que la carga fue exitosa, diríjase al
-                            módulo <strong>Contabilidad > Libro Mayor</strong>. Asegúrese de que existe el "Asiento de
-                            Apertura" mostrando activos en Banco y Patrimonio.</li>
+                            módulo <strong>Contabilidad &gt; Libro Diario</strong> y presione el botón <strong>"Consultar"</strong>.
+                            Verifique que aparece el "Asiento de Apertura" con los activos en Banco y el Patrimonio.
+                            También puede dirigirse a <strong>Contabilidad &gt; Asientos Contables</strong> para visualizar
+                            los movimientos contabilizados.</li>
+                        <li><strong>Configurar método de contabilización:</strong> Diríjase a <strong>Contabilidad &gt; Libros Auxiliares</strong>.
+                            Si aparece una alerta indicando que el sistema está configurado como <em>"Jornalizador"</em>,
+                            vaya a <strong>Administración &gt; Configuración</strong> y cambie el método de contabilización
+                            a <strong>"Centralizador"</strong>. Este paso es indispensable para poder centralizar al final del mes.</li>
                         <li>Ya está listo para comenzar a resolver los Hechos Económicos del mes.</li>
                     </ol>
                 </div>

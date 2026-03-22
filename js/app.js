@@ -575,6 +575,17 @@ const App = {
     async exportToExcel(company) {
         const wb = XLSX.utils.book_new();
 
+        // Identificar cuentas que han tenido movimientos
+        const activeIds = new Set();
+        if (company) {
+            const entries = await DB.getByIndex('journalEntries', 'companyId', company.id);
+            const postedEntries = entries.filter(e => e.status === 'posted');
+            for (const e of postedEntries) {
+                const lines = await DB.getByIndex('journalLines', 'entryId', e.id);
+                if (lines) lines.forEach(l => activeIds.add(l.accountId));
+            }
+        }
+
         // === 1. BALANCE GENERAL ===
         try {
             const balanceData = await AccountingService.getBalanceSheet(Helpers.getCurrentDate());
@@ -589,7 +600,7 @@ const App = {
             balanceRows.push({ 'Concepto': 'ACTIVOS', 'Monto': '' });
             if (balanceData.assets?.items) {
                 balanceData.assets.items.forEach(item => {
-                    if (item.balance !== 0) {
+                    if (item.balance !== 0 || activeIds.has(item.id)) {
                         balanceRows.push({ 'Concepto': `  ${item.name}`, 'Monto': item.balance });
                     }
                 });
@@ -601,7 +612,7 @@ const App = {
             balanceRows.push({ 'Concepto': 'PASIVOS', 'Monto': '' });
             if (balanceData.liabilities?.items) {
                 balanceData.liabilities.items.forEach(item => {
-                    if (item.balance !== 0) {
+                    if (item.balance !== 0 || activeIds.has(item.id)) {
                         balanceRows.push({ 'Concepto': `  ${item.name}`, 'Monto': item.balance });
                     }
                 });
@@ -613,7 +624,7 @@ const App = {
             balanceRows.push({ 'Concepto': 'PATRIMONIO', 'Monto': '' });
             if (balanceData.equity?.items) {
                 balanceData.equity.items.forEach(item => {
-                    if (item.balance !== 0) {
+                    if (item.balance !== 0 || activeIds.has(item.id)) {
                         balanceRows.push({ 'Concepto': `  ${item.name}`, 'Monto': item.balance });
                     }
                 });

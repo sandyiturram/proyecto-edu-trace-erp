@@ -159,7 +159,7 @@ const ExportService = {
                     : Object.values(row);
             });
 
-            doc.autoTable({
+            const autoTableOptions = {
                 startY: yPos,
                 head: [tableHeaders],
                 body: tableData,
@@ -181,7 +181,18 @@ const ExportService = {
                     overflow: 'linebreak',
                     cellPadding: 2
                 }
-            });
+            };
+
+            if (typeof doc.autoTable === 'function') {
+                doc.autoTable(autoTableOptions);
+            } else if (window.jspdf && typeof window.jspdf.autoTable === 'function') {
+                window.jspdf.autoTable(doc, autoTableOptions);
+            } else if (typeof autoTable === 'function') {
+                autoTable(doc, autoTableOptions);
+            } else {
+                Toast.error('El complemento para generar tablas PDF no se ha cargado correctamente.');
+                return false;
+            }
         }
 
         // Pie de página
@@ -336,6 +347,18 @@ const ExportService = {
 
         y += 10;
 
+        // Identificar cuentas para retener cuentas en 0 que tuvieron movimientos
+        const activeIds = new Set();
+        const company = CompanyService.getCurrent();
+        if (company) {
+            const entries = await DB.getByIndex('journalEntries', 'companyId', company.id);
+            const postedEntries = entries.filter(e => e.status === 'posted');
+            for (const e of postedEntries) {
+                const lines = await DB.getByIndex('journalLines', 'entryId', e.id);
+                if (lines) lines.forEach(l => activeIds.add(l.accountId));
+            }
+        }
+
         // Helper para secciones
         const addSection = (title, items, total) => {
             doc.setFontSize(12);
@@ -346,7 +369,7 @@ const ExportService = {
             doc.setFontSize(9);
             doc.setFont('helvetica', 'normal');
 
-            items.filter(i => i.balance !== 0).forEach(item => {
+            items.filter(i => i.balance !== 0 || activeIds.has(i.id)).forEach(item => {
                 doc.text(`    ${item.name}`, margin, y);
                 doc.text(Formatters.currency(item.balance), pageWidth - margin - 40, y, { align: 'right' });
                 y += 5;
